@@ -26,7 +26,7 @@ int main()
 
   double runRate = 0.0;
 
-  char timeline[10][100];
+  char timeline[10][100]; // Had to change this to a 2d vector as wides were causing multiple issues
 
   std::string null = "";
 
@@ -37,9 +37,31 @@ int main()
   // Making rand() actually random (it adds a seed which is based on the time which changes every second)
   std::srand((unsigned)time(&nTime));
 
+  // My friend gave me the obvious idea of a coin flip which my dumb brain forgot
+  std::cout << "Choose heads or tails and press c to continue when ready.\n";
+  std::cin >> null;
+  system("cls");
+
+  random = std::rand() % 2 + 1;
+  if (random == 1)
+  {
+    std::cout << "Heads\nChoose batting or bowling...\n";
+    std::cout << "Enter 'c' to Continue\n";
+    std::cin >> null;
+    system("cls");
+  }
+  else
+  {
+    std::cout << "Tails\nChoose batting or bowling...\n";
+    std::cout << "Enter 'c' to Continue\n";
+    std::cin >> null;
+    system("cls");
+  }
+
   // The while loop containing most of our code
   while (innings < 3)
   {
+    // Start of innings
     std::cout << "INNINGS NUMBER " << innings << "\n\n";
 
     // While loops for our over number and ball number
@@ -116,6 +138,7 @@ int main()
             totalBalls++;
             ballNumber++;
             std::cout << "OUT\n";
+            // Checking if all out (you will see this in all of the following waited random if statements)
             if (wickets == 10)
             {
               break;
@@ -497,6 +520,7 @@ int main()
             system("cls");
             break;
           }
+          // Printing out the amount of runs left to win if in the second innings
           std::cout << "Runs to Win: " << ((oldRuns + 1) - runs) << "\n";
         }
         std::cout << "Enter 'c' to Continue\n";
@@ -504,6 +528,7 @@ int main()
         system("cls");
       }
 
+      // vOverBalls is a vector which will contain each over's number of balls. This again is because of wides increasing the number of balls in an over. Also all out requires this
       overBalls = ballNumber + wideBalls;
       vOverBalls.push_back(overBalls);
 
@@ -561,8 +586,7 @@ int main()
 
     if (innings == 1 && wickets != 10)
     {
-      std::cout << "First innings up.\n"
-                << runs << "/" << wickets << " in 10 overs!\nRun rate: " << runRate << std::endl;
+      std::cout << "First innings up.\n" << runs << "/" << wickets << " in 10 overs!\nRun rate: " << runRate << std::endl;
     }
     else if (runs == oldRuns && innings == 2)
     {
@@ -582,8 +606,6 @@ int main()
     std::cin >> null;
     std::cout << "\n";
 
-    // Total number of balls in innings (incase all out)
-
     overNumber--;
 
     if (null == "y")
@@ -597,6 +619,7 @@ int main()
         }
         std::cout << std::endl;
       }
+      // This is for the reduced number of balls in an over due to all out
       if (ballNumber > 0)
       {
         for (int i = 0; i < ballNumber; i++)
