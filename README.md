@@ -1,6 +1,6 @@
 # Cricket-Attax
 
-Umm me and my brother had this way of playing with cricket attax cards which completely ignored the values written on the cards. The cards were just for show that the player was on your team, and even that didn't matter cause the entire game was luck based. It still was, and is, a very fun game seeing your favorite players get golden ducked while the bowlers hit centuries!
+Me and my brother had this way of playing with cricket attax cards which completely ignored the values written on the cards. The cards were just for show that the player was on your team, and even that didn't matter cause the entire game was luck based. It still was, and is, a very fun game seeing your favorite players get golden ducked while the bowlers hit centuries!
 
 We used to use Alexa for the RNG between 1 and 6 (5 was wicket), but now I wanted to create a program to do that job as it seemed more realistic with weighted percentages, dot balls...maybe no balls and wides in the future but that is kinda complicated. I have a trello board for all features im gonna add based on three stages. I uploaded the files right when I finished stage 1 so maybe you will come in time to see my progress on stage 2 and 3.
 
