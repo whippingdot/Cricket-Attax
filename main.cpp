@@ -11,15 +11,14 @@
 
 int main()
 {
+  system("cls");
   // Variable Declaration
   int overNumber = 1; // This is dumb, I know, and it makes me have to do - 1 wherever I mention overNumber, but I am too lazy to fix it everywhere
   int ballNumber = 0;
-  int ballNumber2 = 0;
   int runs = 0;
   int wickets = 0;
   int innings = 1;
   int random = 0;
-  int timelineNumber = 0;
   int oldRuns = 0;
   int overRuns = 0;
   int totalBalls = 0;
@@ -28,10 +27,9 @@ int main()
 
   double runRate = 0.0;
 
-  char timeline[10][100]; // Had to change this to a 2d vector as wides were causing multiple issues
+  char timeline[10][100]; // Had to change this to a 2d array as wides were causing multiple issues
 
   std::string null = "";
-  int intNull = 0;
 
   std::vector<int> vOverBalls = std::vector<int>();
 
@@ -43,12 +41,11 @@ int main()
   // Intro screen timeeee
   while (null != "4")
   {
-    std::cout << "CRICKET RNG GENERATOR\n---------------------\n";
-    std::cout << "1. Start Sim\n2. How to Play\n3. What is Cricket\n4. Exit\n";
-    std::cin >> intNull;
+    std::cout << "   ___                 \\             .   \n .'   \\ .___  `   ___  |   ,   ___  _/_  \n |      /   \\ | .'   ` |  /  .'   `  |   \n |      |   ' | |      |-<   |----'  |   \n  `.__, /     /  `._.' /  \\_ `.___,  \\__/\n                                         \n   _____                    .           .                \n  (      ` , _ , _   ,   .  |     ___  _/_     __.  .___ \n   `--.  | |' `|' `. |   |  |    /   `  |    .'   \\ /   \\\n      |  | |   |   | |   |  |   |    |  |    |    | |   '\n \\___.'  / /   '   / `._/| /\\__ `.__/|  \\__/  `._.' /    \n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\n1. Start Simulator\n2. How to Play\n3. What is Cricket\n4. Exit\n";
+    std::cin >> null;
     system("cls");
 
-    switch (intNull)
+    switch (std::stoi(null))
     {
     case 1:
       innings = 1;
@@ -62,15 +59,13 @@ int main()
       random = std::rand() % 2 + 1;
       if (random == 1)
       {
-        std::cout << "Heads\nChoose batting or bowling...\n";
-        std::cout << "Enter to Continue\n";
+        std::cout << "Heads\nChoose batting or bowling...\nEnter to Continue\n";
         std::getline(std::cin, null);
         system("cls");
       }
       else
       {
-        std::cout << "Tails\nChoose batting or bowling...\n";
-        std::cout << "Enter to Continue\n";
+        std::cout << "Tails\nChoose batting or bowling...\nEnter to Continue\n";
         std::getline(std::cin, null);
         system("cls");
       }
@@ -621,8 +616,10 @@ int main()
 
         // Full innings timeline
         std::cout << "Do you want the full innings timeline(y/n): ";
-        std::getline(std::cin, null);
+        std::cin >> null;
         std::cout << "\n";
+
+        std::cin.ignore();
 
         overNumber--;
 
