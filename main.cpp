@@ -35,6 +35,15 @@ int main()
   int overBalls = 0;
   int counter = 0;
 
+
+  int dotMax = 0;
+  int oMax = 0;
+  int dMax = 0;
+  int tMax = 0;
+  int fMax = 0;
+  int sMax = 0;
+  int wMax = 0;
+
   double runRate = 0.0;
 
   array_type timeline; // Had to change this to a 2d array as wides were causing multiple issues
@@ -116,147 +125,92 @@ int main()
           {
 
             // Getting the random number from 0 - 100, then adding it by 1 so it is from 1 - 101 NOT INCLUDING 101
-            random = std::rand() % 100 + 1;
+            random = std::rand() % 1000 + 1;
 
             // The main attraction - weighted randoms
             // The weighted randoms are calculated based on the random number that was generated. As it was from 1 - 100 the weighted randoms work by saying if the number was in this range, it outputs this many runs or wicket or dot
             // The first three are buffed for powerplay, and after that the next two are buffs and nerfs incase the first team plays good or bad
 
-            if ((innings == 2 && oldRuns > higherScore) && (overNumber <= (maxOvers / 4) || overNumber > (maxOvers - 2)))
-            {
+
+            if ((innings == 2 && oldRuns > higherScore) && (overNumber <= (maxOvers / 4) || overNumber > (maxOvers - 2))) {
               std::cout << "POWERPLAY\n---------\n";
-              if (random <= 20)
-                e = outPutRuns(5, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 20 && random <= 27.5)
-                e = outPutRuns(1, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 27.5 && random <= 37)
-                e = outPutRuns(2, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 37 && random <= 38)
-                e = outPutRuns(3, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 38 && random <= 70)
-                e = outPutRuns(4, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 70 && random <= 87.5)
-                e = outPutRuns(6, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 89.5)
-              {
-                e = outPutRuns(8, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-                if (e == true)
-                  break;
-              }
+              dotMax = 200;
+              oMax = 275;
+              dMax = 370;
+              tMax = 375;
+              fMax = 700;
+              sMax = 865; // need to tweak
+              wMax = 895;
             }
-            else if ((innings == 2 && oldRuns < lowerScore) && (overNumber <= (maxOvers / 4) || overNumber > (maxOvers - 2)))
-            {
+            else if ((innings == 2 && oldRuns < lowerScore) && (overNumber <= (maxOvers / 4) || overNumber > (maxOvers - 2))) {
               std::cout << "POWERPLAY\n---------\n";
-              if (random <= 25)
-                e = outPutRuns(5, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 25 && random <= 45)
-                e = outPutRuns(1, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 45 && random <= 55)
-                e = outPutRuns(2, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 55 && random <= 56)
-                e = outPutRuns(3, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 56 && random <= 82.5)
-                e = outPutRuns(4, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 82.5 && random <= 90)
-                e = outPutRuns(6, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 90)
-              {
-                e = outPutRuns(8, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-                if (e == true)
-                  break;
-              }
+              dotMax = 250;
+              oMax = 450;
+              dMax = 550;
+              tMax = 555;
+              fMax = 820;
+              sMax = 880;
+              wMax = 900;
             }
-            else if (overNumber <= (maxOvers / 4) || overNumber > (maxOvers - 2))
-            {
+            else if (overNumber <= (maxOvers / 4) || overNumber > (maxOvers - 2)) {
               std::cout << "POWERPLAY\n---------\n";
-              if (random <= 20)
-                e = outPutRuns(5, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 20 && random <= 35)
-                e = outPutRuns(1, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 35 && random <= 45)
-                e = outPutRuns(2, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 45 && random <= 46)
-                e = outPutRuns(3, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 46 && random <= 72.5)
-                e = outPutRuns(4, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 72.5 && random <= 90)
-                e = outPutRuns(6, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 90)
-              {
-                e = outPutRuns(8, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-                if (e == true)
-                  break;
-              }
+              dotMax = 200;
+              oMax = 350;
+              dMax = 450;
+              tMax = 455;
+              fMax = 725;
+              sMax = 870;
+              wMax = 900;
             }
-            else if (innings == 2 && oldRuns > higherScore)
-            {
-              if (random <= 20)
-                e = outPutRuns(5, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 20 && random <= 24)
-                e = outPutRuns(7, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 24 && random <= 44)
-                e = outPutRuns(1, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 44 && random <= 56.5)
-                e = outPutRuns(2, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 56.5 && random <= 57.5)
-                e = outPutRuns(3, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 57.5 && random <= 77.5)
-                e = outPutRuns(4, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 77.5 && random <= 93.5)
-                e = outPutRuns(6, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 94.5)
-              {
-                e = outPutRuns(8, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-                if (e == true)
-                  break;
-              }
+            else if (innings == 2 && oldRuns > higherScore) {
+              dotMax = 200;
+              oMax = 400;
+              dMax = 525;
+              tMax = 530;
+              fMax = 730;
+              sMax = 925;
+              wMax = 945;
             }
-            else if (innings == 2 && oldRuns < lowerScore)
-            {
-              if (random <= 35)
-                e = outPutRuns(5, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 35 && random <= 39)
-                e = outPutRuns(7, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 39 && random <= 59)
-                e = outPutRuns(1, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 59 && random <= 71.5)
-                e = outPutRuns(2, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 71.5 && random <= 72.5)
-                e = outPutRuns(3, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 72.5 && random <= 87.5)
-                e = outPutRuns(4, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 87.5 && random <= 95)
-                e = outPutRuns(6, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 95)
-              {
-                e = outPutRuns(8, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-                if (e == true)
-                  break;
-              }
+            else if (innings == 2 && oldRuns < lowerScore) {
+              dotMax = 350;
+              oMax = 550;
+              dMax = 675;
+              tMax = 680;
+              fMax = 830;
+              sMax = 940;
+              wMax = 950;
             }
-            else if (overNumber > (maxOvers / 4) && overNumber <= (maxOvers - 2))
-            {
-              if (random <= 30)
-                e = outPutRuns(5, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 30 && random <= 34)
-                e = outPutRuns(7, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 34 && random <= 54)
-                e = outPutRuns(1, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 54 && random <= 64)
-                e = outPutRuns(2, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 64 && random <= 65)
-                e = outPutRuns(3, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 65 && random <= 82.5)
-                e = outPutRuns(4, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 82.5 && random <= 95)
-                e = outPutRuns(6, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-              else if (random > 95)
-              {
-                e = outPutRuns(8, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-                if (e == true)
-                  break;
-              }
+            else if (overNumber > (maxOvers / 4) && overNumber <= (maxOvers - 2)) {
+              dotMax = 300;
+              oMax = 500;
+              dMax = 600;
+              tMax = 605;
+              fMax = 780;
+              sMax = 930;
+              wMax = 950;
             }
+
+						if (random <= dotMax)
+							e = outPutRuns(5, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
+						else if (random > dotMax && random <= oMax)
+							e = outPutRuns(1, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
+						else if (random > oMax && random <= dMax)
+							e = outPutRuns(2, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
+						else if (random > dMax && random <= tMax)
+							e = outPutRuns(3, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
+						else if (random > tMax && random <= fMax)
+							e = outPutRuns(4, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
+						else if (random > fMax && random <= sMax)
+							e = outPutRuns(6, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
+            else if (random > sMax && random <= wMax) {
+							e = outPutRuns(7, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
+            }
+						else if (random > wMax)
+						{
+							e = outPutRuns(8, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
+							if (e == true)
+								break;
+						}
 
             // Check if won
             if (innings == 2)
