@@ -72,7 +72,7 @@ int main()
 
   // Making the average number of runs for that over number
   float mOvers = maxOvers;
-  float average = 250 * (mOvers / 20);
+  float average = 218 * (mOvers / 20);
   int higherScore = (7.0 / 6) * average;
   // std::cout << higherScore << std::endl;
   int lowerScore = (5.0 / 6) * average;
@@ -134,58 +134,58 @@ int main()
 
             if ((innings == 2 && oldRuns > higherScore) && (overNumber <= (maxOvers / 4) || overNumber > (maxOvers - 2))) {
               std::cout << "POWERPLAY\n---------\n";
-              dotMax = 200;
-              oMax = 275;
-              dMax = 370;
-              tMax = 375;
-              fMax = 700;
-              sMax = 865; // need to tweak
-              wMax = 895;
+              dotMax = 170;
+              oMax = 400;
+              dMax = 480;
+              tMax = 485;
+              fMax = 720;
+              sMax = 860;
+              wMax = 890;
             }
             else if ((innings == 2 && oldRuns < lowerScore) && (overNumber <= (maxOvers / 4) || overNumber > (maxOvers - 2))) {
               std::cout << "POWERPLAY\n---------\n";
               dotMax = 250;
-              oMax = 450;
-              dMax = 550;
-              tMax = 555;
-              fMax = 820;
+              oMax = 470;
+              dMax = 570;
+              tMax = 575;
+              fMax = 770;
               sMax = 880;
               wMax = 900;
             }
             else if (overNumber <= (maxOvers / 4) || overNumber > (maxOvers - 2)) {
               std::cout << "POWERPLAY\n---------\n";
-              dotMax = 200;
-              oMax = 350;
-              dMax = 450;
-              tMax = 455;
-              fMax = 725;
+              dotMax = 210;
+              oMax = 410;
+              dMax = 530;
+              tMax = 535;
+              fMax = 750;
               sMax = 870;
               wMax = 900;
             }
             else if (innings == 2 && oldRuns > higherScore) {
-              dotMax = 200;
-              oMax = 400;
-              dMax = 525;
-              tMax = 530;
-              fMax = 730;
-              sMax = 925;
-              wMax = 945;
+              dotMax = 260;
+              oMax = 550;
+              dMax = 630;
+              tMax = 635;
+              fMax = 820;
+              sMax = 920;
+              wMax = 940;
             }
             else if (innings == 2 && oldRuns < lowerScore) {
               dotMax = 350;
-              oMax = 550;
-              dMax = 675;
-              tMax = 680;
-              fMax = 830;
+              oMax = 620;
+              dMax = 720;
+              tMax = 725;
+              fMax = 880;
               sMax = 940;
               wMax = 950;
             }
             else if (overNumber > (maxOvers / 4) && overNumber <= (maxOvers - 2)) {
               dotMax = 300;
-              oMax = 500;
-              dMax = 600;
-              tMax = 605;
-              fMax = 780;
+              oMax = 570;
+              dMax = 670;
+              tMax = 675;
+              fMax = 850;
               sMax = 930;
               wMax = 950;
             }
