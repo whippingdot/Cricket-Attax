@@ -9,6 +9,10 @@
 
 #include <string>
 
+#include <cmath>
+
+// #include <print>
+
 // Change this to change the number of overs in the match
 const int maxOvers = 20;
 
@@ -17,7 +21,8 @@ using array_type = char[maxOvers][100];
 // const std::string names[2][11] = { {"Batsman 1", "Batsman 2", "Batsman 3", "Batsman 4", "Batsman 5", "Batsman 6", "Batsman 7", "Batsman 8", "Batsman 9", "Batsman 10", "Batsman 11"}, {"Batsman 1", "Batsman 2", "Batsman 3", "Batsman 4", "Batsman 5", "Batsman 6", "Batsman 7", "Batsman 8", "Batsman 9", "Batsman 10", "Batsman 11"} };
 const std::string names[2][11] = {{"Rohit Sharma", "Quinton de Kock", "Suryakumar Yadav", "Ishan Kishan", "Kieron Pollard", "Hardik Pandya", "Krunal Pandya", "Nathan Coulter-Nile", "Rahul Chahar", "Trent Boult", "Jasprit Bumrah"}, {"Ruturaj Gaikwad", "Devon Conway", "Shivam Dube", "Ajinkya Rahane", "Ambati Rayudu", "MS Dhoni", "Ravindra Jadeja", "Deepak Chahar", "Matheesha Pathirana", "Tushar Deshpande", "Maheesh Theekshana"}};
 
-bool outPutRuns(int x, array_type &array, int &runO, int &runT, int &runN, int &ballN, int &ballW, int &outs, int (&batsmen)[2], int (&index)[2], bool &on, std::vector<std::vector<std::vector<int>>> &team, int inning, int (&balls)[2], std::vector<int> &partner, std::vector<std::vector<int>> &partners);
+bool outPutRuns(int x, array_type &array, int &runO, int &runT, int overN, int &ballN, int &ballW, int &outs, int (&batsmen)[2], int (&index)[2], bool &on, std::vector<std::vector<std::vector<int>>> &team, int inning, int (&balls)[2], std::vector<int> &partner, std::vector<std::vector<int>> &partners, bool &fHit);
+bool superO(int x, char (&array)[2][100], int &runO, int &ballN, int &ballW, int &outs, int (&batsmen)[2], int (&index)[2], bool &on, std::vector<std::vector<std::vector<int>>> &team, int inning, int (&balls)[2], std::vector<int> &partner, std::string nNames[2][3], bool &fHit);
 
 int main()
 {
@@ -35,7 +40,6 @@ int main()
   int overBalls = 0;
   int counter = 0;
 
-
   int dotMax = 0;
   int oMax = 0;
   int dMax = 0;
@@ -50,6 +54,7 @@ int main()
 
   bool e = false;
   bool strike = true;
+  bool free = false;
 
   std::string null = "";
 
@@ -123,7 +128,6 @@ int main()
         {
           while (ballNumber < 6)
           {
-
             // Getting the random number from 0 - 100, then adding it by 1 so it is from 1 - 101 NOT INCLUDING 101
             random = std::rand() % 1000 + 1;
 
@@ -131,8 +135,8 @@ int main()
             // The weighted randoms are calculated based on the random number that was generated. As it was from 1 - 100 the weighted randoms work by saying if the number was in this range, it outputs this many runs or wicket or dot
             // The first three are buffed for powerplay, and after that the next two are buffs and nerfs incase the first team plays good or bad
 
-
-            if ((innings == 2 && oldRuns > higherScore) && (overNumber <= (maxOvers / 4) || overNumber > (maxOvers - 2))) {
+            if ((innings == 2 && oldRuns > higherScore) && (overNumber <= (maxOvers / 4) || overNumber > (maxOvers - 2)))
+            {
               std::cout << "POWERPLAY\n---------\n";
               dotMax = 170;
               oMax = 400;
@@ -142,7 +146,8 @@ int main()
               sMax = 860;
               wMax = 890;
             }
-            else if ((innings == 2 && oldRuns < lowerScore) && (overNumber <= (maxOvers / 4) || overNumber > (maxOvers - 2))) {
+            else if ((innings == 2 && oldRuns < lowerScore) && (overNumber <= (maxOvers / 4) || overNumber > (maxOvers - 2)))
+            {
               std::cout << "POWERPLAY\n---------\n";
               dotMax = 250;
               oMax = 470;
@@ -152,7 +157,8 @@ int main()
               sMax = 880;
               wMax = 900;
             }
-            else if (overNumber <= (maxOvers / 4) || overNumber > (maxOvers - 2)) {
+            else if (overNumber <= (maxOvers / 4) || overNumber > (maxOvers - 2))
+            {
               std::cout << "POWERPLAY\n---------\n";
               dotMax = 210;
               oMax = 410;
@@ -162,7 +168,8 @@ int main()
               sMax = 870;
               wMax = 900;
             }
-            else if (innings == 2 && oldRuns > higherScore) {
+            else if (innings == 2 && oldRuns > higherScore)
+            {
               dotMax = 260;
               oMax = 550;
               dMax = 630;
@@ -171,7 +178,8 @@ int main()
               sMax = 920;
               wMax = 940;
             }
-            else if (innings == 2 && oldRuns < lowerScore) {
+            else if (innings == 2 && oldRuns < lowerScore)
+            {
               dotMax = 350;
               oMax = 620;
               dMax = 720;
@@ -180,7 +188,8 @@ int main()
               sMax = 940;
               wMax = 950;
             }
-            else if (overNumber > (maxOvers / 4) && overNumber <= (maxOvers - 2)) {
+            else if (overNumber > (maxOvers / 4) && overNumber <= (maxOvers - 2))
+            {
               dotMax = 300;
               oMax = 570;
               dMax = 670;
@@ -190,42 +199,52 @@ int main()
               wMax = 950;
             }
 
-						if (random <= dotMax)
-							e = outPutRuns(5, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-						else if (random > dotMax && random <= oMax)
-							e = outPutRuns(1, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-						else if (random > oMax && random <= dMax)
-							e = outPutRuns(2, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-						else if (random > dMax && random <= tMax)
-							e = outPutRuns(3, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-						else if (random > tMax && random <= fMax)
-							e = outPutRuns(4, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-						else if (random > fMax && random <= sMax)
-							e = outPutRuns(6, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-            else if (random > sMax && random <= wMax) {
-							e = outPutRuns(7, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
+            if (free)
+            {
+              dotMax = 100;
+              oMax = 250;
+              dMax = 430;
+              tMax = 435;
+              fMax = 685;
+              sMax = 885;
+              wMax = 900;
             }
-						else if (random > wMax)
-						{
-							e = outPutRuns(8, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships);
-							if (e == true)
-								break;
-						}
+
+            if (random <= dotMax)
+              e = outPutRuns(5, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free);
+            else if (random > dotMax && random <= oMax)
+              e = outPutRuns(1, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free);
+            else if (random > oMax && random <= dMax)
+              e = outPutRuns(2, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free);
+            else if (random > dMax && random <= tMax)
+              e = outPutRuns(3, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free);
+            else if (random > tMax && random <= fMax)
+              e = outPutRuns(4, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free);
+            else if (random > fMax && random <= sMax)
+              e = outPutRuns(6, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free);
+            else if (random > sMax && random <= wMax)
+              e = outPutRuns(7, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free);
+            else if (random > wMax)
+            {
+              e = outPutRuns(8, timeline, overRuns, runs, overNumber, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free);
+              if (e == true)
+                break;
+            }
 
             // Check if won
             if (innings == 2)
             {
               if (runs > oldRuns)
               {
-                std::cout << "Enter to Continue\n";
+                std::cout << "\nEnter to Continue\n";
                 std::getline(std::cin, null);
                 system("cls");
                 break;
               }
               // Printing out the amount of runs left to win if in the second innings
-              std::cout << "Runs to Win: " << ((oldRuns + 1) - runs) << "\n";
+              std::cout << "\nRuns to Win: " << ((oldRuns + 1) - runs) << "\n";
             }
-            std::cout << "Enter to Continue\n";
+            std::cout << "\nEnter to Continue\n";
             std::getline(std::cin, null);
             system("cls");
           }
@@ -250,11 +269,28 @@ int main()
 
           // Timeline after every over
           for (int i = 0; i < overBalls; i++)
-            // std::cout << "Over Balls: " << overBalls << "\nOver Number: " << overNumber - 1 << "\ni: " << i << std::endl;
-            std::cout << timeline[overNumber - 2][i] << " ";
+          {
+            if ((i + 1) != overBalls)
+            {
+              if (timeline[overNumber - 2][i + 1] == 'n')
+              {
+                std::cout << timeline[overNumber - 2][i] << "* ";
+                i++;
+              }
+              else
+              {
+                std::cout << timeline[overNumber - 2][i] << " ";
+              }
+            }
+            else
+            {
+              std::cout << timeline[overNumber - 2][i] << " ";
+            }
+          }
 
           // Calculating run rate
           runRate = static_cast<double>(runs) / static_cast<double>((overNumber - 1));
+          runRate = std::round(runRate * 100.0) / 100.0;
 
           // Printing all stats out
           std::cout << "\n\n";
@@ -268,6 +304,7 @@ int main()
             if (overNumber != maxOvers + 1)
             {
               runRate = static_cast<double>(oldRuns - runs + 1) / static_cast<double>(maxOvers - (overNumber - 1));
+              runRate = std::round(runRate * 100.0) / 100.0;
               std::cout << "Required run rate: " << runRate << "\n";
             }
             std::cout << "Runs to Win: " << ((oldRuns + 1) - runs) << "\n";
@@ -282,6 +319,7 @@ int main()
 
         // Calculating run rate again
         runRate = static_cast<double>(runs) / static_cast<double>(((overNumber - 1) * 6 + ballNumber)) * static_cast<double>(6);
+        runRate = std::round(runRate * 100.0) / 100.0;
 
         // Printing out results
         if (wickets == 10)
@@ -291,10 +329,14 @@ int main()
             std::cout << "\nAll out at " << runs << " after " << overNumber - 1 << " overs with a run rate of " << runRate << "!\n";
 
         if (innings == 1 && wickets != 10)
+
           std::cout << "First innings up.\n"
                     << runs << "/" << wickets << " in " << maxOvers << " overs!\nRun rate : " << runRate << std::endl;
         else if (runs == oldRuns && innings == 2)
+        {
           std::cout << "Both teams tied\n";
+          std::cout << "\nTeam 2 scored " << runs << "/" << wickets << " in " << maxOvers << " overs!\nRun rate : " << runRate << std::endl;
+        }
         else if (runs < oldRuns && innings == 2)
         {
           std::cout << "\nTeam 1 won by " << (oldRuns - runs) << " run(s)!\n";
@@ -330,6 +372,9 @@ int main()
           teams[innings - 1][index[0]][1] = ballsB[0];
           teams[innings - 1][index[1]][0] = current[1];
           teams[innings - 1][index[1]][1] = ballsB[1];
+          partnership[2] = index[0];
+          partnership[3] = index[1];
+          partnerships.push_back(partnership);
         }
 
         // Scorecard
@@ -420,10 +465,24 @@ int main()
         {
           for (int x = 0; x < overNumber; x++)
           {
-            // std::cout << "Overs: " << overNumber << "\nX: " << x << std::endl;
             for (int i = 0; i < vOverBalls[x]; i++)
             {
-              std::cout << timeline[x][i] << " ";
+              if ((i + 1) != vOverBalls[x])
+              {
+                if (timeline[x][i + 1] == 'n')
+                {
+                  std::cout << timeline[x][i] << "* ";
+                  i++;
+                }
+                else
+                {
+                  std::cout << timeline[x][i] << " ";
+                }
+              }
+              else
+              {
+                std::cout << timeline[x][i];
+              }
             }
             std::cout << std::endl;
           }
@@ -431,7 +490,24 @@ int main()
           if (ballNumber > 0)
           {
             for (int i = 0; i < ballNumber; i++)
-              std::cout << timeline[overNumber][i] << " ";
+            {
+              if ((i + 1) != ballNumber)
+              {
+                if (timeline[overNumber][i + 1] == 'n')
+                {
+                  std::cout << timeline[overNumber][i] << "* ";
+                  i++;
+                }
+                else
+                {
+                  std::cout << timeline[overNumber][i] << " ";
+                }
+              }
+              else
+              {
+                std::cout << timeline[overNumber][i] << " ";
+              }
+            }
             std::cout << std::endl;
           }
           std::cout << "\nEnter to Continue\n";
@@ -439,6 +515,8 @@ int main()
         }
 
         system("cls");
+
+        // Here put the code for super over
 
         // Buffs and nerfs to chasing team incase batting team op or bad
         if (innings == 1 && runs > higherScore)
@@ -460,24 +538,303 @@ int main()
         ballNumber = 0;
         overNumber = 1;
         wickets = 0;
-        oldRuns = runs;
         overRuns = 0;
         wideBalls = 0;
-        runs = 0;
-        innings++;
         partnership = {0, 0, 0, 0};
         partnerships.clear();
+        strike = true;
 
         for (int i = 0; i < maxOvers; i++)
         {
           vOverBalls[i] = 0;
         }
+
+        if (innings == 2 && runs == oldRuns)
+        {
+          std::cout
+              << "SUPER OVER\n----------\nFirst, we will let players decide "
+                 "batsmen. Enter corresponding batting order position\n";
+          std::cout << "\nEnter to Continue\n";
+          std::getline(std::cin, null);
+          system("cls");
+
+          teams = {{{0, 0}, {0, 0}, {0, 0}}, {{0, 0}, {0, 0}, {0, 0}}};
+          char sOverT[2][100];
+          std::string superOver[2][3] = {{"", "", ""}, {"", "", ""}};
+
+          for (int x = 1; x < 3; x++)
+          {
+            std::cout << "Player " << x << "\n--------\n";
+            for (int i = 1; i < 4; i++)
+            {
+              std::cout << "Batsman " << i << ": ";
+              std::cin >> null;
+              if (names[x - 1][std::stoi(null) - 1] == superOver[x - 1][0] ||
+                  names[x - 1][std::stoi(null) - 1] == superOver[x - 1][1])
+              {
+                std::cout << "That player has already been selected, please "
+                             "try again\n";
+                --i;
+                continue;
+              }
+              superOver[x - 1][i - 1] = names[x - 1][std::stoi(null) - 1];
+            }
+            std::cout << "\nEnter to Continue\n";
+            std::getline(std::cin, null);
+            system("cls");
+          }
+
+          dotMax = 160;
+          oMax = 310;
+          dMax = 460;
+          tMax = 465;
+          fMax = 715;
+          sMax = 885;
+          wMax = 900;
+
+          std::cout << "Team 2 will now bat first!\n";
+          std::cout << "\nEnter to Continue\n";
+          std::getline(std::cin, null);
+          system("cls");
+
+          while (ballNumber < 6)
+          {
+            random = std::rand() % 1000 + 1;
+
+            if (random <= dotMax)
+              e = superO(5, sOverT, overRuns, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+            else if (random > dotMax && random <= oMax)
+              e = superO(1, sOverT, overRuns, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+            else if (random > oMax && random <= dMax)
+              e = superO(2, sOverT, overRuns, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+            else if (random > dMax && random <= tMax)
+              e = superO(3, sOverT, overRuns, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+            else if (random > tMax && random <= fMax)
+              e = superO(4, sOverT, overRuns, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+            else if (random > fMax && random <= sMax)
+              e = superO(6, sOverT, overRuns, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+            else if (random > sMax && random <= wMax)
+              e = superO(7, sOverT, overRuns, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+            else if (random > wMax)
+            {
+              e = superO(8, sOverT, overRuns, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+              if (e == true)
+                break;
+            }
+
+            std::cout << "\nEnter to Continue\n";
+            std::getline(std::cin, null);
+            system("cls");
+          }
+
+          overBalls = ballNumber + wideBalls;
+          for (int i = 0; i < overBalls; i++)
+            std::cout << sOverT[1][i] << " ";
+
+          // Printing all stats out
+          if (index[0] > 2)
+          {
+            teams[innings - 1][index[1]][0] = current[1];
+            teams[innings - 1][index[1]][1] = ballsB[1];
+          }
+          else if (index[1] > 2)
+          {
+            teams[innings - 1][index[0]][0] = current[0];
+            teams[innings - 1][index[0]][1] = ballsB[0];
+          }
+          else
+          {
+            teams[innings - 1][index[0]][0] = current[0];
+            teams[innings - 1][index[0]][1] = ballsB[0];
+            teams[innings - 1][index[1]][0] = current[1];
+            teams[innings - 1][index[1]][1] = ballsB[1];
+          }
+
+          std::cout << "\n\nSCORECARD\n---------" << std::endl;
+          counter = 0;
+          while (counter < 3)
+          {
+            if ((counter == index[0] || counter == index[1]) &&
+                teams[1][counter][1] != 0)
+              std::cout << superOver[1][counter] << ": " << teams[1][counter][0]
+                        << " in " << teams[1][counter][1] << "\n";
+            else
+            {
+              if (teams[1][counter][1] == 0)
+                std::cout << superOver[1][counter] << ": DNP\n";
+              else
+                std::cout << superOver[1][counter] << ": "
+                          << teams[1][counter][0] << " in "
+                          << teams[1][counter][1] << " - OUT\n";
+            }
+            counter++;
+          }
+          std::cout << "\nFirst over: " << overRuns << "/" << wickets << "\n";
+
+          innings--;
+          oldRuns = overRuns;
+          overRuns = 0;
+          ballNumber = 0;
+          wideBalls = 0;
+          wickets = 0;
+          current[0] = 0;
+          current[1] = 0;
+          index[0] = 0;
+          index[1] = 1;
+          strike = true;
+          ballsB[0] = 0;
+          ballsB[1] = 0;
+          partnership = {0, 0, 0, 0};
+
+          std::cout << "\nEnter to Continue\n";
+          std::getline(std::cin, null);
+          system("cls");
+
+          while (ballNumber < 6)
+          {
+            random = std::rand() % 1000 + 1;
+
+            if (random <= dotMax)
+              e = superO(5, sOverT, overRuns, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+            else if (random > dotMax && random <= oMax)
+              e = superO(1, sOverT, overRuns, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+            else if (random > oMax && random <= dMax)
+              e = superO(2, sOverT, overRuns, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+            else if (random > dMax && random <= tMax)
+              e = superO(3, sOverT, overRuns, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+            else if (random > tMax && random <= fMax)
+              e = superO(4, sOverT, overRuns, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+            else if (random > fMax && random <= sMax)
+              e = superO(6, sOverT, overRuns, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+            else if (random > sMax && random <= wMax)
+              e = superO(7, sOverT, overRuns, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+            else if (random > wMax)
+            {
+              e = superO(8, sOverT, overRuns, ballNumber, wideBalls, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+              if (e == true)
+                break;
+            }
+
+            if (overRuns > oldRuns)
+            {
+              std::cout << "\nEnter to Continue\n";
+              std::getline(std::cin, null);
+              system("cls");
+              break;
+            }
+
+            // Printing out the amount of runs left to win if in the second
+            // innings
+            std::cout << "\nRuns to Win: " << ((oldRuns + 1) - overRuns)
+                      << "\n";
+            std::cout << "\nEnter to Continue\n";
+            std::getline(std::cin, null);
+            system("cls");
+          }
+
+          overBalls = ballNumber + wideBalls;
+          for (int i = 0; i < overBalls; i++)
+            std::cout << sOverT[0][i] << " ";
+
+          if (overRuns > oldRuns)
+            std::cout << "\n\nTEAM 1 WINS IN SUPER OVER!\n"
+                      << overRuns << "/" << wickets << " in " << ballNumber
+                      << " balls!\n";
+          else if (overRuns == oldRuns)
+            std::cout << "\n\nTHE GAME ENDS IN A TIE\n"
+                      << overRuns << "/" << wickets << " in " << ballNumber
+                      << " balls!\n";
+          else
+            std::cout << "\n\nTEAM 2 WINS BY " << oldRuns - overRuns
+                      << " RUNS IN SUPER OVER!\n"
+                      << overRuns << "/" << wickets << " in " << ballNumber
+                      << " balls for Team 1!\n";
+
+          // Printing all stats out
+          if (index[0] > 2)
+          {
+            teams[innings - 1][index[1]][0] = current[1];
+            teams[innings - 1][index[1]][1] = ballsB[1];
+          }
+          else if (index[1] > 2)
+          {
+            teams[innings - 1][index[0]][0] = current[0];
+            teams[innings - 1][index[0]][1] = ballsB[0];
+          }
+          else
+          {
+            teams[innings - 1][index[0]][0] = current[0];
+            teams[innings - 1][index[0]][1] = ballsB[0];
+            teams[innings - 1][index[1]][0] = current[1];
+            teams[innings - 1][index[1]][1] = ballsB[1];
+          }
+
+          std::cout << "\nFULL SCORECARD\n--------------" << std::endl;
+          counter = 0;
+          while (counter < 3)
+          {
+            if ((counter == index[0] || counter == index[1]) &&
+                teams[1][counter][1] != 0)
+              std::cout << superOver[1][counter] << ": " << teams[1][counter][0]
+                        << " in " << teams[1][counter][1] << "\n";
+            else
+            {
+              if (teams[1][counter][1] == 0)
+                std::cout << superOver[1][counter] << ": DNP\n";
+              else
+                std::cout << superOver[1][counter] << ": "
+                          << teams[1][counter][0] << " in "
+                          << teams[1][counter][1] << " - OUT\n";
+            }
+            counter++;
+          }
+
+          std::cout << "\n";
+          counter = 0;
+          while (counter < 3)
+          {
+            if ((counter == index[0] || counter == index[1]) &&
+                teams[0][counter][1] != 0)
+              std::cout << superOver[0][counter] << ": " << teams[0][counter][0]
+                        << " in " << teams[0][counter][1] << "\n";
+            else
+            {
+              if (teams[0][counter][1] == 0)
+                std::cout << superOver[0][counter] << ": DNP\n";
+              else
+                std::cout << superOver[0][counter] << ": "
+                          << teams[0][counter][0] << " in "
+                          << teams[0][counter][1] << " - OUT\n";
+            }
+            counter++;
+          }
+          std::cout << "\nEnter to Continue\n";
+          std::getline(std::cin, null);
+          system("cls");
+          innings = 2;
+          // RESET REST VARIABLES
+          overRuns = 0;
+          ballNumber = 0;
+          wideBalls = 0;
+          wickets = 0;
+          current[0] = 0;
+          current[1] = 0;
+          index[0] = 0;
+          index[1] = 1;
+          strike = true;
+          ballsB[0] = 0;
+          ballsB[1] = 0;
+          partnership = {0, 0, 0, 0};
+        }
+        oldRuns = runs;
+        runs = 0;
+        innings++;
       }
       break;
     case 2:
-      std::cout << "This program basically generates a random number based on weighted percentages that co-relates to a certain number of runs hit or other activities such as wickets or wides.\n\n";
-      std::cout << "I play the game by creating my own squad or team of 11 players which I use against another squad/team of 11 players and use the rng to determine how many runs were hit or who got out. I keep everything tracked on a note taking app or on paper and at the end can see the score, who hit the most runs, and see which bowler had the highest economy etc. I am by no means a 'pro' on cricket knowledge so the rng is not perfect and I am not sure how accurate it is. It was supposed to be a little like T20 but my brother set all the weights and made it so the average score in these 10 overs is 120 lol.\n\n";
-      std::cout << "P.S. There is a buff for the chasing team if the batting team scores above 140 runs and a nerf for the chasing team if the batting team scores below 100 runs.\n\n";
+      std::cout << "This program basically generates a random number based on weighted percentages that co-relates to a certain number of runs hit or other activities such as wickets or wide balls.\n\n";
+      std::cout << "I play the game by creating two teams of 11 players (one mine, one my brother's) and using the simulator to simulate both innings. I keep everything tracked on a note taking app or on paper and at the end can see the score, who hit the most runs, and see which bowler had the highest economy etc (in the sim bowlers are not implemented so it has to be done on paper). I am by no means have 'pro' level cricket knowledge so the RNG is not perfect but I did my best to keep the games a little high scoring with close matches.\n\nYou can adjust the number of overs by changing par score and changing the max overs variable. Another thing I want to note is that an '*' in the timeline means no ball and the following ball is a free hit. Have fun!\n\n";
+      std::cout << "P.S. There is a buff for the chasing team if the batting team scores above 7/6 of par score and a nerf for the chasing team if the batting team scores below 5/6 of par score.\n\n";
       std::cout << "Enter to Continue\n";
       std::cin.ignore();
       std::getline(std::cin, null);
@@ -508,11 +865,16 @@ int main()
   }
 }
 
-bool outPutRuns(int x, array_type &array, int &runO, int &runT, int &runN, int &ballN, int &ballW, int &outs, int (&batsmen)[2], int (&index)[2], bool &on, std::vector<std::vector<std::vector<int>>> &team, int inning, int (&balls)[2], std::vector<int> &partner, std::vector<std::vector<int>> &partners)
+bool outPutRuns(int x, array_type &array, int &runO, int &runT, int overN, int &ballN, int &ballW, int &outs, int (&batsmen)[2], int (&index)[2], bool &on, std::vector<std::vector<std::vector<int>>> &team, int inning, int (&balls)[2], std::vector<int> &partner, std::vector<std::vector<int>> &partners, bool &fHit)
 {
   char number = ' ';
+  int tRandom = std::rand() % 100 + 1;
+  std::string nul = "";
 
-  // std::cout << "Total Balls is: " << ballT << std::endl;
+  if (fHit)
+  {
+    std::cout << "FREE HIT: ";
+  }
 
   switch (x)
   {
@@ -553,20 +915,37 @@ bool outPutRuns(int x, array_type &array, int &runO, int &runT, int &runN, int &
 
   if (x == 1 || x == 2 || x == 3 || x == 4 || x == 6)
   {
-    array[runN - 1][ballN + ballW] = number;
+    array[overN - 1][ballN + ballW] = number;
+    fHit = false;
+    if (tRandom == 18)
+    {
+      fHit = true;
+      array[overN - 1][ballN + ballW + 1] = 'n';
+      std::cout << "\nNO BALL! Free hit next ball!\n";
+      runT++;
+      runO++;
+      partner[0]++;
+      ballW += 2;
+    }
+    else
+    {
+      partner[1]++;
+      ballN++;
+    }
     runT += x;
     runO += x;
     partner[0] += x;
-    partner[1]++;
     if (on)
     {
       batsmen[0] += x;
-      balls[0]++;
+      if (!fHit)
+        balls[0]++;
     }
     else
     {
       batsmen[1] += x;
-      balls[1]++;
+      if (!fHit)
+        balls[1]++;
     }
 
     if (on)
@@ -582,21 +961,35 @@ bool outPutRuns(int x, array_type &array, int &runO, int &runT, int &runN, int &
       std::cout << names[inning - 1][index[0]] << ": " << batsmen[0] << " in " << balls[0] << "\n\n";
     }
 
-    std::cout << "Current partnership: " << partner[0] << " in " << partner[1] << "\n\n";
+    std::cout << "Current partnership: " << partner[0] << " in " << partner[1] << "\n";
 
     if (x == 1 || x == 3)
       on = !on;
-    ballN++;
   }
   else if (x == 5)
   {
-    array[runN - 1][ballN + ballW] = '.';
-    ballN++;
-    partner[1]++;
-    if (on)
-      balls[0]++;
+    array[overN - 1][ballN + ballW] = '.';
+    fHit = false;
+    if (tRandom == 18)
+    {
+      fHit = true;
+      array[overN - 1][ballN + ballW + 1] = 'n';
+      std::cout << "\nNO BALL! Free hit next ball!\n";
+      runT++;
+      runO++;
+      partner[0]++;
+      ballW += 2;
+    }
     else
-      balls[1]++;
+    {
+      ballN++;
+      partner[1]++;
+      if (on)
+        balls[0]++;
+      else
+        balls[1]++;
+    }
+
     if (on)
     {
       std::cout << "\n"
@@ -609,11 +1002,15 @@ bool outPutRuns(int x, array_type &array, int &runO, int &runT, int &runN, int &
                 << names[inning - 1][index[1]] << "*: " << batsmen[1] << " in " << balls[1] << "\n";
       std::cout << names[inning - 1][index[0]] << ": " << batsmen[0] << " in " << balls[0] << "\n\n";
     }
-    std::cout << "Current partnership: " << partner[0] << " in " << partner[1] << "\n\n";
+    std::cout << "Current partnership: " << partner[0] << " in " << partner[1] << "\n";
   }
   else if (x == 7)
   {
-    array[runN - 1][ballN + ballW] = 'w';
+    array[overN - 1][ballN + ballW] = 'w';
+    if (fHit)
+    {
+      std::cout << "\nNo ball continued next ball!\n";
+    }
     if (on)
     {
       std::cout << "\n"
@@ -624,17 +1021,44 @@ bool outPutRuns(int x, array_type &array, int &runO, int &runT, int &runN, int &
     {
       std::cout << "\n"
                 << names[inning - 1][index[1]] << "*: " << batsmen[1] << " in " << balls[1] << "\n";
-      std::cout << names[inning - 1][index[0]] << ": " << batsmen[0] << " in " << balls[0] << "\n\n";
+      std::cout << names[inning - 1][index[0]] << ": " << batsmen[0] << " in "
+                << balls[0] << "\n\n";
     }
-    std::cout << "Current partnership: " << partner[0] << " in " << partner[1] << "\n\n";
+    partner[0]++;
+    std::cout << "Current partnership: " << partner[0] << " in " << partner[1] << "\n";
     runT++;
     runO++;
     ballW++;
   }
   else if (x == 8)
   {
-    array[runN - 1][ballN + ballW] = 'W';
-    if (on)
+    array[overN - 1][ballN + ballW] = 'W';
+    if ((tRandom == 18 || tRandom == 21) && !fHit)
+    {
+      array[overN - 1][ballN + ballW + 1] = 'n';
+      std::cout << "\nBUT ITS A NO BALL!\n";
+      runT++;
+      runO++;
+      partner[0]++;
+      ballW += 2; // MAJOR WARNING - IF I EVER PUT NUMBER OF WIDES THIS WILL CAUSE AN ISSUE
+    }
+    else if ((tRandom == 18 || tRandom == 21))
+    {
+      array[overN - 1][ballN + ballW + 1] = 'n';
+      std::cout << "\nBUT ITS A NO BALL AGAIN!\n";
+      runT++;
+      runO++;
+      partner[0]++;
+      ballW += 2;
+    }
+    else if (fHit)
+    {
+      std::cout << "\nSince last ball was a no ball it doesn't count...\n";
+      on ? balls[0]++ : balls[1]++;
+      ballN++;
+      partner[1]++;
+    }
+    else if (on)
     {
       balls[0]++;
       team[inning - 1][index[0]][0] = batsmen[0];
@@ -668,16 +1092,217 @@ bool outPutRuns(int x, array_type &array, int &runO, int &runT, int &runN, int &
       else
         index[1] = index[0] + 1;
     }
+
+    if (tRandom == 18 || tRandom == 21 || fHit)
+    {
+      if (on)
+      {
+        std::cout << "\n"
+                  << names[inning - 1][index[0]] << "*: " << batsmen[0] << " in " << balls[0] << "\n";
+        std::cout << names[inning - 1][index[1]] << ": " << batsmen[1] << " in " << balls[1] << "\n\n";
+      }
+      else
+      {
+        std::cout << "\n"
+                  << names[inning - 1][index[1]] << "*: " << batsmen[1] << " in " << balls[1] << "\n";
+        std::cout << names[inning - 1][index[0]] << ": " << batsmen[0] << " in " << balls[0] << "\n\n";
+      }
+      std::cout << "Current partnership: " << partner[0] << " in " << partner[1] << "\n";
+    }
+    else
+    {
+      partner[1]++;
+      std::cout << "Broken partnership: " << partner[0] << " in " << partner[1] << "\n";
+      partners.push_back(partner);
+      partner[0] = 0;
+      partner[1] = 0;
+    }
+
+    if (tRandom == 18 || tRandom == 21)
+    {
+      fHit = true;
+    }
+    else
+    {
+      fHit = false;
+      ballN++;
+      outs++;
+    }
+  }
+
+  if (outs == 10)
+    return true;
+
+  return false;
+}
+
+bool superO(int x, char (&array)[2][100], int &runO, int &ballN, int &ballW, int &outs, int (&batsmen)[2], int (&index)[2], bool &on, std::vector<std::vector<std::vector<int>>> &team, int inning, int (&balls)[2], std::vector<int> &partner, std::string nNames[2][3], bool &fHit)
+{
+  char number = ' ';
+  int tRandom = std::rand() % 1000 + 1;
+
+  switch (x)
+  {
+  case 1:
+    std::cout << "Single (1)\n";
+    number = '1';
+    break;
+  case 2:
+    std::cout << "2 runs\n";
+    number = '2';
+    break;
+  case 3:
+    std::cout << "3 runs\n";
+    number = '3';
+    break;
+  case 4:
+    std::cout << "Boundary (4)\n";
+    number = '4';
+    break;
+  case 5:
+    std::cout << ".\n";
+    break;
+  case 6:
+    std::cout << "MAXIMUM (6)\n";
+    number = '6';
+    break;
+  case 7:
+    std::cout << "Wide (w)\n";
+    break;
+  case 8:
+    std::cout << "OUT\n";
+    break;
+
+  default:
+    std::cout << "Well Something Broke!\n";
+    break;
+  }
+
+  if (x == 1 || x == 2 || x == 3 || x == 4 || x == 6)
+  {
+    array[inning - 1][ballN + ballW] = number;
+    runO += x;
+    partner[0] += x;
+    partner[1]++;
+    if (on)
+    {
+      batsmen[0] += x;
+      balls[0]++;
+    }
+    else
+    {
+      batsmen[1] += x;
+      balls[1]++;
+    }
+
+    if (on)
+    {
+      std::cout << "\n"
+                << nNames[inning - 1][index[0]] << "*: " << batsmen[0] << " in " << balls[0] << "\n";
+      std::cout << nNames[inning - 1][index[1]] << ": " << batsmen[1] << " in "
+                << balls[1] << "\n\n";
+    }
+    else
+    {
+      std::cout << "\n"
+                << nNames[inning - 1][index[1]] << "*: " << batsmen[1] << " in " << balls[1] << "\n";
+      std::cout << nNames[inning - 1][index[0]] << ": " << batsmen[0] << " in " << balls[0] << "\n\n";
+    }
+
+    std::cout << "Current partnership: " << partner[0] << " in " << partner[1] << "\n";
+
+    if (x == 1 || x == 3)
+      on = !on;
+    ballN++;
+  }
+  else if (x == 5)
+  {
+    array[inning - 1][ballN + ballW] = '.';
+    ballN++;
+    partner[1]++;
+    if (on)
+      balls[0]++;
+    else
+      balls[1]++;
+    if (on)
+    {
+      std::cout << "\n"
+                << nNames[inning - 1][index[0]] << "*: " << batsmen[0] << " in " << balls[0] << "\n";
+      std::cout << nNames[inning - 1][index[1]] << ": " << batsmen[1] << " in " << balls[1] << "\n\n";
+    }
+    else
+    {
+      std::cout << "\n"
+                << nNames[inning - 1][index[1]] << "*: " << batsmen[1] << " in " << balls[1] << "\n";
+      std::cout << nNames[inning - 1][index[0]] << ": " << batsmen[0] << " in " << balls[0] << "\n\n";
+    }
+    std::cout << "Current partnership: " << partner[0] << " in " << partner[1] << "\n";
+  }
+  else if (x == 7)
+  {
+    array[inning - 1][ballN + ballW] = 'w';
+    if (on)
+    {
+      std::cout << "\n"
+                << nNames[inning - 1][index[0]] << "*: " << batsmen[0] << " in " << balls[0] << "\n";
+      std::cout << nNames[inning - 1][index[1]] << ": " << batsmen[1] << " in " << balls[1] << "\n\n";
+    }
+    else
+    {
+      std::cout << "\n"
+                << nNames[inning - 1][index[1]] << "*: " << batsmen[1] << " in " << balls[1] << "\n";
+      std::cout << nNames[inning - 1][index[0]] << ": " << batsmen[0] << " in " << balls[0] << "\n\n";
+    }
+    std::cout << "Current partnership: " << partner[0] << " in " << partner[1] << "\n";
+    runO++;
+    ballW++;
+  }
+  else if (x == 8)
+  {
+    array[inning - 1][ballN + ballW] = 'W';
+    if (on)
+    {
+      balls[0]++;
+      team[inning - 1][index[0]][0] = batsmen[0];
+      team[inning - 1][index[0]][1] = balls[0];
+      std::cout << "\n"
+                << nNames[inning - 1][index[0]] << "*: " << batsmen[0] << " in " << balls[0] << " - OUT\n";
+      std::cout << nNames[inning - 1][index[1]] << ": " << batsmen[1] << " in " << balls[1] << "\n\n";
+      batsmen[0] = 0;
+      balls[0] = 0;
+      partner[2] = index[0];
+      partner[3] = index[1];
+      if (index[0] > index[1])
+        index[0]++;
+      else
+        index[0] = index[1] + 1;
+    }
+    else
+    {
+      balls[1]++;
+      team[inning - 1][index[1]][0] = batsmen[1];
+      team[inning - 1][index[1]][1] = balls[1];
+      std::cout << "\n"
+                << nNames[inning - 1][index[1]] << "*: " << batsmen[1] << " in " << balls[1] << " - OUT\n";
+      std::cout << nNames[inning - 1][index[0]] << ": " << batsmen[0] << " in " << balls[0] << "\n\n";
+      batsmen[1] = 0;
+      balls[1] = 0;
+      partner[2] = index[0];
+      partner[3] = index[1];
+      if (index[0] < index[1])
+        index[1]++;
+      else
+        index[1] = index[0] + 1;
+    }
     partner[1]++;
     std::cout << "Broken partnership: " << partner[0] << " in " << partner[1] << "\n\n";
-    partners.push_back(partner);
     partner[0] = 0;
     partner[1] = 0;
     ballN++;
     outs++;
   }
 
-  if (outs == 10)
+  if (outs == 2)
     return true;
 
   return false;
