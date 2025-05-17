@@ -64,7 +64,7 @@ int main()
   int ballsB[2] = {0, 0};
   int index[2] = {0, 1};
   int notOut[2] = {0, 0};
-  std::vector<std::vector<std::vector<int>>> teams = {{{0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}}, {{0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}}};
+  std::vector<std::vector<std::vector<int>>> teams = {{{0, 0, 1}, {0, 0, 1}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}}, {{0, 0, 1}, {0, 0, 1}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}}};
   std::vector<std::vector<int>> partnerships = std::vector<std::vector<int>>();
 
   std::vector<int> partnership = {0, 0, 0, 0};
@@ -94,7 +94,7 @@ int main()
     {
     case 1:
       innings = 1;
-      teams = {{{0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}}, {{0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}}};
+      teams = {{{0, 0, 1}, {0, 0, 1}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}}, {{0, 0, 1}, {0, 0, 1}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}}};
       savedP = {0, 0, 0, 0};
       // Let The Games Begin!
       // My friend gave me the obvious idea of a coin flip which my dumb brain forgot
@@ -382,7 +382,7 @@ int main()
         {
           std::cout << "\nSCORECARD\n---------" << std::endl;
           counter = 0;
-          while (teams[0][counter][1] != 0)
+          while (teams[0][counter][2] != 0)
           {
             if (counter == index[0] || counter == index[1])
               std::cout << names[0][counter] << ": " << teams[0][counter][0] << " in " << teams[0][counter][1] << "\n";
@@ -410,7 +410,7 @@ int main()
         {
           std::cout << "\nFULL MATCH SCORECARD\n---------------------" << std::endl;
           counter = 0;
-          while (teams[0][counter][1] != 0)
+          while (teams[0][counter][2] != 0)
           {
             if (counter == notOut[0] || counter == notOut[1])
               std::cout << names[0][counter] << ": " << teams[0][counter][0] << " in " << teams[0][counter][1] << "\n";
@@ -424,7 +424,7 @@ int main()
           }
           std::cout << "\nLargest partnership: " << savedP[0] << " in " << savedP[1] << " between " << names[0][savedP[2]] << " and " << names[0][savedP[3]] << "\n\n";
           counter = 0;
-          while (teams[1][counter][1] != 0)
+          while (teams[1][counter][2] != 0)
           {
             if (counter == index[0] || counter == index[1])
               std::cout << names[1][counter] << ": " << teams[1][counter][0] << " in " << teams[1][counter][1] << "\n";
@@ -558,7 +558,7 @@ int main()
           std::getline(std::cin, null);
           system("cls");
 
-          teams = {{{0, 0}, {0, 0}, {0, 0}}, {{0, 0}, {0, 0}, {0, 0}}};
+          teams = {{{0, 0, 1}, {0, 0, 1}, {0, 0, 0}}, {{0, 0, 1}, {0, 0, 1}, {0, 0, 0}}};
           char sOverT[2][100];
           std::string superOver[2][3] = {{"", "", ""}, {"", "", ""}};
 
@@ -655,7 +655,7 @@ int main()
           while (counter < 3)
           {
             if ((counter == index[0] || counter == index[1]) &&
-                teams[1][counter][1] != 0)
+                teams[1][counter][2] != 0)
               std::cout << superOver[1][counter] << ": " << teams[1][counter][0]
                         << " in " << teams[1][counter][1] << "\n";
             else
@@ -774,7 +774,7 @@ int main()
           while (counter < 3)
           {
             if ((counter == index[0] || counter == index[1]) &&
-                teams[1][counter][1] != 0)
+                teams[1][counter][2] != 0)
               std::cout << superOver[1][counter] << ": " << teams[1][counter][0]
                         << " in " << teams[1][counter][1] << "\n";
             else
@@ -794,7 +794,7 @@ int main()
           while (counter < 3)
           {
             if ((counter == index[0] || counter == index[1]) &&
-                teams[0][counter][1] != 0)
+                teams[0][counter][2] != 0)
               std::cout << superOver[0][counter] << ": " << teams[0][counter][0]
                         << " in " << teams[0][counter][1] << "\n";
             else
@@ -1042,7 +1042,7 @@ bool outPutRuns(int x, array_type &array, int &runO, int &runT, int overN, int &
       partner[0]++;
       ballW += 2; // MAJOR WARNING - IF I EVER PUT NUMBER OF WIDES THIS WILL CAUSE AN ISSUE
     }
-    else if ((tRandom == 18 || tRandom == 21))
+    else if (tRandom == 18 || tRandom == 21)
     {
       array[overN - 1][ballN + ballW + 1] = 'n';
       std::cout << "\nBUT ITS A NO BALL AGAIN!\n";
@@ -1055,7 +1055,6 @@ bool outPutRuns(int x, array_type &array, int &runO, int &runT, int overN, int &
     {
       std::cout << "\nSince last ball was a no ball it doesn't count...\n";
       on ? balls[0]++ : balls[1]++;
-      ballN++;
       partner[1]++;
     }
     else if (on)
@@ -1074,6 +1073,10 @@ bool outPutRuns(int x, array_type &array, int &runO, int &runT, int overN, int &
         index[0]++;
       else
         index[0] = index[1] + 1;
+      if (index[0] <= 10)
+      {
+        team[inning - 1][index[0]][2] = 1;
+      }
     }
     else
     {
@@ -1091,6 +1094,10 @@ bool outPutRuns(int x, array_type &array, int &runO, int &runT, int overN, int &
         index[1]++;
       else
         index[1] = index[0] + 1;
+      if (index[1] <= 10)
+      {
+        team[inning - 1][index[1]][2] = 1;
+      }
     }
 
     if (tRandom == 18 || tRandom == 21 || fHit)
@@ -1124,9 +1131,12 @@ bool outPutRuns(int x, array_type &array, int &runO, int &runT, int overN, int &
     }
     else
     {
+      if (!fHit)
+      {
+        outs++;
+      }
       fHit = false;
       ballN++;
-      outs++;
     }
   }
 
@@ -1276,6 +1286,10 @@ bool superO(int x, char (&array)[2][100], int &runO, int &ballN, int &ballW, int
         index[0]++;
       else
         index[0] = index[1] + 1;
+      if (index[0] <= 10)
+      {
+        team[inning - 1][index[0]][2] = 1;
+      }
     }
     else
     {
@@ -1293,6 +1307,10 @@ bool superO(int x, char (&array)[2][100], int &runO, int &ballN, int &ballW, int
         index[1]++;
       else
         index[1] = index[0] + 1;
+      if (index[0] <= 10)
+      {
+        team[inning - 1][index[1]][2] = 1;
+      }
     }
     partner[1]++;
     std::cout << "Broken partnership: " << partner[0] << " in " << partner[1] << "\n\n";
