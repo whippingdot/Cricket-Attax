@@ -1131,7 +1131,8 @@ bool outPutRuns(int x, array_type &array, int &runO, int &runT, int overN, int &
     }
     else
     {
-      if (!fHit) {
+      if (!fHit)
+      {
         outs++;
       }
       fHit = false;
