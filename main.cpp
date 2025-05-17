@@ -1042,7 +1042,7 @@ bool outPutRuns(int x, array_type &array, int &runO, int &runT, int overN, int &
       partner[0]++;
       ballW += 2; // MAJOR WARNING - IF I EVER PUT NUMBER OF WIDES THIS WILL CAUSE AN ISSUE
     }
-    else if ((tRandom == 18 || tRandom == 21))
+    else if (tRandom == 18 || tRandom == 21)
     {
       array[overN - 1][ballN + ballW + 1] = 'n';
       std::cout << "\nBUT ITS A NO BALL AGAIN!\n";
@@ -1055,7 +1055,6 @@ bool outPutRuns(int x, array_type &array, int &runO, int &runT, int overN, int &
     {
       std::cout << "\nSince last ball was a no ball it doesn't count...\n";
       on ? balls[0]++ : balls[1]++;
-      ballN++;
       partner[1]++;
     }
     else if (on)
@@ -1132,9 +1131,11 @@ bool outPutRuns(int x, array_type &array, int &runO, int &runT, int overN, int &
     }
     else
     {
+      if (!fHit) {
+        outs++;
+      }
       fHit = false;
       ballN++;
-      outs++;
     }
   }
 
