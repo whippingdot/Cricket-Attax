@@ -467,12 +467,36 @@ int main()
           {
             for (int i = 0; i < vOverBalls[x]; i++)
             {
+              switch (timeline[x][i]) {
+                case '1':
+                  counter++;
+                  break;
+                case '2':
+                  counter += 2;
+                  break;
+                case '3':
+                  counter += 3;
+                  break;
+                case '4':
+                  counter += 4;
+                  break;
+                case '6':
+                  counter += 6;
+                  break;
+                case 'w':
+                  counter++;
+                  break;
+                default:
+                  break;
+              }
+
               if ((i + 1) != vOverBalls[x])
               {
                 if (timeline[x][i + 1] == 'n')
                 {
                   std::cout << timeline[x][i] << "* ";
                   i++;
+                  counter++;
                 }
                 else
                 {
@@ -484,19 +508,45 @@ int main()
                 std::cout << timeline[x][i];
               }
             }
-            std::cout << std::endl;
+            std::cout << " - " << counter << std::endl;
+            counter = 0;
           }
+          counter = 0;
           // This is for the reduced number of balls in an over due to all out
           if (ballNumber > 0)
           {
             for (int i = 0; i < ballNumber; i++)
             {
+              switch (timeline[overNumber][i]) {
+                case '1':
+                  counter++;
+                  break;
+                case '2':
+                  counter += 2;
+                  break;
+                case '3':
+                  counter += 3;
+                  break;
+                case '4':
+                  counter += 4;
+                  break;
+                case '6':
+                  counter += 6;
+                  break;
+                case 'w':
+                  counter++;
+                  break;
+                default:
+                  break;
+              }
+
               if ((i + 1) != ballNumber)
               {
                 if (timeline[overNumber][i + 1] == 'n')
                 {
                   std::cout << timeline[overNumber][i] << "* ";
                   i++;
+                  counter++;
                 }
                 else
                 {
@@ -505,14 +555,15 @@ int main()
               }
               else
               {
-                std::cout << timeline[overNumber][i] << " ";
+                std::cout << timeline[overNumber][i];
               }
             }
-            std::cout << std::endl;
+            std::cout << " - " << counter << std::endl;
           }
           std::cout << "\nEnter to Continue\n";
           std::getline(std::cin, null);
         }
+        counter = 0;
 
         system("cls");
 
