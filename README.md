@@ -1,19 +1,8 @@
-# Cricket-Attax
+# Cricket Attax Sim
+This project is a cricket simulator that incorporates weighted probabilities to make certain outcomes more likely than others. The program is built for T20 but can be easily modified to a 10 over or 50 over format. It was built to solve a problem me and my brother had with our method of playing with cricket attax cards and has since developed into a cricket sim with no balls, wides, dots, super over, and much more.
 
-My brother and I had a weird way of playing with Cricket Attax cards that completely ignored the values written on them. The cards were just to show that the player was on your team (when we collect cards it gives us more options), and even that didn't matter cause the entire game was luck based. It was, and still is, a very fun game seeing your favorite players get golden ducked while the bowlers hit centuries!
-
-We used to use Alexa for the RNG between 1 and 6 (5 was wicket). The reason for the creation of this program was to do that same job but with more realistic weighted probabilities. It also allows for the addition of dot balls, no balls, wide balls, etc.
-
-While I recommend running the code after cloning the repo, a slightly outdated version is in the repl below. Replit has changed so I am unsure of whether the repl will work though.
-
-Repl: https://replit.com/@Whippingdot/Cricket-Attax-Gen
-
-## How to Use
-
-Clone the program onto your system and run the C++ file (you can fork the repl and use that to run as it compiles and does everything). After that, all you have to do is press any key and enter to continue while it tells you how many runs was hit on that ball. After each over a timeline of the over will be displayed, and after the whole innings the program asks you if you want the whole innings' timeline. In the second innings it shows the runs to win, and the same other stuff. I have added a bunch of other quality of life features and stats that show you more about the flow of the match as well. Scorecards, partnerships, etc. are all available (with possibly advanced statistics in the future). You can tweak the overs to how many ever you want, but for now mine is kept at 20 to simulate T20.
-
-## Feature Checklist
-
+## Features
+The simulator has support for several features and is still being developed to add more. This is what we currently have and what is planned:
 - [x] Basic 1, 2, 3, 4, 6, Wicket, dot ball
 - [x] Wide balls
 - [x] No balls
@@ -31,3 +20,26 @@ Clone the program onto your system and run the C++ file (you can fork the repl a
 - [ ] Choice of bowler and bowling stats
 - [ ] Advanced stastics scorecard
 - [ ] Randomized commentary
+
+You can check issues on this repository for more planned changes as all will not be reflected here.
+
+## Installation and Usage Instructions
+1. Download the main.cpp file from this repo
+2. Build and run it using a C++ compiler (MSVC Works)
+3. To run the sim and just see innings scorecard / timeline, hold enter until it auto stops
+4. To watch ball by ball, simply press enter to move to the next ball
+5. To finish the sim, hold enter again till innings 2 ends and a full match scorecard appears
+6. To get timeline at end of innings, type 'y' and press enter in the console
+
+## Personalize
+### Teams
+Change the teams by changing the names array on line 22 (put your new teams in batting order). The first team is always batting first but the second team always bats first in the super over. Change the position of the teams in the array to change who bats first (will be changed soon).
+
+### Run Rate
+Change probabilities by changing the values between line 138 and 211 (will be changed soon). After you change probabilities, calculate the par score (like 13 overs of regular play and 7 overs of powerplay - will be changed to 5 overs of powerplay and 2 overs of death soon) and replace 218 with it in the 'average' variable.
+
+## Contributions
+This game is open to contributions. With all the issues public, just solve any one of them and create a PR / comment on the issue to move towards merging it. I would greatly appreciate it as it helps reduce some of the work I have to do!
+
+## Backstory
+My brother and I had a weird way of playing with Cricket Attax cards that completely ignored the values written on them. The cards were just to show that the player was on your team (when we collect cards it gives us more options), and even that didn't matter cause the entire game was luck based. It was, and still is, a very fun game seeing your favorite players get golden ducked while the bowlers hit centuries! We used to use Alexa for the RNG between 1 and 6 (5 was wicket). This program replaces that.
