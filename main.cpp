@@ -15,6 +15,7 @@ int main()
   int random = 0;
   int oldRuns = 0;
   int overRuns = 0;
+  int projected = 0;
   int counter = 0;
 
   int dotMax = 0;
@@ -350,6 +351,14 @@ int main()
               std::cout << "Required run rate: " << runRate << "\n";
             }
             std::cout << "Runs to Win: " << ((oldRuns + 1) - runs) << "\n";
+          }
+          else {
+            projected = runRate * maxOvers;
+            std::cout << "Projected score at current run rate: " << projected << "\n";
+            projected = static_cast<int>(runs + static_cast<double>(10.9 * (maxOvers + 1 - overNumber)));
+            std::cout << "Projected score at par run rate : " << projected << "\n";
+            projected = static_cast<int>(runs + static_cast<double>(13 * (maxOvers + 1 - overNumber)));
+            std::cout << "Projected score at high run rate (13): " << projected << "\n";
           }
           strike = !strike;
           std::cout << "\nEnter to Continue\n";
