@@ -1,6 +1,6 @@
 #include "main.h"
 
-bool outPutRuns(int x, array_type &array, int &runO, int &runT, int overN, int &ballN, int &ballW, int &outs, int (&batsmen)[2], int (&index)[2], bool &on, std::vector<std::vector<std::vector<int>>> &team, int inning, int (&balls)[2], std::vector<int> &partner, std::vector<std::vector<int>> &partners, bool &fHit)
+bool outPutRuns(int x, std::array<std::vector<char>, maxOvers> &array, int &runO, int &runT, int overN, int &ballN, int &outs, std::array<int, 2> &batsmen, std::array<int, 2> &index, bool &on, std::vector<std::vector<std::vector<int>>> &team, int inning, std::array<int, 2> &balls, std::vector<int> &partner, std::vector<std::vector<int>> &partners, bool &fHit)
 {
   char number = ' ';
   int tRandom = std::rand() % 100 + 1;
@@ -50,17 +50,16 @@ bool outPutRuns(int x, array_type &array, int &runO, int &runT, int overN, int &
 
   if (x == 1 || x == 2 || x == 3 || x == 4 || x == 6)
   {
-    array[overN - 1][ballN + ballW] = number;
+    array[overN - 1].push_back(number);
     fHit = false;
     if (tRandom == 18)
     {
       fHit = true;
-      array[overN - 1][ballN + ballW + 1] = 'n';
+      array[overN - 1].push_back('n');
       std::cout << "\nNO BALL! Free hit next ball!\n";
       runT++;
       runO++;
       partner[0]++;
-      ballW += 2;
     }
     else
     {
@@ -103,17 +102,16 @@ bool outPutRuns(int x, array_type &array, int &runO, int &runT, int overN, int &
   }
   else if (x == 5)
   {
-    array[overN - 1][ballN + ballW] = '.';
+    array[overN - 1].push_back('.');
     fHit = false;
     if (tRandom == 18)
     {
       fHit = true;
-      array[overN - 1][ballN + ballW + 1] = 'n';
+      array[overN - 1].push_back('n');
       std::cout << "\nNO BALL! Free hit next ball!\n";
       runT++;
       runO++;
       partner[0]++;
-      ballW += 2;
     }
     else
     {
@@ -141,7 +139,7 @@ bool outPutRuns(int x, array_type &array, int &runO, int &runT, int overN, int &
   }
   else if (x == 7)
   {
-    array[overN - 1][ballN + ballW] = 'w';
+    array[overN - 1].push_back('w');
     if (fHit)
     {
       std::cout << "\nNo ball continued next ball!\n";
@@ -163,28 +161,25 @@ bool outPutRuns(int x, array_type &array, int &runO, int &runT, int overN, int &
     std::cout << "Current partnership: " << partner[0] << " in " << partner[1] << "\n";
     runT++;
     runO++;
-    ballW++;
   }
   else if (x == 8)
   {
-    array[overN - 1][ballN + ballW] = 'W';
+    array[overN - 1].push_back('W');
     if ((tRandom == 18 || tRandom == 21) && !fHit)
     {
-      array[overN - 1][ballN + ballW + 1] = 'n';
+      array[overN - 1].push_back('n');
       std::cout << "\nBUT ITS A NO BALL!\n";
       runT++;
       runO++;
       partner[0]++;
-      ballW += 2; // MAJOR WARNING - IF I EVER PUT NUMBER OF WIDES THIS WILL CAUSE AN ISSUE
     }
     else if (tRandom == 18 || tRandom == 21)
     {
-      array[overN - 1][ballN + ballW + 1] = 'n';
+      array[overN - 1].push_back('n');
       std::cout << "\nBUT ITS A NO BALL AGAIN!\n";
       runT++;
       runO++;
       partner[0]++;
-      ballW += 2;
     }
     else if (fHit)
     {
@@ -281,7 +276,7 @@ bool outPutRuns(int x, array_type &array, int &runO, int &runT, int overN, int &
   return false;
 }
 
-bool superO(int x, char (&array)[2][100], int &runO, int &ballN, int &ballW, int &outs, int (&batsmen)[2], int (&index)[2], bool &on, std::vector<std::vector<std::vector<int>>> &team, int inning, int (&balls)[2], std::vector<int> &partner, std::string nNames[2][3], bool &fHit)
+bool superO(int x, std::array<std::vector<char>, 2> &array, int &runO, int &ballN, int &outs, std::array<int, 2> &batsmen, std::array<int, 2> &index, bool &on, std::vector<std::vector<std::vector<int>>> &team, int inning, std::array<int, 2> &balls, std::vector<int> &partner, std::array<std::array<std::string, 3>, 2> nNames, bool &fHit)
 {
   char number = ' ';
   int tRandom = std::rand() % 1000 + 1;
@@ -325,7 +320,7 @@ bool superO(int x, char (&array)[2][100], int &runO, int &ballN, int &ballW, int
 
   if (x == 1 || x == 2 || x == 3 || x == 4 || x == 6)
   {
-    array[inning - 1][ballN + ballW] = number;
+    array[inning - 1].push_back(number);
     runO += x;
     partner[0] += x;
     partner[1]++;
@@ -362,7 +357,7 @@ bool superO(int x, char (&array)[2][100], int &runO, int &ballN, int &ballW, int
   }
   else if (x == 5)
   {
-    array[inning - 1][ballN + ballW] = '.';
+    array[inning - 1].push_back('.');
     ballN++;
     partner[1]++;
     if (on)
@@ -385,7 +380,7 @@ bool superO(int x, char (&array)[2][100], int &runO, int &ballN, int &ballW, int
   }
   else if (x == 7)
   {
-    array[inning - 1][ballN + ballW] = 'w';
+    array[inning - 1].push_back('w');
     if (on)
     {
       std::cout << "\n"
@@ -400,11 +395,10 @@ bool superO(int x, char (&array)[2][100], int &runO, int &ballN, int &ballW, int
     }
     std::cout << "Current partnership: " << partner[0] << " in " << partner[1] << "\n";
     runO++;
-    ballW++;
   }
   else if (x == 8)
   {
-    array[inning - 1][ballN + ballW] = 'W';
+    array[inning - 1].push_back('W');
     if (on)
     {
       balls[0]++;
