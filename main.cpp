@@ -1,5 +1,8 @@
 #include "main.h"
 
+std::string names[2][11] = {{"Rohit Sharma", "Quinton de Kock", "Suryakumar Yadav", "Ishan Kishan", "Kieron Pollard", "Hardik Pandya", "Krunal Pandya", "Nathan Coulter-Nile", "Rahul Chahar", "Trent Boult", "Jasprit Bumrah"}, {"Ruturaj Gaikwad", "Devon Conway", "Shivam Dube", "Ajinkya Rahane", "Ambati Rayudu", "MS Dhoni", "Ravindra Jadeja", "Deepak Chahar", "Matheesha Pathirana", "Tushar Deshpande", "Maheesh Theekshana"}};
+// std::string names[2][11] = { {"Batsman 1", "Batsman 2", "Batsman 3", "Batsman 4", "Batsman 5", "Batsman 6", "Batsman 7", "Batsman 8", "Batsman 9", "Batsman 10", "Batsman 11"}, {"Batsman 1", "Batsman 2", "Batsman 3", "Batsman 4", "Batsman 5", "Batsman 6", "Batsman 7", "Batsman 8", "Batsman 9", "Batsman 10", "Batsman 11"} };
+
 int main()
 {
   system("cls");
@@ -40,7 +43,8 @@ int main()
   bool free = false;
 
   std::string null = "";
-
+  std::string storedFirst = names[0][0];
+ 
   int vOverBalls[maxOvers];
 
   int current[2] = {0, 0};
@@ -78,27 +82,82 @@ int main()
     case 1:
       innings = 1;
       teams = {{{0, 0, 1}, {0, 0, 1}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}}, {{0, 0, 1}, {0, 0, 1}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}}};
+
+      if (names[0][0] != storedFirst) {
+        std::swap(names[0], names[1]);
+      }
+
       savedP = {0, 0, 0, 0};
+      random = std::rand() % 2;
       // Let The Games Begin!
       // My friend gave me the obvious idea of a coin flip which my dumb brain forgot
       std::getline(std::cin, null);
-      std::cout << "Choose heads or tails and enter to continue when ready.\n";
-      std::getline(std::cin, null);
+      if (random == 1) {
+        std::cout << "Player 1: Choose heads (h) or tails (t) and enter to continue when ready.\n";
+      }
+      else {
+        std::cout << "Player 2: Choose heads (h) or tails (t) and enter to continue when ready.\n";
+      }
+			std::cin >> null;
       system("cls");
+      counter = random;
 
-      random = std::rand() % 2 + 1;
+      random = std::rand() % 2;
       if (random == 1)
       {
-        std::cout << "Heads\nChoose batting or bowling...\nEnter to Continue\n";
-        std::getline(std::cin, null);
+        std::cout << "Heads!\n";
+        if (counter == 1) {
+          if (null == "h") {
+            std::cout << "Player 1: Choose batting (bat) or bowling (bowl).\nEnter to Continue\n";
+          }
+          else {
+            std::cout << "Player 2: Choose batting (bat) or bowling (bowl).\nEnter to Continue\n";
+            counter = 2;
+          }
+        }
+        else {
+          if (null == "h") {
+            std::cout << "Player 2: Choose batting (bat) or bowling (bowl).\nEnter to Continue\n";
+            counter = 2;
+          }
+          else {
+            std::cout << "Player 1: Choose batting (bat) or bowling (bowl).\nEnter to Continue\n";
+            counter = 1;
+          }
+        }
+        std::cin >> null;
         system("cls");
       }
       else
       {
-        std::cout << "Tails\nChoose batting or bowling...\nEnter to Continue\n";
-        std::getline(std::cin, null);
+				std::cout << "Tails!\n";
+        if (counter == 1) {
+          if (null == "h") {
+            std::cout << "Player 2: Choose batting (bat) or bowling (bowl).\nEnter to Continue\n";
+            counter = 2;
+          }
+          else {
+            std::cout << "Player 1: Choose batting (bat) or bowling (bowl).\nEnter to Continue\n";
+          }
+        }
+        else {
+          if (null == "h") {
+            std::cout << "Player 1: Choose batting (bat) or bowling (bowl).\nEnter to Continue\n";
+            counter = 1;
+          }
+          else {
+            std::cout << "Player 2: Choose batting (bat) or bowling (bowl).\nEnter to Continue\n";
+            counter = 2;
+          }
+        }
+        std::cin >> null;
         system("cls");
       }
+
+      if ((counter == 1 && null == "bowl") || (counter == 2 && null == "bat")) {
+        std::swap(names[0], names[1]);
+      }
+      counter = 0;
 
       // The while loop containing most of our code
       while (innings < 3)
