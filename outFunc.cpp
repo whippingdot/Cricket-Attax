@@ -1,6 +1,6 @@
 #include "main.h"
 
-bool outPutRuns(int x, std::array<std::vector<char>, maxOvers> &array, int &runO, int &runT, int overN, int &ballN, int &outs, std::array<int, 2> &batsmen, std::array<int, 2> &index, bool &on, std::vector<std::vector<std::vector<int>>> &team, int inning, std::array<int, 2> &balls, std::vector<int> &partner, std::vector<std::vector<int>> &partners, bool &fHit)
+bool outPutRuns(int x, std::array<std::vector<char>, maxOvers> &array, int &runO, int &runT, int overN, int &ballN, int &outs, std::array<int, 2> &batsmen, std::array<int, 2> &index, bool &on, std::vector<std::vector<std::vector<int>>> &team, int inning, std::array<int, 2> &balls, std::vector<int> &partner, std::vector<std::vector<int>> &partners, bool &fHit, std::array<std::vector<std::array<int, 5>>, 2> &fall)
 {
   char number = ' ';
   int tRandom = std::rand() % 100 + 1;
@@ -189,9 +189,16 @@ bool outPutRuns(int x, std::array<std::vector<char>, maxOvers> &array, int &runO
     }
     else if (on)
     {
+      std::array<int, 5> fOW = std::array<int, 5>();
       balls[0]++;
       team[inning - 1][index[0]][0] = batsmen[0];
       team[inning - 1][index[0]][1] = balls[0];
+      fOW[0] = outs + 1;
+      fOW[1] = runT;
+      fOW[2] = index[0];
+      fOW[3] = overN - 1;
+      fOW[4] = ballN + 1;
+      fall[inning - 1].push_back(fOW);
       std::cout << "\n"
                 << names[inning - 1][index[0]] << "*: " << batsmen[0] << " in " << balls[0] << " - OUT\n";
       std::cout << names[inning - 1][index[1]] << ": " << batsmen[1] << " in " << balls[1] << "\n\n";
@@ -210,9 +217,16 @@ bool outPutRuns(int x, std::array<std::vector<char>, maxOvers> &array, int &runO
     }
     else
     {
+      std::array<int, 5> fOW = std::array<int, 5>();
       balls[1]++;
       team[inning - 1][index[1]][0] = batsmen[1];
       team[inning - 1][index[1]][1] = balls[1];
+      fOW[0] = outs + 1;
+      fOW[1] = runT;
+      fOW[2] = index[1];
+      fOW[3] = overN - 1;
+      fOW[4] = ballN + 1;
+      fall[inning - 1].push_back(fOW);
       std::cout << "\n"
                 << names[inning - 1][index[1]] << "*: " << batsmen[1] << " in " << balls[1] << " - OUT\n";
       std::cout << names[inning - 1][index[0]] << ": " << batsmen[0] << " in " << balls[0] << "\n\n";

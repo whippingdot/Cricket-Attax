@@ -35,8 +35,6 @@ int main()
 
   double runRate = 0.0;
 
-  std::array<std::vector<char>, maxOvers> timeline; // Had to change this to a 2d array as wides were causing multiple issues
-
   bool e = false;
   bool strike = true;
   bool free = false;
@@ -47,6 +45,8 @@ int main()
   std::array<int, 2> ballsB = {0, 0};
   std::array<int, 2> index = {0, 1};
   std::array<int, 2> notOut = {0, 0};
+  std::array<std::vector<char>, maxOvers> timeline; // Had to change this to a 2d array as wides were causing multiple issues
+  std::array<std::vector<std::array<int, 5>>, 2> fallOW = std::array<std::vector<std::array<int, 5>>, 2>();
   std::vector<std::vector<std::vector<int>>> teams = {{{0, 0, 1}, {0, 0, 1}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}}, {{0, 0, 1}, {0, 0, 1}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}}};
   std::vector<std::vector<int>> partnerships = std::vector<std::vector<int>>();
 
@@ -80,6 +80,8 @@ int main()
       teams = {{{0, 0, 1}, {0, 0, 1}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}}, {{0, 0, 1}, {0, 0, 1}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}}};
 
       names = {{{"Rohit Sharma", "Quinton de Kock", "Suryakumar Yadav", "Ishan Kishan", "Kieron Pollard", "Hardik Pandya", "Krunal Pandya", "Nathan Coulter-Nile", "Rahul Chahar", "Trent Boult", "Jasprit Bumrah"}, {"Ruturaj Gaikwad", "Devon Conway", "Shivam Dube", "Ajinkya Rahane", "Ambati Rayudu", "MS Dhoni", "Ravindra Jadeja", "Deepak Chahar", "Matheesha Pathirana", "Tushar Deshpande", "Maheesh Theekshana"}}};
+      fallOW[0].clear();
+      fallOW[1].clear();
 
       savedP = {0, 0, 0, 0};
       random = std::rand() % 2;
@@ -257,22 +259,22 @@ int main()
             wMax = static_cast<int>((1000 * wideP) + sMax);
 
             if (random <= dotMax)
-              e = outPutRuns(5, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free);
+              e = outPutRuns(5, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW);
             else if (random > dotMax && random <= oMax)
-              e = outPutRuns(1, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free);
+              e = outPutRuns(1, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW);
             else if (random > oMax && random <= dMax)
-              e = outPutRuns(2, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free);
+              e = outPutRuns(2, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW);
             else if (random > dMax && random <= tMax)
-              e = outPutRuns(3, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free);
+              e = outPutRuns(3, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW);
             else if (random > tMax && random <= fMax)
-              e = outPutRuns(4, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free);
+              e = outPutRuns(4, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW);
             else if (random > fMax && random <= sMax)
-              e = outPutRuns(6, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free);
+              e = outPutRuns(6, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW);
             else if (random > sMax && random <= wMax)
-              e = outPutRuns(7, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free);
+              e = outPutRuns(7, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW);
             else if (random > wMax)
             {
-              e = outPutRuns(8, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free);
+              e = outPutRuns(8, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW);
               if (e == true)
                 break;
             }
@@ -352,7 +354,8 @@ int main()
             }
             std::cout << "Runs to Win: " << ((oldRuns + 1) - runs) << "\n";
           }
-          else {
+          else
+          {
             projected = runRate * maxOvers;
             std::cout << "Projected score at current run rate: " << projected << "\n";
             projected = static_cast<int>(runs + static_cast<double>(10.9 * (maxOvers + 1 - overNumber)));
@@ -474,6 +477,18 @@ int main()
           }
           std::cout << "\nLargest partnership: " << savedP[0] << " in " << savedP[1] << " between " << names[0][savedP[2]] << " and " << names[0][savedP[3]] << "\n\n";
           counter = 0;
+
+          std::cout << "Fall of wickets: ";
+          for (int i = 0; i < fallOW[0].size(); i++)
+          {
+            std::cout << fallOW[0][i][0] << "-" << fallOW[0][i][1] << " (" << names[0][fallOW[0][i][2]] << ", " << fallOW[0][i][3] << "." << fallOW[0][i][4] << " ov)";
+            if (i + 1 < fallOW[0].size())
+            {
+              std::cout << ", ";
+            }
+          }
+          std::cout << "\n\n";
+
           while (teams[1][counter][2] != 0)
           {
             if (counter == index[0] || counter == index[1])
@@ -487,6 +502,7 @@ int main()
             }
           }
           counter = 0;
+
           for (int i = 0; i < partnerships.size(); i++)
           {
             if (partnerships[i][0] > partnerships[counter][0])
@@ -501,6 +517,17 @@ int main()
 
         std::cout << "Largest partnership: " << partnerships[counter][0] << " in " << partnerships[counter][1] << " between " << names[innings - 1][partnerships[counter][2]] << " and " << names[innings - 1][partnerships[counter][3]] << "\n\n";
         counter = 0;
+
+        std::cout << "Fall of wickets: ";
+        for (int i = 0; i < fallOW[innings - 1].size(); i++)
+        {
+          std::cout << fallOW[innings - 1][i][0] << "-" << fallOW[innings - 1][i][1] << " (" << names[innings - 1][fallOW[innings - 1][i][2]] << ", " << fallOW[innings - 1][i][3] << "." << fallOW[innings - 1][i][4] << " ov)";
+          if (i + 1 < fallOW[innings - 1].size())
+          {
+            std::cout << ", ";
+          }
+        }
+        std::cout << "\n\n";
 
         // Full innings timeline
         std::cout << "Do you want the full innings timeline(y/n): ";
