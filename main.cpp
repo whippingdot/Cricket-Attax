@@ -3,8 +3,7 @@
 std::array<std::array<std::string, 11>, 2> names = {{{"Rohit Sharma", "Quinton de Kock", "Suryakumar Yadav", "Ishan Kishan", "Kieron Pollard", "Hardik Pandya", "Krunal Pandya", "Nathan Coulter-Nile", "Rahul Chahar", "Trent Boult", "Jasprit Bumrah"}, {"Ruturaj Gaikwad", "Devon Conway", "Shivam Dube", "Ajinkya Rahane", "Ambati Rayudu", "MS Dhoni", "Ravindra Jadeja", "Deepak Chahar", "Matheesha Pathirana", "Tushar Deshpande", "Maheesh Theekshana"}}};
 // std::array<std::array<std::string, 11>, 2> names = { {"Batsman 1", "Batsman 2", "Batsman 3", "Batsman 4", "Batsman 5", "Batsman 6", "Batsman 7", "Batsman 8", "Batsman 9", "Batsman 10", "Batsman 11"}, {"Batsman 1", "Batsman 2", "Batsman 3", "Batsman 4", "Batsman 5", "Batsman 6", "Batsman 7", "Batsman 8", "Batsman 9", "Batsman 10", "Batsman 11"} };
 
-int main()
-{
+int main() {
   system("cls");
   // Variable Declaration
   int overNumber = 1; // This is dumb, I know, and it makes me have to do - 1 wherever I mention overNumber, but I am too lazy to fix it everywhere
@@ -297,8 +296,6 @@ int main()
             system("cls");
           }
 
-          // vOverBalls is a vector which will contain each over's number of balls. This again is because of wides increasing the number of balls in an over. Also all out requires this
-
           // Increasing over number if six balls were finished
           if (ballNumber == 6)
           {
@@ -307,9 +304,7 @@ int main()
           }
 
           // Checking if won or all out again
-          if ((wickets == 10) || ((innings == 2) && (runs > oldRuns)))
-            break;
-          else if ((innings == 2) && (runs > oldRuns))
+          if ((wickets == 10) || (innings == 2) && (runs > oldRuns))
             break;
 
           // Timeline after every over
@@ -356,7 +351,7 @@ int main()
           }
           else
           {
-            projected = runRate * maxOvers;
+            projected = static_cast<int>(runRate * maxOvers);
             std::cout << "Projected score at current run rate: " << projected << "\n";
             projected = static_cast<int>(runs + static_cast<double>(10.9 * (maxOvers + 1 - overNumber)));
             std::cout << "Projected score at par run rate : " << projected << "\n";
@@ -591,9 +586,9 @@ int main()
           }
           counter = 0;
           // This is for the reduced number of balls in an over due to all out
-          if (ballNumber > 0)
+          if (overNumber != 20 && timeline[overNumber].size() > 0)
           {
-            for (int i = 0; i < ballNumber; i++)
+            for (int i = 0; i < timeline[overNumber].size(); i++)
             {
               switch (timeline[overNumber][i])
               {
@@ -619,7 +614,7 @@ int main()
                 break;
               }
 
-              if ((i + 1) != ballNumber)
+              if ((i + 1) != timeline[overNumber].size())
               {
                 if (timeline[overNumber][i + 1] == 'n')
                 {
