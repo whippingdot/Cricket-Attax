@@ -188,56 +188,75 @@ int main()
             // The weighted randoms are calculated based on the random number that was generated. As it was from 1 - 100 the weighted randoms work by saying if the number was in this range, it outputs this many runs or wicket or dot
             // The first three are buffed for powerplay, and after that the next two are buffs and nerfs incase the first team plays good or bad
 
-            dotP = 0.3f;
-            oneP = 0.27f;
-            doubleP = 0.1f;
-            threeP = 0.005f;
-            fourP = 0.175f;
-            sixP = 0.08f;
-            wideP = 0.02f;
-
-            if ((innings == 2 && oldRuns > higherScore) && (overNumber <= (maxOvers / 4) || overNumber > (maxOvers - 2)))
+            if ((index[0] < 7 && strike) || (index[1] < 7 && !strike))
             {
-              std::cout << "POWERPLAY\n---------\n";
-              dotP -= 0.13f;
-              oneP -= 0.04f;
-              doubleP -= 0.02f;
-              fourP += 0.06f;
-              sixP += 0.06f;
-              wideP += 0.01f;
+              if (overNumber > (maxOvers / 4) && overNumber <= (maxOvers - 2))
+              {
+                dotP = 0.32f;
+                oneP = 0.27f;
+                doubleP = 0.1f;
+                threeP = 0.005f;
+                fourP = 0.175f;
+                sixP = 0.08f;
+                wideP = 0.02f;
+              }
+              else if (overNumber <= (maxOvers / 4))
+              {
+                std::cout << "POWERPLAY\n---------\n";
+                dotP = 0.26f;
+                oneP = 0.20f;
+                doubleP = 0.12f;
+                threeP = 0.005f;
+                fourP = 0.215f;
+                sixP = 0.12f;
+                wideP = 0.03f;
+              }
+              else if (overNumber > (maxOvers - 2))
+              {
+                std::cout << "DEATH\n-----\n";
+                dotP = 0.25f;
+                oneP = 0.15f;
+                doubleP = 0.16f;
+                threeP = 0.01f;
+                fourP = 0.20f;
+                sixP = 0.15f;
+                wideP = 0.015f;
+              }
             }
-            else if ((innings == 2 && oldRuns < lowerScore) && (overNumber <= (maxOvers / 4) || overNumber > (maxOvers - 2)))
+            else
             {
-              std::cout << "POWERPLAY\n---------\n";
-              dotP -= 0.05f;
-              oneP -= 0.05f;
-              fourP += 0.02f;
-              sixP += 0.03f;
-            }
-            else if (overNumber <= (maxOvers / 4) || overNumber > (maxOvers - 2))
-            {
-              std::cout << "POWERPLAY\n---------\n";
-              dotP -= 0.09f;
-              oneP -= 0.07f;
-              doubleP += 0.02f;
-              fourP += 0.04f;
-              sixP += 0.04f;
-              wideP += 0.01f;
-            }
-            else if (innings == 2 && oldRuns > higherScore)
-            {
-              dotP -= 0.04f;
-              oneP += 0.02f;
-              doubleP -= 0.02f;
-              fourP += 0.01f;
-              sixP += 0.02f;
-            }
-            else if (innings == 2 && oldRuns < lowerScore)
-            {
-              dotP += 0.05f;
-              fourP -= 0.02f;
-              sixP -= 0.02f;
-              wideP -= 0.01f;
+              if (overNumber > (maxOvers / 4) && overNumber <= (maxOvers - 2))
+              {
+                dotP = 0.45f;
+                oneP = 0.26f;
+                doubleP = 0.1f;
+                threeP = 0.005f;
+                fourP = 0.08f;
+                sixP = 0.05f;
+                wideP = 0.01f;
+              }
+              else if (overNumber <= (maxOvers / 4))
+              {
+                std::cout << "POWERPLAY\n---------\n";
+                dotP = 0.30f;
+                oneP = 0.27f;
+                doubleP = 0.12f;
+                threeP = 0.005f;
+                fourP = 0.145f;
+                sixP = 0.8f;
+                wideP = 0.02f;
+              }
+              else if (overNumber > (maxOvers - 2))
+              {
+                std::cout << "DEATH\n-----\n";
+                dotP = 0.235f;
+                oneP = 0.15f;
+                doubleP = 0.16f;
+                threeP = 0.02f;
+                fourP = 0.20f;
+                sixP = 0.15f;
+                wideP = 0.005f;
+              }
             }
 
             if (free)
@@ -642,11 +661,11 @@ int main()
 
         system("cls");
 
-        // Buffs and nerfs to chasing team incase batting team op or bad
-        if (innings == 1 && runs > higherScore)
-          std::cout << "Chasing team will now get {buffed} as the score was above " << higherScore << "!\n";
-        else if (innings == 1 && runs < lowerScore)
-          std::cout << "Chasing team will now get {nerfed} as the score was sub " << lowerScore << "!\n";
+        //// Buffs and nerfs to chasing team incase batting team op or bad
+        // if (innings == 1 && runs > higherScore)
+        //	std::cout << "Chasing team will now get {buffed} as the score was above " << higherScore << "!\n";
+        // else if (innings == 1 && runs < lowerScore)
+        //	std::cout << "Chasing team will now get {nerfed} as the score was sub " << lowerScore << "!\n";
 
         std::cout << "\nEnter to Continue\n";
         std::getline(std::cin, null);
