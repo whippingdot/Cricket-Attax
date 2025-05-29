@@ -38,6 +38,7 @@ int main()
   bool e = false;
   bool strike = true;
   bool free = false;
+  bool changed = false;
 
   std::string null = "";
 
@@ -269,6 +270,14 @@ int main()
               wideP = 0.015f;
             }
 
+            if (changed)
+            {
+              dotP -= 0.075f;
+              doubleP -= 0.02f;
+              fourP += 0.025f;
+              sixP += 0.05f;
+            }
+
             dotMax = static_cast<int>(1000 * dotP);
             oMax = static_cast<int>((1000 * oneP) + dotMax);
             dMax = static_cast<int>((1000 * doubleP) + oMax);
@@ -379,6 +388,10 @@ int main()
             std::cout << "Projected score at high run rate (13): " << projected << "\n";
           }
           strike = !strike;
+          if (!changed && (overNumber == 18 && wickets <= 3) || (overNumber == 17 && wickets <= 2))
+          {
+            changed = true;
+          }
           std::cout << "\nEnter to Continue\n";
           std::getline(std::cin, null);
           overRuns = 0;
@@ -685,6 +698,7 @@ int main()
         partnership = {0, 0, 0, 0};
         partnerships.clear();
         strike = true;
+        changed = false;
 
         for (int i = 0; i < timeline.size(); i++)
         {
