@@ -193,7 +193,7 @@ int main()
             {
               if (overNumber > (maxOvers / 4) && overNumber <= (maxOvers - 2))
               {
-                dotP = 0.32f;
+                dotP = 0.31f;
                 oneP = 0.27f;
                 doubleP = 0.1f;
                 threeP = 0.005f;
@@ -204,7 +204,7 @@ int main()
               else if (overNumber <= (maxOvers / 4))
               {
                 std::cout << "POWERPLAY\n---------\n";
-                dotP = 0.26f;
+                dotP = 0.245f;
                 oneP = 0.20f;
                 doubleP = 0.12f;
                 threeP = 0.005f;
@@ -215,7 +215,7 @@ int main()
               else if (overNumber > (maxOvers - 2))
               {
                 std::cout << "DEATH\n-----\n";
-                dotP = 0.25f;
+                dotP = 0.24f;
                 oneP = 0.15f;
                 doubleP = 0.16f;
                 threeP = 0.01f;
@@ -228,7 +228,7 @@ int main()
             {
               if (overNumber > (maxOvers / 4) && overNumber <= (maxOvers - 2))
               {
-                dotP = 0.45f;
+                dotP = 0.44f;
                 oneP = 0.26f;
                 doubleP = 0.1f;
                 threeP = 0.005f;
@@ -239,7 +239,7 @@ int main()
               else if (overNumber <= (maxOvers / 4))
               {
                 std::cout << "POWERPLAY\n---------\n";
-                dotP = 0.30f;
+                dotP = 0.285f;
                 oneP = 0.27f;
                 doubleP = 0.12f;
                 threeP = 0.005f;
@@ -250,7 +250,7 @@ int main()
               else if (overNumber > (maxOvers - 2))
               {
                 std::cout << "DEATH\n-----\n";
-                dotP = 0.235f;
+                dotP = 0.225f;
                 oneP = 0.15f;
                 doubleP = 0.16f;
                 threeP = 0.02f;
