@@ -38,6 +38,7 @@ int main()
   bool e = false;
   bool strike = true;
   bool free = false;
+  bool changed = false;
 
   std::string null = "";
 
@@ -192,7 +193,7 @@ int main()
             {
               if (overNumber > (maxOvers / 4) && overNumber <= (maxOvers - 2))
               {
-                dotP = 0.32f;
+                dotP = 0.31f;
                 oneP = 0.27f;
                 doubleP = 0.1f;
                 threeP = 0.005f;
@@ -203,7 +204,7 @@ int main()
               else if (overNumber <= (maxOvers / 4))
               {
                 std::cout << "POWERPLAY\n---------\n";
-                dotP = 0.26f;
+                dotP = 0.245f;
                 oneP = 0.20f;
                 doubleP = 0.12f;
                 threeP = 0.005f;
@@ -214,7 +215,7 @@ int main()
               else if (overNumber > (maxOvers - 2))
               {
                 std::cout << "DEATH\n-----\n";
-                dotP = 0.25f;
+                dotP = 0.24f;
                 oneP = 0.15f;
                 doubleP = 0.16f;
                 threeP = 0.01f;
@@ -227,7 +228,7 @@ int main()
             {
               if (overNumber > (maxOvers / 4) && overNumber <= (maxOvers - 2))
               {
-                dotP = 0.45f;
+                dotP = 0.44f;
                 oneP = 0.26f;
                 doubleP = 0.1f;
                 threeP = 0.005f;
@@ -238,7 +239,7 @@ int main()
               else if (overNumber <= (maxOvers / 4))
               {
                 std::cout << "POWERPLAY\n---------\n";
-                dotP = 0.30f;
+                dotP = 0.285f;
                 oneP = 0.27f;
                 doubleP = 0.12f;
                 threeP = 0.005f;
@@ -249,7 +250,7 @@ int main()
               else if (overNumber > (maxOvers - 2))
               {
                 std::cout << "DEATH\n-----\n";
-                dotP = 0.235f;
+                dotP = 0.225f;
                 oneP = 0.15f;
                 doubleP = 0.16f;
                 threeP = 0.02f;
@@ -267,6 +268,14 @@ int main()
               fourP = 0.25f;
               sixP = 0.2f;
               wideP = 0.015f;
+            }
+
+            if (changed)
+            {
+              dotP -= 0.075f;
+              doubleP -= 0.02f;
+              fourP += 0.025f;
+              sixP += 0.05f;
             }
 
             dotMax = static_cast<int>(1000 * dotP);
@@ -379,6 +388,10 @@ int main()
             std::cout << "Projected score at high run rate (13): " << projected << "\n";
           }
           strike = !strike;
+          if (!changed && (overNumber == 18 && wickets <= 3) || (overNumber == 17 && wickets <= 2))
+          {
+            changed = true;
+          }
           std::cout << "\nEnter to Continue\n";
           std::getline(std::cin, null);
           overRuns = 0;
@@ -685,6 +698,7 @@ int main()
         partnership = {0, 0, 0, 0};
         partnerships.clear();
         strike = true;
+        changed = false;
 
         for (int i = 0; i < timeline.size(); i++)
         {
