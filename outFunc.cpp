@@ -1,10 +1,11 @@
 #include "main.h"
 
-bool outPutRuns(int x, std::array<std::vector<char>, maxOvers> &array, int &runO, int &runT, int overN, int &ballN, int &outs, std::array<int, 2> &batsmen, std::array<int, 2> &index, bool &on, std::vector<std::vector<std::vector<int>>> &team, int inning, std::array<int, 2> &balls, std::vector<int> &partner, std::vector<std::vector<int>> &partners, bool &fHit, std::array<std::vector<std::array<int, 5>>, 2> &fall)
+bool outPutRuns(int x, std::array<std::vector<char>, maxOvers> &array, int &runO, int &runT, int overN, int &ballN, int &outs, std::array<int, 2> &batsmen, std::array<int, 2> &index, bool &on, std::vector<std::vector<std::vector<int>>> &team, int inning, std::array<int, 2> &balls, std::vector<int> &partner, std::vector<std::vector<int>> &partners, bool &fHit, std::array<std::vector<std::array<int, 5>>, 2> &fall, int &wickT, int &wickTCount, bool &added)
 {
   char number = ' ';
   int tRandom = std::rand() % 100 + 1;
   std::string nul = "";
+  added = false;
 
   if (fHit)
   {
@@ -278,10 +279,49 @@ bool outPutRuns(int x, std::array<std::vector<char>, maxOvers> &array, int &runO
       if (!fHit)
       {
         outs++;
+        wickT += 1;
+        added = true;
       }
       fHit = false;
       ballN++;
     }
+  }
+
+  int ball = (overN - 1) * 6 + ballN;
+  // std::cout << "WICKETS IN LAST 20: " << wickT << " + real ball no: " << ball << std::endl;
+  if (ball >= 26 && ball - wickTCount == 26)
+  {
+    // std::cout << wickTCount << std::endl;
+    int remainder = wickTCount % 6;
+    // std::cout << remainder << std::endl;
+    int extras = 0;
+    for (int i = 0; i < array[wickTCount / 6].size(); i++)
+    {
+      // std::cout << array[wickTCount / 6][i] << std::endl;
+      if (array[wickTCount / 6][i] == 'w')
+      {
+        extras += 1;
+      }
+      else if (i + 1 != array[wickTCount / 6].size())
+      {
+        if (array[wickTCount / 6][i + 1] == 'n')
+        {
+          extras += 2;
+        }
+      }
+      if (i - extras == remainder)
+      {
+        break;
+      }
+    }
+    remainder += extras;
+
+    if (array[wickTCount / 6][remainder] == 'W')
+    {
+      wickT--;
+    }
+
+    wickTCount++;
   }
 
   if (outs == 10)
