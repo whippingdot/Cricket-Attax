@@ -11,12 +11,15 @@ int main()
   int ballNumber = 0;
   int runs = 0;
   int wickets = 0;
+  int wicketsT = 0;
+  int wicketsTCounter = 0;
   int innings = 1;
   int random = 0;
   int oldRuns = 0;
   int overRuns = 0;
   int projected = 0;
   int counter = 0;
+  int balls = 0;
 
   int dotMax = 0;
   int oMax = 0;
@@ -39,6 +42,10 @@ int main()
   bool strike = true;
   bool free = false;
   bool changed = false;
+  bool collapse = false;
+  bool added = false;
+  bool buffed = false;
+  bool nerfed = false;
 
   std::string null = "";
 
@@ -57,14 +64,16 @@ int main()
   time_t nTime;
 
   // Making rand() actually random (it adds a seed which is based on the time which changes every second)
-  std::srand((unsigned)time(&nTime));
+  std::mt19937 gen(std::random_device{}());
+  std::uniform_int_distribution<> dist(1, 1000);
+  std::uniform_int_distribution<> two(1, 2);
 
   // Making the average number of runs for that over number
   float mOvers = maxOvers;
-  float average = 218 * (mOvers / 20);
-  int higherScore = static_cast<int>((7.0 / 6) * average);
+  float average = 211 * (mOvers / 20);
+  int higherScore = static_cast<int>((6.75 / 6) * average);
   // std::cout << higherScore << std::endl;
-  int lowerScore = static_cast<int>((5.0 / 6) * average);
+  int lowerScore = static_cast<int>((5.25 / 6) * average);
   // std::cout << lowerScore << std::endl;
 
   // Intro screen timeeee
@@ -85,7 +94,7 @@ int main()
       fallOW[1].clear();
 
       savedP = {0, 0, 0, 0};
-      random = std::rand() % 2;
+      random = two(gen);
       // Let The Games Begin!
       // My friend gave me the obvious idea of a coin flip which my dumb brain forgot
       std::getline(std::cin, null);
@@ -101,7 +110,7 @@ int main()
       system("cls");
       counter = random;
 
-      random = std::rand() % 2;
+      random = two(gen);
       if (random == 1)
       {
         std::cout << "Heads!\n";
@@ -178,12 +187,41 @@ int main()
         std::cout << "INNINGS NUMBER " << innings << "\n\n";
 
         // While loops for our over number and ball number
+        if (oldRuns >= higherScore && innings == 2)
+        {
+          buffed = true;
+          std::cout << "The chasing team has been buffed due to a score high above par!\n";
+        }
+        else if (oldRuns <= lowerScore && innings == 2)
+        {
+          nerfed = true;
+          std::cout << "The chasing team has been nerfed due to a score much lower than par!\n";
+        }
+
+        std::cout << "\nEnter to Continue\n";
+        std::getline(std::cin, null);
+        system("cls");
+
         while (overNumber <= maxOvers)
         {
           while (ballNumber < 6)
           {
             // Getting the random number from 0 - 100, then adding it by 1 so it is from 1 - 101 NOT INCLUDING 101
-            random = std::rand() % 1000 + 1;
+            random = dist(gen);
+
+            if (wicketsT >= 3 && (added || !collapse))
+            {
+              collapse = true;
+              balls = 1;
+            }
+            else if (collapse && balls > 8)
+            {
+              collapse = false;
+            }
+            else if (collapse)
+            {
+              balls++;
+            }
 
             // The main attraction - weighted randoms
             // The weighted randoms are calculated based on the random number that was generated. As it was from 1 - 100 the weighted randoms work by saying if the number was in this range, it outputs this many runs or wicket or dot
@@ -193,7 +231,7 @@ int main()
             {
               if (overNumber > (maxOvers / 4) && overNumber <= (maxOvers - 2))
               {
-                dotP = 0.31f;
+                dotP = 0.30f;
                 oneP = 0.27f;
                 doubleP = 0.1f;
                 threeP = 0.005f;
@@ -204,31 +242,32 @@ int main()
               else if (overNumber <= (maxOvers / 4))
               {
                 std::cout << "POWERPLAY\n---------\n";
-                dotP = 0.245f;
+                dotP = 0.305f;
                 oneP = 0.20f;
-                doubleP = 0.12f;
+                doubleP = 0.1f;
                 threeP = 0.005f;
-                fourP = 0.215f;
-                sixP = 0.12f;
+                fourP = 0.195f;
+                sixP = 0.1f;
                 wideP = 0.03f;
               }
               else if (overNumber > (maxOvers - 2))
               {
                 std::cout << "DEATH\n-----\n";
-                dotP = 0.24f;
+                dotP = 0.30f;
                 oneP = 0.15f;
-                doubleP = 0.16f;
+                doubleP = 0.14f;
                 threeP = 0.01f;
-                fourP = 0.20f;
-                sixP = 0.15f;
+                fourP = 0.19f;
+                sixP = 0.12f;
                 wideP = 0.015f;
               }
             }
             else
             {
+              std::cout << "Bowler Time!\n";
               if (overNumber > (maxOvers / 4) && overNumber <= (maxOvers - 2))
               {
-                dotP = 0.44f;
+                dotP = 0.43f;
                 oneP = 0.26f;
                 doubleP = 0.1f;
                 threeP = 0.005f;
@@ -239,23 +278,23 @@ int main()
               else if (overNumber <= (maxOvers / 4))
               {
                 std::cout << "POWERPLAY\n---------\n";
-                dotP = 0.285f;
+                dotP = 0.345f;
                 oneP = 0.27f;
-                doubleP = 0.12f;
+                doubleP = 0.1f;
                 threeP = 0.005f;
-                fourP = 0.145f;
-                sixP = 0.8f;
+                fourP = 0.125f;
+                sixP = 0.06f;
                 wideP = 0.02f;
               }
               else if (overNumber > (maxOvers - 2))
               {
                 std::cout << "DEATH\n-----\n";
-                dotP = 0.225f;
+                dotP = 0.285f;
                 oneP = 0.15f;
-                doubleP = 0.16f;
+                doubleP = 0.14f;
                 threeP = 0.02f;
-                fourP = 0.20f;
-                sixP = 0.15f;
+                fourP = 0.19f;
+                sixP = 0.12f;
                 wideP = 0.005f;
               }
             }
@@ -272,10 +311,33 @@ int main()
 
             if (changed)
             {
-              dotP -= 0.075f;
+              dotP -= 0.045f;
               doubleP -= 0.02f;
               fourP += 0.025f;
-              sixP += 0.05f;
+              sixP += 0.03f;
+            }
+
+            if (collapse)
+            {
+              std::cout << "COLLAPSE ON\n";
+              fourP -= 0.02f;
+              sixP -= 0.01f;
+              dotP += 0.05f;
+            }
+
+            if (buffed)
+            {
+              fourP += 0.03f;
+              sixP += 0.02f;
+              dotP -= 0.06f;
+            }
+            else if (nerfed)
+            {
+              oneP += 0.12f;
+              fourP -= 0.04f;
+              sixP -= 0.03f;
+              wideP -= 0.005f;
+              doubleP -= 0.035f;
             }
 
             dotMax = static_cast<int>(1000 * dotP);
@@ -287,22 +349,22 @@ int main()
             wMax = static_cast<int>((1000 * wideP) + sMax);
 
             if (random <= dotMax)
-              e = outPutRuns(5, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW);
+              e = outPutRuns(5, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added);
             else if (random > dotMax && random <= oMax)
-              e = outPutRuns(1, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW);
+              e = outPutRuns(1, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added);
             else if (random > oMax && random <= dMax)
-              e = outPutRuns(2, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW);
+              e = outPutRuns(2, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added);
             else if (random > dMax && random <= tMax)
-              e = outPutRuns(3, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW);
+              e = outPutRuns(3, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added);
             else if (random > tMax && random <= fMax)
-              e = outPutRuns(4, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW);
+              e = outPutRuns(4, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added);
             else if (random > fMax && random <= sMax)
-              e = outPutRuns(6, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW);
+              e = outPutRuns(6, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added);
             else if (random > sMax && random <= wMax)
-              e = outPutRuns(7, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW);
+              e = outPutRuns(7, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added);
             else if (random > wMax)
             {
-              e = outPutRuns(8, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW);
+              e = outPutRuns(8, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added);
               if (e == true)
                 break;
             }
@@ -410,7 +472,6 @@ int main()
             std::cout << "\nAll out at " << runs << " after " << overNumber - 1 << " overs with a run rate of " << runRate << "!\n";
 
         if (innings == 1 && wickets != 10)
-
           std::cout << "First innings up.\n"
                     << runs << "/" << wickets << " in " << maxOvers << " overs!\nRun rate : " << runRate << std::endl;
         else if (runs == oldRuns && innings == 2)
@@ -680,10 +741,6 @@ int main()
         // else if (innings == 1 && runs < lowerScore)
         //	std::cout << "Chasing team will now get {nerfed} as the score was sub " << lowerScore << "!\n";
 
-        std::cout << "\nEnter to Continue\n";
-        std::getline(std::cin, null);
-        system("cls");
-
         // Resetting all variables
         current[0] = 0;
         ballsB[0] = 0;
@@ -699,6 +756,13 @@ int main()
         partnerships.clear();
         strike = true;
         changed = false;
+        wicketsT = 0;
+        balls = 0;
+        collapse = false;
+        added = false;
+        wicketsTCounter = 0;
+        buffed = false;
+        nerfed = false;
 
         for (int i = 0; i < timeline.size(); i++)
         {
@@ -764,7 +828,7 @@ int main()
 
           while (ballNumber < 6)
           {
-            random = std::rand() % 1000 + 1;
+            random = dist(gen);
 
             if (random <= dotMax)
               e = superO(5, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
@@ -855,7 +919,7 @@ int main()
 
           while (ballNumber < 6)
           {
-            random = std::rand() % 1000 + 1;
+            random = dist(gen);
 
             if (random <= dotMax)
               e = superO(5, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
