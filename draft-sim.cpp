@@ -445,16 +445,6 @@ void draftSim()
           }
         }
 
-        if (free)
-        {
-          dotP = 0.1f;
-          oneP = 0.15f;
-          doubleP = 0.18f;
-          fourP = 0.25f;
-          sixP = 0.2f;
-          wideP = 0.015f;
-        }
-
         if (changed)
         {
           dotP -= 0.045f;
@@ -485,6 +475,19 @@ void draftSim()
           doubleP -= 0.035f;
         }
 
+        strike ? playerMods(names[innings - 1][index[0]], dotP, oneP, doubleP, threeP, fourP, sixP, wideP) : playerMods(names[innings - 1][index[1]], dotP, oneP, doubleP, threeP, fourP, sixP, wideP);
+        // strike ? std::cout << names[innings - 1][index[0]] << std::endl : std::cout << names[innings - 1][index[1]] << std::endl;
+
+        if (free)
+        {
+          dotP = 0.1f;
+          oneP = 0.15f;
+          doubleP = 0.18f;
+          fourP = 0.25f;
+          sixP = 0.2f;
+          wideP = 0.015f;
+        }
+
         dotMax = static_cast<int>(1000 * dotP);
         oMax = static_cast<int>((1000 * oneP) + dotMax);
         dMax = static_cast<int>((1000 * doubleP) + oMax);
@@ -492,6 +495,7 @@ void draftSim()
         fMax = static_cast<int>((1000 * fourP) + tMax);
         sMax = static_cast<int>((1000 * sixP) + fMax);
         wMax = static_cast<int>((1000 * wideP) + sMax);
+        // std::cout << dotMax << " " << oMax << " " << dMax << " " << tMax << " " << fMax << " " << sMax << " " << wMax << std::endl;
 
         if (random <= dotMax)
           e = outPutRuns(5, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names);

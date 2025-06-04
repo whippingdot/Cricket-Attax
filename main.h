@@ -33,3 +33,23 @@ bool superO(int x, std::array<std::vector<char>, 2> &array, int &runO, int &ball
 void baseSim();
 
 void draftSim();
+
+struct Player {
+	float dotPIncrease = 0.0f;
+	float dotPDecrease = 0.0f;
+	float onePIncrease = 0.0f;
+	float onePDecrease = 0.0f;
+	float doublePIncrease = 0.0f;
+	float doublePDecrease = 0.0f;
+	float threePIncrease = 0.0f;
+	float threePDecrease = 0.0f;
+	float fourPIncrease = 0.0f;
+	float fourPDecrease = 0.0f;
+	float sixPIncrease = 0.0f;
+	float sixPDecrease = 0.0f;
+	float widePIncrease = 0.0f;
+	float widePDecrease = 0.0f;
+};
+
+extern std::unordered_map<std::string, Player> players;
+void playerMods(std::string name, float& dotP, float& oneP, float& doubleP, float& threeP, float& fourP, float& sixP, float& wideP);
