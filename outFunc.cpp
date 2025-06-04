@@ -1,6 +1,6 @@
 #include "main.h"
 
-bool outPutRuns(int x, std::array<std::vector<char>, maxOvers> &array, int &runO, int &runT, int overN, int &ballN, int &outs, std::array<int, 2> &batsmen, std::array<int, 2> &index, bool &on, std::vector<std::vector<std::vector<int>>> &team, int inning, std::array<int, 2> &balls, std::vector<int> &partner, std::vector<std::vector<int>> &partners, bool &fHit, std::array<std::vector<std::array<int, 5>>, 2> &fall, int &wickT, int &wickTCount, bool &added)
+bool outPutRuns(int x, std::array<std::vector<char>, maxOvers> &array, int &runO, int &runT, int overN, int &ballN, int &outs, std::array<int, 2> &batsmen, std::array<int, 2> &index, bool &on, std::vector<std::vector<std::vector<int>>> &team, int inning, std::array<int, 2> &balls, std::vector<int> &partner, std::vector<std::vector<int>> &partners, bool &fHit, std::array<std::vector<std::array<int, 5>>, 2> &fall, int &wickT, int &wickTCount, bool &added, std::array<std::array<std::string, 11>, 2> names)
 {
   char number = ' ';
   int tRandom = std::rand() % 100 + 1;
@@ -487,9 +487,13 @@ bool superO(int x, std::array<std::vector<char>, 2> &array, int &runO, int &ball
       partner[2] = index[0];
       partner[3] = index[1];
       if (index[0] < index[1])
+      {
         index[1]++;
+      }
       else
+      {
         index[1] = index[0] + 1;
+      }
       if (index[0] <= 10)
       {
         team[inning - 1][index[1]][2] = 1;
@@ -504,7 +508,9 @@ bool superO(int x, std::array<std::vector<char>, 2> &array, int &runO, int &ball
   }
 
   if (outs == 2)
+  {
     return true;
+  }
 
   return false;
 }
