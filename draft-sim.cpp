@@ -17,6 +17,10 @@ void draftSim()
   int projected = 0;
   int counter = 0;
   int balls = 0;
+  int gillStarted = 300;
+  int gillUp = 0;
+  int hardikStarted = 300;
+  int hardikUp = 0;
   int teamAC = 0;
   int teamBC = 0;
 
@@ -36,6 +40,7 @@ void draftSim()
   float wideP = 0.0f;
 
   double runRate = 0.0;
+  double requiredRR = 0.0;
 
   bool e = false;
   bool strike = true;
@@ -45,6 +50,7 @@ void draftSim()
   bool added = false;
   bool buffed = false;
   bool nerfed = false;
+  bool flashP = false;
 
   std::string null = "";
 
@@ -52,13 +58,14 @@ void draftSim()
   std::array<int, 2> ballsB = {0, 0};
   std::array<int, 2> index = {0, 1};
   std::array<int, 2> notOut = {0, 0};
+  std::array<int, 3> chemistryPartner = {12, 0, 0};
   std::array<std::vector<char>, maxOvers> timeline; // Had to change this to a 2d array as wides were causing multiple issues
   std::array<std::vector<std::array<int, 5>>, 2> fallOW = std::array<std::vector<std::array<int, 5>>, 2>();
   std::vector<std::vector<std::vector<int>>> teams = {{{0, 0, 1}, {0, 0, 1}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}}, {{0, 0, 1}, {0, 0, 1}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}}};
-  std::vector<std::vector<int>> partnerships = std::vector<std::vector<int>>();
+  std::vector<std::array<int, 4>> partnerships = std::vector<std::array<int, 4>>();
 
-  std::vector<int> partnership = {0, 0, 0, 0};
-  std::vector<int> savedP = {0, 0, 0, 0};
+  std::array<int, 4> partnership = {0, 0, 0, 0};
+  std::array<int, 4> savedP = {0, 0, 0, 0};
 
   // Making rand() actually random (it adds a seed which is based on the time which changes every second)
   std::mt19937 gen(std::random_device{}());
@@ -152,7 +159,9 @@ void draftSim()
   std::cin >> null;
   if (null == "debug")
   {
-    names = {{{"Rohit Sharma", "Quinton de Kock", "Suryakumar Yadav", "Glenn Maxwell", "Kieron Pollard", "Hardik Pandya", "Andre Russell", "Rashid Khan", "Axar Patel", "Trent Boult", "Jasprit Bumrah"}, {"Ruturaj Gaikwad", "Sai Sudharsan", "Shivam Dube", "Nicholas Pooran", "Shakib al Hasan", "MS Dhoni", "Ravindra Jadeja", "Deepak Chahar", "Mohammed Siraj", "Lasith Malinga", "Varun Chakravarthy"}}};
+    //names = {{{"Rohit Sharma", "Quinton de Kock", "Suryakumar Yadav", "Glenn Maxwell", "Kieron Pollard", "Hardik Pandya", "Andre Russell", "Rashid Khan", "Axar Patel", "Trent Boult", "Jasprit Bumrah"}, {"Ruturaj Gaikwad", "Sai Sudharsan", "Shivam Dube", "Nicholas Pooran", "Shakib Al Hasan", "MS Dhoni", "Ravindra Jadeja", "Deepak Chahar", "Mohammed Siraj", "Lasith Malinga", "Varun Chakravarthy"}}};
+    //names = {{{"Shubman Gill", "Yashasvi Jaiswal", "KL Rahul", "AB de Villiers", "Rishabh Pant", "Washington Sundar", "Dwayne Bravo", "Sunil Narine", "Marco Jansen", "Jofra Archer", "Arshdeep Singh"}, {"David Warner", "Shane Watson", "Phil Salt", "Virat Kohli", "Ben Stokes", "Shimron Hetmeyer", "Wanindu Hasaranga", "Kuldeep Yadav", "Bhuvneshwar Kumar", "Mitchell Starc", "Shane Warne"}}};
+    names = {{{"Shubman Gill", "Yashasvi Jaiswal", "KL Rahul", "AB de Villiers", "Rishabh Pant", "Washington Sundar", "Dwayne Bravo", "Sunil Narine", "Marco Jansen", "Jofra Archer", "Arshdeep Singh"}, {"Abhishek Sharma", "Chris Gayle", "Jos Buttler", "Travis Head", "Shreyas Iyer", "Sanju Samson", "Heinrich Klaasen", "Ravichandran Ashwin", "Dale Steyn", "Mohammed Shami", "Yuzvendra Chahal"}}};
   }
   else if (players.contains(toLower(null)))
   {
@@ -370,6 +379,35 @@ void draftSim()
           balls++;
         }
 
+        if ((chemistryPartner[0] == 12) && (partnership[0] >= 50) && (names[innings - 1][index[0]] == "AB de Villiers" || names[innings - 1][index[1]] == "AB de Villiers")) {
+          chemistryPartner[0] = index[0];
+          chemistryPartner[1] = index[1];
+        }
+        else if (chemistryPartner[0] != 12 && (chemistryPartner[0] != index[0] || chemistryPartner[1] != index[1]) && chemistryPartner[2] == 0) {
+          chemistryPartner[2] = 1;
+        }
+
+        if ((names[innings - 1][partnership[2]] == "Shubman Gill" || names[innings - 1][partnership[3]] == "Shubman Gill") && gillStarted == 300) {
+          gillStarted = runs;
+        }
+        else if (gillStarted != 300) {
+          gillUp = (runs - gillStarted) / 20;
+          if (gillUp > 5) {
+            gillUp = 5;
+          }
+        }
+
+        if ((names[innings - 1][partnership[2]] == "Hardik Pandya" || names[innings - 1][partnership[3]] == "Hardik Pandya") && hardikStarted == 300) {
+          hardikStarted = runs;
+        }
+        else if (hardikStarted != 300) {
+          hardikUp = (runs - hardikStarted) / 10;
+          if (hardikUp > 5) {
+            hardikUp = 5;
+          }
+        }
+
+
         // The main attraction - weighted randoms
         // The weighted randoms are calculated based on the random number that was generated. As it was from 1 - 100 the weighted randoms work by saying if the number was in this range, it outputs this many runs or wicket or dot
         // The first three are buffed for powerplay, and after that the next two are buffs and nerfs incase the first team plays good or bad
@@ -475,9 +513,6 @@ void draftSim()
           doubleP -= 0.035f;
         }
 
-        strike ? playerMods(names[innings - 1][index[0]], dotP, oneP, doubleP, threeP, fourP, sixP, wideP) : playerMods(names[innings - 1][index[1]], dotP, oneP, doubleP, threeP, fourP, sixP, wideP);
-        // strike ? std::cout << names[innings - 1][index[0]] << std::endl : std::cout << names[innings - 1][index[1]] << std::endl;
-
         if (free)
         {
           dotP = 0.1f;
@@ -488,6 +523,9 @@ void draftSim()
           wideP = 0.015f;
         }
 
+        //std::cout << "Makes it here\n";
+        strike ? playerMods(names[innings - 1][index[0]], names[innings - 1][index[1]], dotP, oneP, doubleP, threeP, fourP, sixP, wideP, ballsB[0], current[0], overNumber, ballNumber, gillUp, hardikUp, partnership[0], runRate, requiredRR, true, added, flashP, chemistryPartner[2]) : playerMods(names[innings - 1][index[1]], names[innings - 1][index[0]], dotP, oneP, doubleP, threeP, fourP, sixP, wideP, ballsB[1], current[1], overNumber, ballNumber, gillUp, hardikUp, partnership[0], runRate, requiredRR, true, added, flashP, chemistryPartner[2]);
+
         dotMax = static_cast<int>(1000 * dotP);
         oMax = static_cast<int>((1000 * oneP) + dotMax);
         dMax = static_cast<int>((1000 * doubleP) + oMax);
@@ -495,7 +533,7 @@ void draftSim()
         fMax = static_cast<int>((1000 * fourP) + tMax);
         sMax = static_cast<int>((1000 * sixP) + fMax);
         wMax = static_cast<int>((1000 * wideP) + sMax);
-        // std::cout << dotMax << " " << oMax << " " << dMax << " " << tMax << " " << fMax << " " << sMax << " " << wMax << std::endl;
+        //std::cout << dotMax << " " << oMax << " " << dMax << " " << tMax << " " << fMax << " " << sMax << " " << wMax << std::endl;
 
         if (random <= dotMax)
           e = outPutRuns(5, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names);
@@ -583,9 +621,9 @@ void draftSim()
       {
         if (overNumber != maxOvers + 1)
         {
-          runRate = static_cast<double>(oldRuns - runs + 1) / static_cast<double>(maxOvers - (overNumber - 1));
-          runRate = std::round(runRate * 100.0) / 100.0;
-          std::cout << "Required run rate: " << runRate << "\n";
+          requiredRR = static_cast<double>(oldRuns - runs + 1) / static_cast<double>(maxOvers - (overNumber - 1));
+          requiredRR = std::round(requiredRR * 100.0) / 100.0;
+          std::cout << "Required run rate: " << requiredRR << "\n";
         }
         std::cout << "Runs to Win: " << ((oldRuns + 1) - runs) << "\n";
       }
@@ -597,6 +635,12 @@ void draftSim()
         std::cout << "Projected score at par run rate : " << projected << "\n";
         projected = static_cast<int>(runs + static_cast<double>(13 * (maxOvers + 1 - overNumber)));
         std::cout << "Projected score at high run rate (13): " << projected << "\n";
+      }
+      if (overRuns <= 9) {
+        flashP = true;
+      }
+      else {
+        flashP = false;
       }
       strike = !strike;
       if (!changed && (overNumber == 18 && wickets <= 3) || (overNumber == 17 && wickets <= 2))
@@ -930,6 +974,12 @@ void draftSim()
     wicketsTCounter = 0;
     buffed = false;
     nerfed = false;
+    gillStarted = 300;
+    gillUp = 0;
+    hardikStarted = 300;
+    hardikUp = 300;
+    flashP = false;
+    chemistryPartner = {12, 0, 0};
 
     for (int i = 0; i < timeline.size(); i++)
     {

@@ -51,10 +51,10 @@ void baseSim()
   std::array<std::vector<char>, maxOvers> timeline; // Had to change this to a 2d array as wides were causing multiple issues
   std::array<std::vector<std::array<int, 5>>, 2> fallOW = std::array<std::vector<std::array<int, 5>>, 2>();
   std::vector<std::vector<std::vector<int>>> teams = {{{0, 0, 1}, {0, 0, 1}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}}, {{0, 0, 1}, {0, 0, 1}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}}};
-  std::vector<std::vector<int>> partnerships = std::vector<std::vector<int>>();
+  std::vector<std::array<int, 4>> partnerships = std::vector<std::array<int, 4>>();
 
-  std::vector<int> partnership = {0, 0, 0, 0};
-  std::vector<int> savedP = {0, 0, 0, 0};
+  std::array<int, 4> partnership = {0, 0, 0, 0};
+  std::array<int, 4> savedP = {0, 0, 0, 0};
 
   // Making rand() actually random (it adds a seed which is based on the time which changes every second)
   std::mt19937 gen(std::random_device{}());
