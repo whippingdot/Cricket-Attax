@@ -204,7 +204,7 @@ void baseSim()
 
         if ((index[0] < 7 && strike) || (index[1] < 7 && !strike))
         {
-          if (overNumber > (maxOvers / 4) && overNumber <= (maxOvers - 2))
+          if (overNumber > ((maxOvers / 4) + 1) && overNumber <= (maxOvers - 2))
           {
             dotP = 0.30f;
             oneP = 0.27f;
@@ -214,7 +214,7 @@ void baseSim()
             sixP = 0.08f;
             wideP = 0.02f;
           }
-          else if (overNumber <= (maxOvers / 4))
+          else if (overNumber <= ((maxOvers / 4) + 1))
           {
             std::cout << "POWERPLAY\n---------\n";
             dotP = 0.305f;
@@ -239,7 +239,7 @@ void baseSim()
         }
         else
         {
-          if (overNumber > (maxOvers / 4) && overNumber <= (maxOvers - 2))
+          if (overNumber > ((maxOvers / 4) + 1) && overNumber <= (maxOvers - 2))
           {
             dotP = 0.43f;
             oneP = 0.26f;
@@ -249,7 +249,7 @@ void baseSim()
             sixP = 0.05f;
             wideP = 0.01f;
           }
-          else if (overNumber <= (maxOvers / 4))
+          else if (overNumber <= ((maxOvers / 4) + 1))
           {
             std::cout << "POWERPLAY\n---------\n";
             dotP = 0.345f;

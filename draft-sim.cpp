@@ -159,8 +159,8 @@ void draftSim()
   std::cin >> null;
   if (null == "debug")
   {
-    //names = {{{"Rohit Sharma", "Quinton de Kock", "Suryakumar Yadav", "Glenn Maxwell", "Kieron Pollard", "Hardik Pandya", "Andre Russell", "Rashid Khan", "Axar Patel", "Trent Boult", "Jasprit Bumrah"}, {"Ruturaj Gaikwad", "Sai Sudharsan", "Shivam Dube", "Nicholas Pooran", "Shakib Al Hasan", "MS Dhoni", "Ravindra Jadeja", "Deepak Chahar", "Mohammed Siraj", "Lasith Malinga", "Varun Chakravarthy"}}};
-    //names = {{{"Shubman Gill", "Yashasvi Jaiswal", "KL Rahul", "AB de Villiers", "Rishabh Pant", "Washington Sundar", "Dwayne Bravo", "Sunil Narine", "Marco Jansen", "Jofra Archer", "Arshdeep Singh"}, {"David Warner", "Shane Watson", "Phil Salt", "Virat Kohli", "Ben Stokes", "Shimron Hetmeyer", "Wanindu Hasaranga", "Kuldeep Yadav", "Bhuvneshwar Kumar", "Mitchell Starc", "Shane Warne"}}};
+    // names = {{{"Rohit Sharma", "Quinton de Kock", "Suryakumar Yadav", "Glenn Maxwell", "Kieron Pollard", "Hardik Pandya", "Andre Russell", "Rashid Khan", "Axar Patel", "Trent Boult", "Jasprit Bumrah"}, {"Ruturaj Gaikwad", "Sai Sudharsan", "Shivam Dube", "Nicholas Pooran", "Shakib Al Hasan", "MS Dhoni", "Ravindra Jadeja", "Deepak Chahar", "Mohammed Siraj", "Lasith Malinga", "Varun Chakravarthy"}}};
+    // names = {{{"Shubman Gill", "Yashasvi Jaiswal", "KL Rahul", "AB de Villiers", "Rishabh Pant", "Washington Sundar", "Dwayne Bravo", "Sunil Narine", "Marco Jansen", "Jofra Archer", "Arshdeep Singh"}, {"David Warner", "Shane Watson", "Phil Salt", "Virat Kohli", "Ben Stokes", "Shimron Hetmeyer", "Wanindu Hasaranga", "Kuldeep Yadav", "Bhuvneshwar Kumar", "Mitchell Starc", "Shane Warne"}}};
     names = {{{"Shubman Gill", "Yashasvi Jaiswal", "KL Rahul", "AB de Villiers", "Rishabh Pant", "Washington Sundar", "Dwayne Bravo", "Sunil Narine", "Marco Jansen", "Jofra Archer", "Arshdeep Singh"}, {"Abhishek Sharma", "Chris Gayle", "Jos Buttler", "Travis Head", "Shreyas Iyer", "Sanju Samson", "Heinrich Klaasen", "Ravichandran Ashwin", "Dale Steyn", "Mohammed Shami", "Yuzvendra Chahal"}}};
   }
   else if (players.contains(toLower(null)))
@@ -379,34 +379,41 @@ void draftSim()
           balls++;
         }
 
-        if ((chemistryPartner[0] == 12) && (partnership[0] >= 50) && (names[innings - 1][index[0]] == "AB de Villiers" || names[innings - 1][index[1]] == "AB de Villiers")) {
+        if ((chemistryPartner[0] == 12) && (partnership[0] >= 50) && (names[innings - 1][index[0]] == "AB de Villiers" || names[innings - 1][index[1]] == "AB de Villiers"))
+        {
           chemistryPartner[0] = index[0];
           chemistryPartner[1] = index[1];
         }
-        else if (chemistryPartner[0] != 12 && (chemistryPartner[0] != index[0] || chemistryPartner[1] != index[1]) && chemistryPartner[2] == 0) {
+        else if (chemistryPartner[0] != 12 && (chemistryPartner[0] != index[0] || chemistryPartner[1] != index[1]) && chemistryPartner[2] == 0)
+        {
           chemistryPartner[2] = 1;
         }
 
-        if ((names[innings - 1][partnership[2]] == "Shubman Gill" || names[innings - 1][partnership[3]] == "Shubman Gill") && gillStarted == 300) {
+        if ((names[innings - 1][partnership[2]] == "Shubman Gill" || names[innings - 1][partnership[3]] == "Shubman Gill") && gillStarted == 300)
+        {
           gillStarted = runs;
         }
-        else if (gillStarted != 300) {
+        else if (gillStarted != 300)
+        {
           gillUp = (runs - gillStarted) / 20;
-          if (gillUp > 5) {
+          if (gillUp > 5)
+          {
             gillUp = 5;
           }
         }
 
-        if ((names[innings - 1][partnership[2]] == "Hardik Pandya" || names[innings - 1][partnership[3]] == "Hardik Pandya") && hardikStarted == 300) {
+        if ((names[innings - 1][partnership[2]] == "Hardik Pandya" || names[innings - 1][partnership[3]] == "Hardik Pandya") && hardikStarted == 300)
+        {
           hardikStarted = runs;
         }
-        else if (hardikStarted != 300) {
+        else if (hardikStarted != 300)
+        {
           hardikUp = (runs - hardikStarted) / 10;
-          if (hardikUp > 5) {
+          if (hardikUp > 5)
+          {
             hardikUp = 5;
           }
         }
-
 
         // The main attraction - weighted randoms
         // The weighted randoms are calculated based on the random number that was generated. As it was from 1 - 100 the weighted randoms work by saying if the number was in this range, it outputs this many runs or wicket or dot
@@ -414,7 +421,7 @@ void draftSim()
 
         if ((index[0] < 7 && strike) || (index[1] < 7 && !strike))
         {
-          if (overNumber > (maxOvers / 4) && overNumber <= (maxOvers - 2))
+          if (overNumber > ((maxOvers / 4) + 1) && overNumber <= (maxOvers - 2))
           {
             dotP = 0.30f;
             oneP = 0.27f;
@@ -424,7 +431,7 @@ void draftSim()
             sixP = 0.08f;
             wideP = 0.02f;
           }
-          else if (overNumber <= (maxOvers / 4))
+          else if (overNumber <= ((maxOvers / 4) + 1))
           {
             std::cout << "POWERPLAY\n---------\n";
             dotP = 0.305f;
@@ -449,7 +456,7 @@ void draftSim()
         }
         else
         {
-          if (overNumber > (maxOvers / 4) && overNumber <= (maxOvers - 2))
+          if (overNumber > ((maxOvers / 4) + 1) && overNumber <= (maxOvers - 2))
           {
             dotP = 0.43f;
             oneP = 0.26f;
@@ -459,7 +466,7 @@ void draftSim()
             sixP = 0.05f;
             wideP = 0.01f;
           }
-          else if (overNumber <= (maxOvers / 4))
+          else if (overNumber <= ((maxOvers / 4) + 1))
           {
             std::cout << "POWERPLAY\n---------\n";
             dotP = 0.345f;
@@ -523,7 +530,7 @@ void draftSim()
           wideP = 0.015f;
         }
 
-        //std::cout << "Makes it here\n";
+        // std::cout << "Makes it here\n";
         strike ? playerMods(names[innings - 1][index[0]], names[innings - 1][index[1]], dotP, oneP, doubleP, threeP, fourP, sixP, wideP, ballsB[0], current[0], overNumber, ballNumber, gillUp, hardikUp, partnership[0], runRate, requiredRR, true, added, flashP, chemistryPartner[2]) : playerMods(names[innings - 1][index[1]], names[innings - 1][index[0]], dotP, oneP, doubleP, threeP, fourP, sixP, wideP, ballsB[1], current[1], overNumber, ballNumber, gillUp, hardikUp, partnership[0], runRate, requiredRR, true, added, flashP, chemistryPartner[2]);
 
         dotMax = static_cast<int>(1000 * dotP);
@@ -533,7 +540,7 @@ void draftSim()
         fMax = static_cast<int>((1000 * fourP) + tMax);
         sMax = static_cast<int>((1000 * sixP) + fMax);
         wMax = static_cast<int>((1000 * wideP) + sMax);
-        //std::cout << dotMax << " " << oMax << " " << dMax << " " << tMax << " " << fMax << " " << sMax << " " << wMax << std::endl;
+        // std::cout << dotMax << " " << oMax << " " << dMax << " " << tMax << " " << fMax << " " << sMax << " " << wMax << std::endl;
 
         if (random <= dotMax)
           e = outPutRuns(5, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names);
@@ -636,10 +643,12 @@ void draftSim()
         projected = static_cast<int>(runs + static_cast<double>(13 * (maxOvers + 1 - overNumber)));
         std::cout << "Projected score at high run rate (13): " << projected << "\n";
       }
-      if (overRuns <= 9) {
+      if (overRuns <= 9)
+      {
         flashP = true;
       }
-      else {
+      else
+      {
         flashP = false;
       }
       strike = !strike;
