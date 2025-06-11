@@ -9,12 +9,15 @@ void draftSim()
   int runs = 0;
   int wickets = 0;
   int wicketsT = 0;
+  int oldWickets = 0;
   int wicketsTCounter = 0;
   int innings = 1;
+  int bowlerInnings = 0;
   int random = 0;
   int oldRuns = 0;
   int overRuns = 0;
   int projected = 0;
+  int extras = 0;
   int counter = 0;
   int balls = 0;
   int gillStarted = 300;
@@ -41,6 +44,7 @@ void draftSim()
 
   double runRate = 0.0;
   double requiredRR = 0.0;
+  double economy = 0.0;
 
   bool e = false;
   bool strike = true;
@@ -51,17 +55,22 @@ void draftSim()
   bool buffed = false;
   bool nerfed = false;
   bool flashP = false;
+  bool debug = false;
 
   std::string null = "";
+  std::string bowlerName = "";
 
   std::array<int, 2> current = {0, 0};
   std::array<int, 2> ballsB = {0, 0};
   std::array<int, 2> index = {0, 1};
   std::array<int, 2> notOut = {0, 0};
   std::array<int, 3> chemistryPartner = {12, 0, 0};
+  std::array<std::vector<int>, 2> bowlerNames = std::array<std::vector<int>, 2>();
+  std::array<std::unordered_map<std::string, int>, 2> bowlers = std::array<std::unordered_map<std::string, int>, 2>();
   std::array<std::vector<char>, maxOvers> timeline; // Had to change this to a 2d array as wides were causing multiple issues
   std::array<std::vector<std::array<int, 5>>, 2> fallOW = std::array<std::vector<std::array<int, 5>>, 2>();
-  std::vector<std::vector<std::vector<int>>> teams = {{{0, 0, 1}, {0, 0, 1}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}}, {{0, 0, 1}, {0, 0, 1}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}}};
+  std::array<std::array<std::array<int, 3>, 11>, 2> teams = {{{{{{0, 0, 1}}, {{0, 0, 1}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}}}, {{{{0, 0, 1}}, {{0, 0, 1}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}}}}};
+  std::array<std::vector<std::array<int, 6>>, 2> bowlerStats = std::array<std::vector<std::array<int, 6>>, 2>();
   std::vector<std::array<int, 4>> partnerships = std::vector<std::array<int, 4>>();
 
   std::array<int, 4> partnership = {0, 0, 0, 0};
@@ -69,7 +78,7 @@ void draftSim()
 
   // Making rand() actually random (it adds a seed which is based on the time which changes every second)
   std::mt19937 gen(std::random_device{}());
-  std::uniform_int_distribution<> dist(1, 1000);
+  std::uniform_int_distribution<> dist(1, 10000);
   std::uniform_int_distribution<> two(1, 2);
 
   // Making the average number of runs for that over number
@@ -100,6 +109,7 @@ void draftSim()
       {"dube", "Shivam Dube"},
       {"abhishek", "Abhishek Sharma"},
       {"warner", "David Warner"},
+      {"gayle", "Chris Gayle"},
       // Wicket Keepers (full + first)
       {"msd", "MS Dhoni"},
       {"dhoni", "MS Dhoni"},
@@ -120,7 +130,6 @@ void draftSim()
       {"stokes", "Ben Stokes"},
       {"russell", "Andre Russell"},
       {"bravo", "Dwayne Bravo"},
-      {"gayle", "Chris Gayle"},
       {"watson", "Shane Watson"},
       {"pollard", "Kieron Pollard"},
       {"washington", "Washington Sundar"},
@@ -153,15 +162,16 @@ void draftSim()
   // Draft
   std::cout << "+-----------------------+\n| ___            __ _   |\n||   \\ _ _ __ _ / _| |_ |\n|| |) | '_/ _` |  _|  _||\n||___/|_| \\__,_|_|  \\__||\n+-----------------------+\n\n";
 
-  std::cout << "Batsmen             Wicket Keepers      All Rounders        Pace Bowlers        Spin Bowlers\n--------            ---------------     -------------       -------------       -------------\nRuturaj Gaikwad     MS Dhoni            Ravindra Jadeja     Dale Steyn          Wanindu Hasaranga\nVirat Kohli         KL Rahul            Hardik Pandya       Lasith Malinga      Axar Patel\nRohit Sharma        Rishabh Pant        Shakib Al Hasan     Trent Boult         Rashid Khan\nSai Sudharsan       Jos Buttler         Glenn Maxwell       Mitchell Starc      Yuzvendra Chahal\nTravis Head         Phil Salt           Ben Stokes          Mohammed Shami      Sunil Narine\nSuryakumar Yadav    Heinrich Klaasen    Andre Russell       Bhuvneshwar Kumar   Kuldeep Yadav\nNicholas Pooran     Sanju Samson        \x1b[9mDwayne Bravo\x1b[0m        Mohammed Siraj      Ravichandran Ashwin\nShubman Gill        Quinton de Kock     Chris Gayle         Jofra Archer        Varun Chakravarthy\nYashasvi Jaiswal                        Shane Watson        Marco Jansen        Shane Warne\nShimron Hetmyer                         Kieron Pollard      Deepak Chahar\nAB de Villiers                          Washington Sundar   Arshdeep Singh\nShreyas Iyer                                                Jasprit Bumrah\nShivam Dube\nAbhishek Sharma\nDavid Warner\n\n";
+  std::cout << "Batsmen             Wicket Keepers      All Rounders        Pace Bowlers        Spin Bowlers\n--------            ---------------     -------------       -------------       -------------\nRuturaj Gaikwad     MS Dhoni            Ravindra Jadeja     Dale Steyn          Wanindu Hasaranga\nVirat Kohli         KL Rahul            Hardik Pandya       Lasith Malinga      Axar Patel\nRohit Sharma        Rishabh Pant        Shakib Al Hasan     Trent Boult         Rashid Khan\nSai Sudharsan       Jos Buttler         Glenn Maxwell       Mitchell Starc      Yuzvendra Chahal\nTravis Head         Phil Salt           Ben Stokes          Mohammed Shami      Sunil Narine\nSuryakumar Yadav    Heinrich Klaasen    Andre Russell       Bhuvneshwar Kumar   Kuldeep Yadav\nNicholas Pooran     Sanju Samson        Dwayne Bravo        Mohammed Siraj      Ravichandran Ashwin\nShubman Gill        Quinton de Kock     Shane Watson        Jofra Archer        Varun Chakravarthy\nYashasvi Jaiswal                        Kieron Pollard      Marco Jansen        Shane Warne\nShimron Hetmyer                         Washington Sundar   Deepak Chahar\nAB de Villiers                                              Arshdeep Singh\nShreyas Iyer                                                Jasprit Bumrah\nShivam Dube\nAbhishek Sharma\nDavid Warner\nChris Gayle\n\n";
   random = two(gen);
   std::cout << "Player " << random << " make the first pick: ";
   std::cin >> null;
   if (null == "debug")
   {
-    // names = {{{"Rohit Sharma", "Quinton de Kock", "Suryakumar Yadav", "Glenn Maxwell", "Kieron Pollard", "Hardik Pandya", "Andre Russell", "Rashid Khan", "Axar Patel", "Trent Boult", "Jasprit Bumrah"}, {"Ruturaj Gaikwad", "Sai Sudharsan", "Shivam Dube", "Nicholas Pooran", "Shakib Al Hasan", "MS Dhoni", "Ravindra Jadeja", "Deepak Chahar", "Mohammed Siraj", "Lasith Malinga", "Varun Chakravarthy"}}};
-    // names = {{{"Shubman Gill", "Yashasvi Jaiswal", "KL Rahul", "AB de Villiers", "Rishabh Pant", "Washington Sundar", "Dwayne Bravo", "Sunil Narine", "Marco Jansen", "Jofra Archer", "Arshdeep Singh"}, {"David Warner", "Shane Watson", "Phil Salt", "Virat Kohli", "Ben Stokes", "Shimron Hetmeyer", "Wanindu Hasaranga", "Kuldeep Yadav", "Bhuvneshwar Kumar", "Mitchell Starc", "Shane Warne"}}};
-    names = {{{"Shubman Gill", "Yashasvi Jaiswal", "KL Rahul", "AB de Villiers", "Rishabh Pant", "Washington Sundar", "Dwayne Bravo", "Sunil Narine", "Marco Jansen", "Jofra Archer", "Arshdeep Singh"}, {"Abhishek Sharma", "Chris Gayle", "Jos Buttler", "Travis Head", "Shreyas Iyer", "Sanju Samson", "Heinrich Klaasen", "Ravichandran Ashwin", "Dale Steyn", "Mohammed Shami", "Yuzvendra Chahal"}}};
+    debug = true;
+    // names = {{{"Rohit Sharma", "Quinton de Kock", "Suryakumar Yadav", "Glenn Maxwell", "Kieron Pollard", "Hardik Pandya", "Heinrich Klaasen", "Rashid Khan", "Axar Patel", "Trent Boult", "Jasprit Bumrah"}, {"Ruturaj Gaikwad", "Sai Sudharsan", "Shivam Dube", "Nicholas Pooran", "Shakib Al Hasan", "MS Dhoni", "Ravindra Jadeja", "Deepak Chahar", "Mohammed Siraj", "Lasith Malinga", "Varun Chakravarthy"}}};
+    // names = {{{"Shubman Gill", "Yashasvi Jaiswal", "KL Rahul", "AB de Villiers", "Rishabh Pant", "Washington Sundar", "Dwayne Bravo", "Sunil Narine", "Marco Jansen", "Jofra Archer", "Arshdeep Singh"}, {"David Warner", "Chris Gayle", "Phil Salt", "Virat Kohli", "Ben Stokes", "Shimron Hetmeyer", "Wanindu Hasaranga", "Kuldeep Yadav", "Bhuvneshwar Kumar", "Mitchell Starc", "Shane Warne"}}};
+    names = {{{"Shubman Gill", "Yashasvi Jaiswal", "KL Rahul", "AB de Villiers", "Rishabh Pant", "Washington Sundar", "Dwayne Bravo", "Sunil Narine", "Marco Jansen", "Jofra Archer", "Arshdeep Singh"}, {"Travis Head", "Shane Watson", "Jos Buttler", "Abhishek Sharma", "Shreyas Iyer", "Sanju Samson", "Andre Russell", "Ravichandran Ashwin", "Dale Steyn", "Mohammed Shami", "Yuzvendra Chahal"}}};
   }
   else if (players.contains(toLower(null)))
   {
@@ -185,7 +195,7 @@ void draftSim()
     {
       break;
     }
-    std::cout << "Batsmen             Wicket Keepers      All Rounders        Pace Bowlers        Spin Bowlers\n--------            ---------------     -------------       -------------       -------------\nRuturaj Gaikwad     MS Dhoni            Ravindra Jadeja     Dale Steyn          Wanindu Hasaranga\nVirat Kohli         KL Rahul            Hardik Pandya       Lasith Malinga      Axar Patel\nRohit Sharma        Rishabh Pant        Shakib Al Hasan     Trent Boult         Rashid Khan\nSai Sudharsan       Jos Buttler         Glenn Maxwell       Mitchell Starc      Yuzvendra Chahal\nTravis Head         Phil Salt           Ben Stokes          Mohammed Shami      Sunil Narine\nSuryakumar Yadav    Heinrich Klaasen    Andre Russell       Bhuvneshwar Kumar   Kuldeep Yadav\nNicholas Pooran     Sanju Samson        \x1b[9mDwayne Bravo\x1b[0m        Mohammed Siraj      Ravichandran Ashwin\nShubman Gill        Quinton de Kock     Chris Gayle         Jofra Archer        Varun Chakravarthy\nYashasvi Jaiswal                        Shane Watson        Marco Jansen        Shane Warne\nShimron Hetmyer                         Kieron Pollard      Deepak Chahar\nAB de Villiers                          Washington Sundar   Arshdeep Singh\nShreyas Iyer                                                Jasprit Bumrah\nShivam Dube\nAbhishek Sharma\nDavid Warner\n\n";
+    std::cout << "Batsmen             Wicket Keepers      All Rounders        Pace Bowlers        Spin Bowlers\n--------            ---------------     -------------       -------------       -------------\nRuturaj Gaikwad     MS Dhoni            Ravindra Jadeja     Dale Steyn          Wanindu Hasaranga\nVirat Kohli         KL Rahul            Hardik Pandya       Lasith Malinga      Axar Patel\nRohit Sharma        Rishabh Pant        Shakib Al Hasan     Trent Boult         Rashid Khan\nSai Sudharsan       Jos Buttler         Glenn Maxwell       Mitchell Starc      Yuzvendra Chahal\nTravis Head         Phil Salt           Ben Stokes          Mohammed Shami      Sunil Narine\nSuryakumar Yadav    Heinrich Klaasen    Andre Russell       Bhuvneshwar Kumar   Kuldeep Yadav\nNicholas Pooran     Sanju Samson        Dwayne Bravo        Mohammed Siraj      Ravichandran Ashwin\nShubman Gill        Quinton de Kock     Shane Watson        Jofra Archer        Varun Chakravarthy\nYashasvi Jaiswal                        Kieron Pollard      Marco Jansen        Shane Warne\nShimron Hetmyer                         Washington Sundar   Deepak Chahar\nAB de Villiers                                              Arshdeep Singh\nShreyas Iyer                                                Jasprit Bumrah\nShivam Dube\nAbhishek Sharma\nDavid Warner\nChris Gayle\n\n";
     random == 1 ? random = 2 : random = 1;
     if (i == 22)
     {
@@ -335,29 +345,74 @@ void draftSim()
   {
     std::swap(names[0], names[1]);
   }
-  counter = 0;
 
+  counter = 0;
+  for (int i = 0; i < 2; i++)
+  {
+    counter = 0;
+    for (int j = 0; j < 11; j++)
+    {
+      if (Players[names[i][j]].bowler)
+      {
+        bowlers[i][names[i][j]] = counter;
+        bowlerNames[i].push_back(j);
+        bowlerStats[i].push_back({0, 0, 0, 0, 0, 0});
+        counter++;
+      }
+    }
+  }
+
+  counter = 0;
   // The while loop containing most of our code
   while (innings < 3)
   {
     // Start of innings
-    std::cout << "INNINGS NUMBER " << innings << "\n\n";
+    std::cout << "INNINGS NUMBER " << innings << "\n";
 
     // While loops for our over number and ball number
     if (oldRuns >= higherScore && innings == 2)
     {
       buffed = true;
-      std::cout << "The chasing team has been buffed due to a score high above par!\n";
+      std::cout << "\nThe chasing team has been buffed due to a score high above par!\n";
     }
     else if (oldRuns <= lowerScore && innings == 2)
     {
       nerfed = true;
-      std::cout << "The chasing team has been nerfed due to a score much lower than par!\n";
+      std::cout << "\nThe chasing team has been nerfed due to a score much lower than par!\n";
     }
 
-    std::cout << "\nEnter to Continue\n";
-    std::getline(std::cin, null);
-    system("cls");
+    innings == 1 ? bowlerInnings = 1 : bowlerInnings = 0;
+    if (!debug)
+    {
+      std::cout << "\nChoose your bowler for the first over (number):\n";
+      for (int a = 0; a < bowlerNames[bowlerInnings].size(); a++)
+      {
+        std::cout << a + 1 << ". " << names[bowlerInnings][bowlerNames[bowlerInnings][a]] << std::endl;
+      }
+      std::cin >> null;
+
+      while ((std::stoi(null) - 1) >= bowlerNames[bowlerInnings].size())
+      {
+        system("cls");
+        std::cout << "That is an incorrect index. Please choose again!\nChoose your bowler for the first over (number):\n";
+        for (int a = 0; a < bowlerNames[bowlerInnings].size(); a++)
+        {
+          std::cout << a + 1 << ". " << names[bowlerInnings][bowlerNames[bowlerInnings][a]] << std::endl;
+        }
+        std::cin >> null;
+      }
+      bowlerName = names[bowlerInnings][bowlerNames[bowlerInnings][std::stoi(null) - 1]];
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      system("cls");
+    }
+    else
+    {
+      counter = 0;
+      bowlerName = names[bowlerInnings][bowlerNames[bowlerInnings][counter]];
+      std::cout << "\nEnter to Continue\n";
+      std::getline(std::cin, null);
+      system("cls");
+    }
 
     while (overNumber <= maxOvers)
     {
@@ -531,16 +586,16 @@ void draftSim()
         }
 
         // std::cout << "Makes it here\n";
-        strike ? playerMods(names[innings - 1][index[0]], names[innings - 1][index[1]], dotP, oneP, doubleP, threeP, fourP, sixP, wideP, ballsB[0], current[0], overNumber, ballNumber, gillUp, hardikUp, partnership[0], runRate, requiredRR, true, added, flashP, chemistryPartner[2]) : playerMods(names[innings - 1][index[1]], names[innings - 1][index[0]], dotP, oneP, doubleP, threeP, fourP, sixP, wideP, ballsB[1], current[1], overNumber, ballNumber, gillUp, hardikUp, partnership[0], runRate, requiredRR, true, added, flashP, chemistryPartner[2]);
+        strike ? playerMods(names[innings - 1][index[0]], names[innings - 1][index[1]], bowlerName, dotP, oneP, doubleP, threeP, fourP, sixP, wideP, ballsB[0], current[0], overNumber, ballNumber, gillUp, hardikUp, partnership[0], runRate, requiredRR, Players[bowlerName].pace, added, flashP, chemistryPartner[2], Players) : playerMods(names[innings - 1][index[1]], names[innings - 1][index[0]], bowlerName, dotP, oneP, doubleP, threeP, fourP, sixP, wideP, ballsB[1], current[1], overNumber, ballNumber, gillUp, hardikUp, partnership[0], runRate, requiredRR, Players[bowlerName].pace, added, flashP, chemistryPartner[2], Players);
 
-        dotMax = static_cast<int>(1000 * dotP);
-        oMax = static_cast<int>((1000 * oneP) + dotMax);
-        dMax = static_cast<int>((1000 * doubleP) + oMax);
-        tMax = static_cast<int>((1000 * threeP) + dMax);
-        fMax = static_cast<int>((1000 * fourP) + tMax);
-        sMax = static_cast<int>((1000 * sixP) + fMax);
-        wMax = static_cast<int>((1000 * wideP) + sMax);
-        // std::cout << dotMax << " " << oMax << " " << dMax << " " << tMax << " " << fMax << " " << sMax << " " << wMax << std::endl;
+        dotMax = static_cast<int>(10000 * dotP);
+        oMax = static_cast<int>((10000 * oneP) + dotMax);
+        dMax = static_cast<int>((10000 * doubleP) + oMax);
+        tMax = static_cast<int>((10000 * threeP) + dMax);
+        fMax = static_cast<int>((10000 * fourP) + tMax);
+        sMax = static_cast<int>((10000 * sixP) + fMax);
+        wMax = static_cast<int>((10000 * wideP) + sMax);
+        std::cout << dotMax << " " << oMax << " " << dMax << " " << tMax << " " << fMax << " " << sMax << " " << wMax << std::endl;
 
         if (random <= dotMax)
           e = outPutRuns(5, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names);
@@ -588,19 +643,48 @@ void draftSim()
         overNumber++;
       }
 
+      bowlerStats[bowlerInnings][bowlers[bowlerInnings][bowlerName]][0]++;
+      if (overRuns == 0)
+      {
+        bowlerStats[bowlerInnings][bowlers[bowlerInnings][bowlerName]][2]++;
+      }
+      bowlerStats[bowlerInnings][bowlers[bowlerInnings][bowlerName]][3] += overRuns;
+      bowlerStats[bowlerInnings][bowlers[bowlerInnings][bowlerName]][4] += wickets - oldWickets;
+      oldWickets = wickets;
+
       // Checking if won or all out again
       if ((wickets == 10) || (innings == 2) && (runs > oldRuns))
+      {
+        for (int i = 0; i < timeline[overNumber - 2].size(); i++)
+        {
+          if (timeline[overNumber - 2][i] == 'w')
+          {
+            extras++;
+          }
+          else if (timeline[overNumber - 2][i] == 'n')
+          {
+            extras++;
+          }
+        }
+        bowlerStats[bowlerInnings][bowlers[bowlerInnings][bowlerName]][5] += extras;
+        extras = 0;
         break;
+      }
 
       // Timeline after every over
       for (int i = 0; i < timeline[overNumber - 2].size(); i++)
       {
+        if (timeline[overNumber - 2][i] == 'w')
+        {
+          extras++;
+        }
         if ((i + 1) != timeline[overNumber - 2].size())
         {
           if (timeline[overNumber - 2][i + 1] == 'n')
           {
             std::cout << timeline[overNumber - 2][i] << "* ";
             i++;
+            extras++;
           }
           else
           {
@@ -612,6 +696,9 @@ void draftSim()
           std::cout << timeline[overNumber - 2][i] << " ";
         }
       }
+
+      bowlerStats[bowlerInnings][bowlers[bowlerInnings][bowlerName]][5] += extras;
+      extras = 0;
 
       // Calculating run rate
       runRate = static_cast<double>(runs) / static_cast<double>((overNumber - 1));
@@ -643,6 +730,75 @@ void draftSim()
         projected = static_cast<int>(runs + static_cast<double>(13 * (maxOvers + 1 - overNumber)));
         std::cout << "Projected score at high run rate (13): " << projected << "\n";
       }
+
+      if (debug)
+      {
+        if (counter + 1 == bowlerNames[bowlerInnings].size())
+        {
+          counter = 0;
+        }
+        else
+        {
+          counter++;
+        }
+        bowlerName = names[bowlerInnings][bowlerNames[bowlerInnings][counter]];
+      }
+
+      if (overNumber != 21 && !debug)
+      {
+        std::cout << "\nChoose a bowler for the next over (number):\n";
+        for (int a = 0; a < bowlerNames[bowlerInnings].size(); a++)
+        {
+          if (bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][0] == 4)
+          {
+            std::cout << "\033[1;31m" << a + 1 << ". " << names[bowlerInnings][bowlerNames[bowlerInnings][a]] << ": " << bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][0] << "-" << bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][3] << "-" << bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][4] << "\033[0m" << std::endl;
+          }
+          else
+          {
+            std::cout << a + 1 << ". " << names[bowlerInnings][bowlerNames[bowlerInnings][a]] << ": " << bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][0] << "-" << bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][3] << "-" << bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][4] << std::endl;
+          }
+        }
+        std::cin >> null;
+
+        while ((std::stoi(null) - 1) >= bowlerNames[bowlerInnings].size() || bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][std::stoi(null) - 1]]]][0] == 4 || bowlerName == names[bowlerInnings][bowlerNames[bowlerInnings][std::stoi(null) - 1]])
+        {
+          system("cls");
+          if (std::stoi(null) - 1 >= bowlerNames[bowlerInnings].size())
+          {
+            std::cout << "That is an incorrect index. Please choose again!\nChoose your bowler for the first over (number):\n";
+          }
+          else if (bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][std::stoi(null) - 1]]]][0] == 4)
+          {
+            std::cout << "That bowler has already bowled 4 overs. Please choose again!\nChoose your bowler for the first over (number):\n";
+          }
+          else
+          {
+            std::cout << "That bowler has bowled the previous over. Please choose again!\nChoose your bowler for the first over (number):\n";
+          }
+          for (int a = 0; a < bowlerNames[bowlerInnings].size(); a++)
+          {
+            if (bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][0] == 4)
+            {
+              std::cout << "\033[1;31m" << a + 1 << ". " << names[bowlerInnings][bowlerNames[bowlerInnings][a]] << ": " << bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][0] << "-" << bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][3] << "-" << bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][4] << "\033[0m" << std::endl;
+            }
+            else
+            {
+              std::cout << a + 1 << ". " << names[bowlerInnings][bowlerNames[bowlerInnings][a]] << ": " << bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][0] << "-" << bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][3] << "-" << bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][4] << std::endl;
+            }
+          }
+          std::cin >> null;
+        }
+        bowlerName = names[bowlerInnings][bowlerNames[bowlerInnings][std::stoi(null) - 1]];
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        system("cls");
+      }
+      else
+      {
+        std::cout << "\nEnter to Continue\n";
+        std::getline(std::cin, null);
+        system("cls");
+      }
+
       if (overRuns <= 9)
       {
         flashP = true;
@@ -656,10 +812,7 @@ void draftSim()
       {
         changed = true;
       }
-      std::cout << "\nEnter to Continue\n";
-      std::getline(std::cin, null);
       overRuns = 0;
-      system("cls");
     }
 
     // Calculating run rate again
@@ -731,6 +884,12 @@ void draftSim()
       partnerships.push_back(partnership);
     }
 
+    if (ballNumber != 0)
+    {
+      bowlerStats[bowlerInnings][bowlers[bowlerInnings][bowlerName]][1] = ballNumber;
+      std::cout << ballNumber << std::endl;
+    }
+
     // Scorecard
     if (innings == 1)
     {
@@ -794,6 +953,24 @@ void draftSim()
       }
       std::cout << "\n\n";
 
+      for (int a = 0; a < bowlerNames[1].size(); a++)
+      {
+        if (bowlerStats[1][bowlers[1][names[1][bowlerNames[1][a]]]][1] == 0)
+        {
+          economy = static_cast<double>(bowlerStats[1][bowlers[1][names[1][bowlerNames[1][a]]]][3]) / static_cast<double>(bowlerStats[1][bowlers[1][names[1][bowlerNames[1][a]]]][0]);
+          economy = std::round(economy * 100.0) / 100.0;
+          std::cout << names[1][bowlerNames[1][a]] << ": " << bowlerStats[1][bowlers[1][names[1][bowlerNames[1][a]]]][0] << "-" << bowlerStats[1][bowlers[1][names[1][bowlerNames[1][a]]]][3] << "-" << bowlerStats[1][bowlers[1][names[1][bowlerNames[1][a]]]][4] << " - " << bowlerStats[1][bowlers[1][names[1][bowlerNames[1][a]]]][2] << " maiden - " << bowlerStats[1][bowlers[1][names[1][bowlerNames[1][a]]]][5] << " extras - " << economy << " economy\n";
+        }
+        else
+        {
+          economy = static_cast<double>(bowlerStats[1][bowlers[1][names[1][bowlerNames[1][a]]]][3]) / static_cast<double>((bowlerStats[1][bowlers[1][names[1][bowlerNames[1][a]]]][0] + (static_cast<double>(bowlerStats[1][bowlers[1][names[1][bowlerNames[1][a]]]][1]) / 6.0)));
+          economy = std::round(economy * 100.0) / 100.0;
+          std::cout << names[1][bowlerNames[1][a]] << ": " << bowlerStats[1][bowlers[1][names[1][bowlerNames[1][a]]]][0] << "." << bowlerStats[1][bowlers[1][names[1][bowlerNames[1][a]]]][1] << "-" << bowlerStats[1][bowlers[1][names[1][bowlerNames[1][a]]]][3] << "-" << bowlerStats[1][bowlers[1][names[1][bowlerNames[1][a]]]][4] << " - " << bowlerStats[1][bowlers[1][names[1][bowlerNames[1][a]]]][2] << " maiden - " << bowlerStats[1][bowlers[1][names[1][bowlerNames[1][a]]]][5] << " extras - " << economy << " economy\n";
+        }
+      }
+
+      std::cout << "\n";
+
       while (teams[1][counter][2] != 0)
       {
         if (counter == index[0] || counter == index[1])
@@ -838,8 +1015,24 @@ void draftSim()
     }
     std::cout << "\n\n";
 
+    for (int a = 0; a < bowlerNames[bowlerInnings].size(); a++)
+    {
+      if (bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][1] == 0)
+      {
+        economy = static_cast<double>(bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][3]) / static_cast<double>(bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][0]);
+        economy = std::round(economy * 100.0) / 100.0;
+        std::cout << names[bowlerInnings][bowlerNames[bowlerInnings][a]] << ": " << bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][0] << "-" << bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][3] << "-" << bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][4] << " - " << bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][2] << " maiden - " << bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][5] << " extras - " << economy << " economy\n";
+      }
+      else
+      {
+        economy = static_cast<double>(bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][3]) / static_cast<double>((bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][0] + (static_cast<double>(bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][1]) / 6.0)));
+        economy = std::round(economy * 100.0) / 100.0;
+        std::cout << names[bowlerInnings][bowlerNames[bowlerInnings][a]] << ": " << bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][0] << "." << bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][1] << "-" << bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][3] << "-" << bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][4] << " - " << bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][2] << " maiden - " << bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][5] << " extras - " << economy << " economy\n";
+      }
+    }
+
     // Full innings timeline
-    std::cout << "Do you want the full innings timeline(y/n): ";
+    std::cout << "\nDo you want the full innings timeline(y/n): ";
     std::cin >> null;
     std::cout << "\n";
 
@@ -989,6 +1182,7 @@ void draftSim()
     hardikUp = 300;
     flashP = false;
     chemistryPartner = {12, 0, 0};
+    oldWickets = 0;
 
     for (int i = 0; i < timeline.size(); i++)
     {
@@ -1004,7 +1198,7 @@ void draftSim()
       std::getline(std::cin, null);
       system("cls");
 
-      teams = {{{0, 0, 1}, {0, 0, 1}, {0, 0, 0}}, {{0, 0, 1}, {0, 0, 1}, {0, 0, 0}}};
+      std::array<std::array<std::array<int, 3>, 3>, 2> superTeams = {{{{{{0, 0, 1}}, {{0, 0, 1}}, {{0, 0, 0}}}}, {{{{0, 0, 1}}, {{0, 0, 1}}, {{0, 0, 0}}}}}};
       std::array<std::vector<char>, 2> sOverT;
       std::array<std::array<std::string, 3>, 2> superOver = {{{"", "", ""}, {"", "", ""}}};
 
@@ -1039,13 +1233,13 @@ void draftSim()
       sixP = 0.17f;
       wideP = 0.015f;
 
-      dotMax = static_cast<int>(1000 * dotP);
-      oMax = static_cast<int>((1000 * oneP) + dotMax);
-      dMax = static_cast<int>((1000 * doubleP) + oMax);
-      tMax = static_cast<int>((1000 * threeP) + dMax);
-      fMax = static_cast<int>((1000 * fourP) + tMax);
-      sMax = static_cast<int>((1000 * sixP) + fMax);
-      wMax = static_cast<int>((1000 * wideP) + sMax);
+      dotMax = static_cast<int>(10000 * dotP);
+      oMax = static_cast<int>((10000 * oneP) + dotMax);
+      dMax = static_cast<int>((10000 * doubleP) + oMax);
+      tMax = static_cast<int>((10000 * threeP) + dMax);
+      fMax = static_cast<int>((10000 * fourP) + tMax);
+      sMax = static_cast<int>((10000 * sixP) + fMax);
+      wMax = static_cast<int>((10000 * wideP) + sMax);
 
       std::cout << "Team 2 will now bat first!\n";
       std::cout << "\nEnter to Continue\n";
@@ -1057,22 +1251,22 @@ void draftSim()
         random = dist(gen);
 
         if (random <= dotMax)
-          e = superO(5, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(5, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > dotMax && random <= oMax)
-          e = superO(1, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(1, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > oMax && random <= dMax)
-          e = superO(2, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(2, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > dMax && random <= tMax)
-          e = superO(3, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(3, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > tMax && random <= fMax)
-          e = superO(4, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(4, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > fMax && random <= sMax)
-          e = superO(6, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(6, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > sMax && random <= wMax)
-          e = superO(7, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(7, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > wMax)
         {
-          e = superO(8, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(8, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
           if (e == true)
             break;
         }
@@ -1088,20 +1282,20 @@ void draftSim()
       // Printing all stats out
       if (index[0] > 2)
       {
-        teams[innings - 1][index[1]][0] = current[1];
-        teams[innings - 1][index[1]][1] = ballsB[1];
+        superTeams[innings - 1][index[1]][0] = current[1];
+        superTeams[innings - 1][index[1]][1] = ballsB[1];
       }
       else if (index[1] > 2)
       {
-        teams[innings - 1][index[0]][0] = current[0];
-        teams[innings - 1][index[0]][1] = ballsB[0];
+        superTeams[innings - 1][index[0]][0] = current[0];
+        superTeams[innings - 1][index[0]][1] = ballsB[0];
       }
       else
       {
-        teams[innings - 1][index[0]][0] = current[0];
-        teams[innings - 1][index[0]][1] = ballsB[0];
-        teams[innings - 1][index[1]][0] = current[1];
-        teams[innings - 1][index[1]][1] = ballsB[1];
+        superTeams[innings - 1][index[0]][0] = current[0];
+        superTeams[innings - 1][index[0]][1] = ballsB[0];
+        superTeams[innings - 1][index[1]][0] = current[1];
+        superTeams[innings - 1][index[1]][1] = ballsB[1];
       }
 
       std::cout << "\n\nSCORECARD\n---------" << std::endl;
@@ -1109,17 +1303,17 @@ void draftSim()
       while (counter < 3)
       {
         if ((counter == index[0] || counter == index[1]) &&
-            teams[1][counter][2] != 0)
-          std::cout << superOver[1][counter] << ": " << teams[1][counter][0]
-                    << " in " << teams[1][counter][1] << "\n";
+            superTeams[1][counter][2] != 0)
+          std::cout << superOver[1][counter] << ": " << superTeams[1][counter][0]
+                    << " in " << superTeams[1][counter][1] << "\n";
         else
         {
-          if (teams[1][counter][1] == 0)
+          if (superTeams[1][counter][1] == 0)
             std::cout << superOver[1][counter] << ": DNP\n";
           else
             std::cout << superOver[1][counter] << ": "
-                      << teams[1][counter][0] << " in "
-                      << teams[1][counter][1] << " - OUT\n";
+                      << superTeams[1][counter][0] << " in "
+                      << superTeams[1][counter][1] << " - OUT\n";
         }
         counter++;
       }
@@ -1148,22 +1342,22 @@ void draftSim()
         random = dist(gen);
 
         if (random <= dotMax)
-          e = superO(5, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(5, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > dotMax && random <= oMax)
-          e = superO(1, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(1, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > oMax && random <= dMax)
-          e = superO(2, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(2, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > dMax && random <= tMax)
-          e = superO(3, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(3, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > tMax && random <= fMax)
-          e = superO(4, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(4, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > fMax && random <= sMax)
-          e = superO(6, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(6, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > sMax && random <= wMax)
-          e = superO(7, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(7, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > wMax)
         {
-          e = superO(8, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(8, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
           if (e == true)
             break;
         }
@@ -1205,20 +1399,20 @@ void draftSim()
       // Printing all stats out
       if (index[0] > 2)
       {
-        teams[innings - 1][index[1]][0] = current[1];
-        teams[innings - 1][index[1]][1] = ballsB[1];
+        superTeams[innings - 1][index[1]][0] = current[1];
+        superTeams[innings - 1][index[1]][1] = ballsB[1];
       }
       else if (index[1] > 2)
       {
-        teams[innings - 1][index[0]][0] = current[0];
-        teams[innings - 1][index[0]][1] = ballsB[0];
+        superTeams[innings - 1][index[0]][0] = current[0];
+        superTeams[innings - 1][index[0]][1] = ballsB[0];
       }
       else
       {
-        teams[innings - 1][index[0]][0] = current[0];
-        teams[innings - 1][index[0]][1] = ballsB[0];
-        teams[innings - 1][index[1]][0] = current[1];
-        teams[innings - 1][index[1]][1] = ballsB[1];
+        superTeams[innings - 1][index[0]][0] = current[0];
+        superTeams[innings - 1][index[0]][1] = ballsB[0];
+        superTeams[innings - 1][index[1]][0] = current[1];
+        superTeams[innings - 1][index[1]][1] = ballsB[1];
       }
 
       std::cout << "\nFULL SCORECARD\n--------------" << std::endl;
@@ -1226,17 +1420,17 @@ void draftSim()
       while (counter < 3)
       {
         if ((counter == index[0] || counter == index[1]) &&
-            teams[1][counter][2] != 0)
-          std::cout << superOver[1][counter] << ": " << teams[1][counter][0]
-                    << " in " << teams[1][counter][1] << "\n";
+            superTeams[1][counter][2] != 0)
+          std::cout << superOver[1][counter] << ": " << superTeams[1][counter][0]
+                    << " in " << superTeams[1][counter][1] << "\n";
         else
         {
-          if (teams[1][counter][1] == 0)
+          if (superTeams[1][counter][1] == 0)
             std::cout << superOver[1][counter] << ": DNP\n";
           else
             std::cout << superOver[1][counter] << ": "
-                      << teams[1][counter][0] << " in "
-                      << teams[1][counter][1] << " - OUT\n";
+                      << superTeams[1][counter][0] << " in "
+                      << superTeams[1][counter][1] << " - OUT\n";
         }
         counter++;
       }
@@ -1246,17 +1440,17 @@ void draftSim()
       while (counter < 3)
       {
         if ((counter == index[0] || counter == index[1]) &&
-            teams[0][counter][2] != 0)
-          std::cout << superOver[0][counter] << ": " << teams[0][counter][0]
-                    << " in " << teams[0][counter][1] << "\n";
+            superTeams[0][counter][2] != 0)
+          std::cout << superOver[0][counter] << ": " << superTeams[0][counter][0]
+                    << " in " << superTeams[0][counter][1] << "\n";
         else
         {
-          if (teams[0][counter][1] == 0)
+          if (superTeams[0][counter][1] == 0)
             std::cout << superOver[0][counter] << ": DNP\n";
           else
             std::cout << superOver[0][counter] << ": "
-                      << teams[0][counter][0] << " in "
-                      << teams[0][counter][1] << " - OUT\n";
+                      << superTeams[0][counter][0] << " in "
+                      << superTeams[0][counter][1] << " - OUT\n";
         }
         counter++;
       }

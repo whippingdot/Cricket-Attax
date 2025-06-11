@@ -50,7 +50,7 @@ void baseSim()
   std::array<int, 2> notOut = {0, 0};
   std::array<std::vector<char>, maxOvers> timeline; // Had to change this to a 2d array as wides were causing multiple issues
   std::array<std::vector<std::array<int, 5>>, 2> fallOW = std::array<std::vector<std::array<int, 5>>, 2>();
-  std::vector<std::vector<std::vector<int>>> teams = {{{0, 0, 1}, {0, 0, 1}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}}, {{0, 0, 1}, {0, 0, 1}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}}};
+  std::array<std::array<std::array<int, 3>, 11>, 2> teams = {{{{{{0, 0, 1}}, {{0, 0, 1}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}}}, {{{{0, 0, 1}}, {{0, 0, 1}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}}}}};
   std::vector<std::array<int, 4>> partnerships = std::vector<std::array<int, 4>>();
 
   std::array<int, 4> partnership = {0, 0, 0, 0};
@@ -160,18 +160,18 @@ void baseSim()
   while (innings < 3)
   {
     // Start of innings
-    std::cout << "INNINGS NUMBER " << innings << "\n\n";
+    std::cout << "INNINGS NUMBER " << innings << "\n";
 
     // While loops for our over number and ball number
     if (oldRuns >= higherScore && innings == 2)
     {
       buffed = true;
-      std::cout << "The chasing team has been buffed due to a score high above par!\n";
+      std::cout << "\nThe chasing team has been buffed due to a score high above par!\n";
     }
     else if (oldRuns <= lowerScore && innings == 2)
     {
       nerfed = true;
-      std::cout << "The chasing team has been nerfed due to a score much lower than par!\n";
+      std::cout << "\nThe chasing team has been nerfed due to a score much lower than par!\n";
     }
 
     std::cout << "\nEnter to Continue\n";
@@ -773,7 +773,7 @@ void baseSim()
       std::getline(std::cin, null);
       system("cls");
 
-      teams = {{{0, 0, 1}, {0, 0, 1}, {0, 0, 0}}, {{0, 0, 1}, {0, 0, 1}, {0, 0, 0}}};
+      std::array<std::array<std::array<int, 3>, 3>, 2> superTeams = {{{{{{0, 0, 1}}, {{0, 0, 1}}, {{0, 0, 0}}}}, {{{{0, 0, 1}}, {{0, 0, 1}}, {{0, 0, 0}}}}}};
       std::array<std::vector<char>, 2> sOverT;
       std::array<std::array<std::string, 3>, 2> superOver = {{{"", "", ""}, {"", "", ""}}};
 
@@ -826,22 +826,22 @@ void baseSim()
         random = dist(gen);
 
         if (random <= dotMax)
-          e = superO(5, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(5, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > dotMax && random <= oMax)
-          e = superO(1, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(1, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > oMax && random <= dMax)
-          e = superO(2, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(2, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > dMax && random <= tMax)
-          e = superO(3, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(3, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > tMax && random <= fMax)
-          e = superO(4, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(4, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > fMax && random <= sMax)
-          e = superO(6, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(6, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > sMax && random <= wMax)
-          e = superO(7, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(7, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > wMax)
         {
-          e = superO(8, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(8, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
           if (e == true)
             break;
         }
@@ -857,20 +857,20 @@ void baseSim()
       // Printing all stats out
       if (index[0] > 2)
       {
-        teams[innings - 1][index[1]][0] = current[1];
-        teams[innings - 1][index[1]][1] = ballsB[1];
+        superTeams[innings - 1][index[1]][0] = current[1];
+        superTeams[innings - 1][index[1]][1] = ballsB[1];
       }
       else if (index[1] > 2)
       {
-        teams[innings - 1][index[0]][0] = current[0];
-        teams[innings - 1][index[0]][1] = ballsB[0];
+        superTeams[innings - 1][index[0]][0] = current[0];
+        superTeams[innings - 1][index[0]][1] = ballsB[0];
       }
       else
       {
-        teams[innings - 1][index[0]][0] = current[0];
-        teams[innings - 1][index[0]][1] = ballsB[0];
-        teams[innings - 1][index[1]][0] = current[1];
-        teams[innings - 1][index[1]][1] = ballsB[1];
+        superTeams[innings - 1][index[0]][0] = current[0];
+        superTeams[innings - 1][index[0]][1] = ballsB[0];
+        superTeams[innings - 1][index[1]][0] = current[1];
+        superTeams[innings - 1][index[1]][1] = ballsB[1];
       }
 
       std::cout << "\n\nSCORECARD\n---------" << std::endl;
@@ -878,17 +878,17 @@ void baseSim()
       while (counter < 3)
       {
         if ((counter == index[0] || counter == index[1]) &&
-            teams[1][counter][2] != 0)
-          std::cout << superOver[1][counter] << ": " << teams[1][counter][0]
-                    << " in " << teams[1][counter][1] << "\n";
+            superTeams[1][counter][2] != 0)
+          std::cout << superOver[1][counter] << ": " << superTeams[1][counter][0]
+                    << " in " << superTeams[1][counter][1] << "\n";
         else
         {
-          if (teams[1][counter][1] == 0)
+          if (superTeams[1][counter][1] == 0)
             std::cout << superOver[1][counter] << ": DNP\n";
           else
             std::cout << superOver[1][counter] << ": "
-                      << teams[1][counter][0] << " in "
-                      << teams[1][counter][1] << " - OUT\n";
+                      << superTeams[1][counter][0] << " in "
+                      << superTeams[1][counter][1] << " - OUT\n";
         }
         counter++;
       }
@@ -917,22 +917,22 @@ void baseSim()
         random = dist(gen);
 
         if (random <= dotMax)
-          e = superO(5, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(5, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > dotMax && random <= oMax)
-          e = superO(1, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(1, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > oMax && random <= dMax)
-          e = superO(2, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(2, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > dMax && random <= tMax)
-          e = superO(3, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(3, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > tMax && random <= fMax)
-          e = superO(4, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(4, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > fMax && random <= sMax)
-          e = superO(6, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(6, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > sMax && random <= wMax)
-          e = superO(7, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(7, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
         else if (random > wMax)
         {
-          e = superO(8, sOverT, overRuns, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, superOver, free);
+          e = superO(8, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
           if (e == true)
             break;
         }
@@ -974,20 +974,20 @@ void baseSim()
       // Printing all stats out
       if (index[0] > 2)
       {
-        teams[innings - 1][index[1]][0] = current[1];
-        teams[innings - 1][index[1]][1] = ballsB[1];
+        superTeams[innings - 1][index[1]][0] = current[1];
+        superTeams[innings - 1][index[1]][1] = ballsB[1];
       }
       else if (index[1] > 2)
       {
-        teams[innings - 1][index[0]][0] = current[0];
-        teams[innings - 1][index[0]][1] = ballsB[0];
+        superTeams[innings - 1][index[0]][0] = current[0];
+        superTeams[innings - 1][index[0]][1] = ballsB[0];
       }
       else
       {
-        teams[innings - 1][index[0]][0] = current[0];
-        teams[innings - 1][index[0]][1] = ballsB[0];
-        teams[innings - 1][index[1]][0] = current[1];
-        teams[innings - 1][index[1]][1] = ballsB[1];
+        superTeams[innings - 1][index[0]][0] = current[0];
+        superTeams[innings - 1][index[0]][1] = ballsB[0];
+        superTeams[innings - 1][index[1]][0] = current[1];
+        superTeams[innings - 1][index[1]][1] = ballsB[1];
       }
 
       std::cout << "\nFULL SCORECARD\n--------------" << std::endl;
@@ -995,17 +995,17 @@ void baseSim()
       while (counter < 3)
       {
         if ((counter == index[0] || counter == index[1]) &&
-            teams[1][counter][2] != 0)
-          std::cout << superOver[1][counter] << ": " << teams[1][counter][0]
-                    << " in " << teams[1][counter][1] << "\n";
+            superTeams[1][counter][2] != 0)
+          std::cout << superOver[1][counter] << ": " << superTeams[1][counter][0]
+                    << " in " << superTeams[1][counter][1] << "\n";
         else
         {
-          if (teams[1][counter][1] == 0)
+          if (superTeams[1][counter][1] == 0)
             std::cout << superOver[1][counter] << ": DNP\n";
           else
             std::cout << superOver[1][counter] << ": "
-                      << teams[1][counter][0] << " in "
-                      << teams[1][counter][1] << " - OUT\n";
+                      << superTeams[1][counter][0] << " in "
+                      << superTeams[1][counter][1] << " - OUT\n";
         }
         counter++;
       }
@@ -1015,17 +1015,17 @@ void baseSim()
       while (counter < 3)
       {
         if ((counter == index[0] || counter == index[1]) &&
-            teams[0][counter][2] != 0)
-          std::cout << superOver[0][counter] << ": " << teams[0][counter][0]
-                    << " in " << teams[0][counter][1] << "\n";
+            superTeams[0][counter][2] != 0)
+          std::cout << superOver[0][counter] << ": " << superTeams[0][counter][0]
+                    << " in " << superTeams[0][counter][1] << "\n";
         else
         {
-          if (teams[0][counter][1] == 0)
+          if (superTeams[0][counter][1] == 0)
             std::cout << superOver[0][counter] << ": DNP\n";
           else
             std::cout << superOver[0][counter] << ": "
-                      << teams[0][counter][0] << " in "
-                      << teams[0][counter][1] << " - OUT\n";
+                      << superTeams[0][counter][0] << " in "
+                      << superTeams[0][counter][1] << " - OUT\n";
         }
         counter++;
       }
