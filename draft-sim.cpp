@@ -21,6 +21,7 @@ void draftSim()
   int projected = 0;
   int extras = 0;
   int counter = 0;
+  int batsmenCounter = 0;
   int balls = 0;
   int gillStarted = 300;
   int gillUp = 0;
@@ -67,17 +68,20 @@ void draftSim()
 
   std::array<int, 2> current = {0, 0};
   std::array<int, 2> ballsB = {0, 0};
-  std::array<int, 2> index = {0, 1};
+  std::array<int, 2> index = {0, 0};
   std::array<int, 2> notOut = {0, 0};
   std::array<int, 2> jadduSpell = {0, 0};
   std::array<int, 2> steynSpell = {0, 0};
   std::array<int, 2> hasarangaSpell = {0, 0};
   std::array<int, 3> chemistryPartner = {12, 0, 0};
+  std::vector<int> batsmenOrder = std::vector<int>();
+  std::vector<int> oldBatsmenOrder = std::vector<int>();
+  std::unordered_map<int, int> batters = std::unordered_map<int, int>();
   std::array<std::vector<int>, 2> bowlerNames = std::array<std::vector<int>, 2>();
   std::array<std::unordered_map<std::string, int>, 2> bowlers = std::array<std::unordered_map<std::string, int>, 2>();
   std::array<std::vector<char>, maxOvers> timeline; // Had to change this to a 2d array as wides were causing multiple issues
   std::array<std::vector<std::array<int, 5>>, 2> fallOW = std::array<std::vector<std::array<int, 5>>, 2>();
-  std::array<std::array<std::array<int, 3>, 11>, 2> teams = {{{{{{0, 0, 1}}, {{0, 0, 1}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}}}, {{{{0, 0, 1}}, {{0, 0, 1}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}}}}};
+  std::array<std::array<std::array<int, 3>, 11>, 2> teams = {{{{{{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}}}, {{{{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}}}}};
   std::array<std::vector<std::array<int, 6>>, 2> bowlerStats = std::array<std::vector<std::array<int, 6>>, 2>();
   std::vector<std::array<int, 4>> partnerships = std::vector<std::array<int, 4>>();
 
@@ -234,8 +238,7 @@ void draftSim()
     debug = true;
     // names = {{{"Rohit Sharma", "Quinton de Kock", "Suryakumar Yadav", "Glenn Maxwell", "Kieron Pollard", "Hardik Pandya", "Heinrich Klaasen", "Rashid Khan", "Axar Patel", "Trent Boult", "Jasprit Bumrah"}, {"Ruturaj Gaikwad", "Sai Sudharsan", "Shivam Dube", "Nicholas Pooran", "Shakib Al Hasan", "MS Dhoni", "Ravindra Jadeja", "Deepak Chahar", "Mohammed Siraj", "Lasith Malinga", "Varun Chakravarthy"}}};
     // names = {{{"Shubman Gill", "Yashasvi Jaiswal", "KL Rahul", "AB de Villiers", "Rishabh Pant", "Washington Sundar", "Dwayne Bravo", "Sunil Narine", "Marco Jansen", "Jofra Archer", "Arshdeep Singh"}, {"David Warner", "Chris Gayle", "Phil Salt", "Virat Kohli", "Ben Stokes", "Shimron Hetmyer", "Wanindu Hasaranga", "Kuldeep Yadav", "Bhuvneshwar Kumar", "Mitchell Starc", "Shane Warne"}}};
-    // names = {{{"Shubman Gill", "Yashasvi Jaiswal", "KL Rahul", "AB de Villiers", "Rishabh Pant", "Washington Sundar", "Dwayne Bravo", "Sunil Narine", "Marco Jansen", "Jofra Archer", "Arshdeep Singh"}, {"Travis Head", "Shane Watson", "Jos Buttler", "Abhishek Sharma", "Shreyas Iyer", "Sanju Samson", "Andre Russell", "Ravichandran Ashwin", "Dale Steyn", "Mohammed Shami", "Yuzvendra Chahal"}}};
-    names = {{{"Shubman Gill", "Yashasvi Jaiswal", "KL Rahul", "AB de Villiers", "Rishabh Pant", "Washington Sundar", "Dwayne Bravo", "Sunil Narine", "Marco Jansen", "Jofra Archer", "Arshdeep Singh"}, {"Travis Head", "Ruturaj Gaikwad", "Jos Buttler", "Abhishek Sharma", "Shreyas Iyer", "Rashid Khan", "Sunil Narine", "Varun Chakravarthy", "Rashid Khan", "Sunil Narine", "Varun Chakravarthy"}}};
+    names = {{{"Shubman Gill", "Yashasvi Jaiswal", "KL Rahul", "AB de Villiers", "Rishabh Pant", "Washington Sundar", "Dwayne Bravo", "Sunil Narine", "Marco Jansen", "Jofra Archer", "Arshdeep Singh"}, {"Travis Head", "Shane Watson", "Jos Buttler", "Abhishek Sharma", "Shreyas Iyer", "Sanju Samson", "Andre Russell", "Ravichandran Ashwin", "Dale Steyn", "Mohammed Shami", "Yuzvendra Chahal"}}};
   }
   else if (players.contains(null))
   {
@@ -363,11 +366,11 @@ void draftSim()
     {
       if (null == "h")
       {
-        std::cout << "Player 1: Choose batting (bat) or bowling (bowl).\nEnter to Continue\n";
+        std::cout << "Player 1: Choose batting (bat) or bowling (bowl). Type in your answer.\n";
       }
       else
       {
-        std::cout << "Player 2: Choose batting (bat) or bowling (bowl).\nEnter to Continue\n";
+        std::cout << "Player 2: Choose batting (bat) or bowling (bowl). Type in your answer.\n";
         counter = 2;
       }
     }
@@ -375,12 +378,12 @@ void draftSim()
     {
       if (null == "h")
       {
-        std::cout << "Player 2: Choose batting (bat) or bowling (bowl).\nEnter to Continue\n";
+        std::cout << "Player 2: Choose batting (bat) or bowling (bowl). Type in your answer.\n";
         counter = 2;
       }
       else
       {
-        std::cout << "Player 1: Choose batting (bat) or bowling (bowl).\nEnter to Continue\n";
+        std::cout << "Player 1: Choose batting (bat) or bowling (bowl). Type in your answer.\n";
         counter = 1;
       }
     }
@@ -394,30 +397,31 @@ void draftSim()
     {
       if (null == "h")
       {
-        std::cout << "Player 2: Choose batting (bat) or bowling (bowl).\nEnter to Continue\n";
+        std::cout << "Player 2: Choose batting (bat) or bowling (bowl). Type in your answer.\n";
         counter = 2;
       }
       else
       {
-        std::cout << "Player 1: Choose batting (bat) or bowling (bowl).\nEnter to Continue\n";
+        std::cout << "Player 1: Choose batting (bat) or bowling (bowl). Type in your answer.\n";
       }
     }
     else
     {
       if (null == "h")
       {
-        std::cout << "Player 1: Choose batting (bat) or bowling (bowl).\nEnter to Continue\n";
+        std::cout << "Player 1: Choose batting (bat) or bowling (bowl). Type in your answer.\n";
         counter = 1;
       }
       else
       {
-        std::cout << "Player 2: Choose batting (bat) or bowling (bowl).\nEnter to Continue\n";
+        std::cout << "Player 2: Choose batting (bat) or bowling (bowl). Type in your answer.\n";
         counter = 2;
       }
     }
     std::cin >> null;
     system("cls");
   }
+  std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
   if ((counter == 1 && null == "bowl") || (counter == 2 && null == "bat"))
   {
@@ -491,6 +495,70 @@ void draftSim()
       std::getline(std::cin, null);
       system("cls");
     }
+
+    std::cout << "Pick on-strike opener (number):\n";
+    batsmenCounter = 1;
+    for (int i = 0; i < 11; i++)
+    {
+      if (teams[innings - 1][i][2] != 1)
+      {
+        std::cout << batsmenCounter << ". " << names[innings - 1][i] << std::endl;
+        batters[batsmenCounter] = i;
+        batsmenCounter++;
+      }
+    }
+    std::cin >> null;
+    while (std::stoi(null) >= batsmenCounter || std::stoi(null) <= 0)
+    {
+      batsmenCounter = 1;
+      std::cout << "\nThat is an incorrect index. Please choose again!\nPick on-strike opener (number):\n";
+      for (int i = 0; i < 11; i++)
+      {
+        if (teams[innings - 1][i][2] != 1)
+        {
+          std::cout << batsmenCounter << ". " << names[innings - 1][i] << std::endl;
+          batsmenCounter++;
+        }
+      }
+      std::cin >> null;
+    }
+    index[0] = batters[std::stoi(null)];
+    batsmenOrder.push_back(batters[std::stoi(null)]);
+    batters.clear();
+    teams[innings - 1][index[0]][2] = 1;
+
+    std::cout << "\nPick off-strike opener (number):\n";
+    batsmenCounter = 1;
+    for (int i = 0; i < 11; i++)
+    {
+      if (teams[innings - 1][i][2] != 1)
+      {
+        std::cout << batsmenCounter << ". " << names[innings - 1][i] << std::endl;
+        batters[batsmenCounter] = i;
+        batsmenCounter++;
+      }
+    }
+    std::cin >> null;
+    while (std::stoi(null) >= batsmenCounter || std::stoi(null) <= 0)
+    {
+      batsmenCounter = 1;
+      std::cout << "\nThat is an incorrect index. Please choose again!\nPick off-strike opener (number):\n";
+      for (int i = 0; i < 11; i++)
+      {
+        if (teams[innings - 1][i][2] != 1)
+        {
+          std::cout << batsmenCounter << ". " << names[innings - 1][i] << std::endl;
+          batsmenCounter++;
+        }
+      }
+      std::cin >> null;
+    }
+    index[1] = batters[std::stoi(null)];
+    batsmenOrder.push_back(batters[std::stoi(null)]);
+    batters.clear();
+    teams[innings - 1][index[1]][2] = 1;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    system("cls");
 
     while (overNumber <= maxOvers)
     {
@@ -679,7 +747,7 @@ void draftSim()
           sixP = 0.02f;
           wideP = 0.0f;
         }
-        else if (hundoGen <= 25 && Players[bowlerName].yorkerGod)
+        else if (hundoGen >= 5 && hundoGen <= 25 && Players[bowlerName].yorkerGod)
         {
           std::cout << "A yorker ball! ";
           dotP = 0.5f;
@@ -701,22 +769,22 @@ void draftSim()
         // std::cout << dotMax << " " << oMax << " " << dMax << " " << tMax << " " << fMax << " " << sMax << " " << wMax << std::endl;
 
         if (random <= dotMax)
-          e = outPutRuns(5, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names);
+          e = outPutRuns("draft", 5, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names);
         else if (random > dotMax && random <= oMax)
-          e = outPutRuns(1, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names);
+          e = outPutRuns("draft", 1, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names);
         else if (random > oMax && random <= dMax)
-          e = outPutRuns(2, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names);
+          e = outPutRuns("draft", 2, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names);
         else if (random > dMax && random <= tMax)
-          e = outPutRuns(3, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names);
+          e = outPutRuns("draft", 3, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names);
         else if (random > tMax && random <= fMax)
-          e = outPutRuns(4, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names);
+          e = outPutRuns("draft", 4, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names);
         else if (random > fMax && random <= sMax)
-          e = outPutRuns(6, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names);
+          e = outPutRuns("draft", 6, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names);
         else if (random > sMax && random <= wMax)
-          e = outPutRuns(7, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names);
+          e = outPutRuns("draft", 7, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names);
         else if (random > wMax)
         {
-          e = outPutRuns(8, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names);
+          e = outPutRuns("draft", 8, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names);
           if (e == true)
             break;
         }
@@ -746,6 +814,75 @@ void draftSim()
           {
             warneWickets++;
           }
+
+          if (strike)
+          {
+            std::cout << "\nPick the next batter (number):\n";
+            batsmenCounter = 1;
+            for (int i = 0; i < 11; i++)
+            {
+              if (teams[innings - 1][i][2] != 1)
+              {
+                std::cout << batsmenCounter << ". " << names[innings - 1][i] << std::endl;
+                batters[batsmenCounter] = i;
+                batsmenCounter++;
+              }
+            }
+            std::cin >> null;
+            while (std::stoi(null) >= batsmenCounter || std::stoi(null) <= 0)
+            {
+              batsmenCounter = 1;
+              std::cout << "\nThat is an incorrect index. Please choose again!\nPick the next batter (number):\n";
+              for (int i = 0; i < 11; i++)
+              {
+                if (teams[innings - 1][i][2] != 1)
+                {
+                  std::cout << batsmenCounter << ". " << names[innings - 1][i] << std::endl;
+                  batsmenCounter++;
+                }
+              }
+              std::cin >> null;
+            }
+            index[0] = batters[std::stoi(null)];
+            batsmenOrder.push_back(batters[std::stoi(null)]);
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            batters.clear();
+            teams[innings - 1][index[0]][2] = 1;
+          }
+          else
+          {
+            std::cout << "\nPick the next batter (number):\n";
+            batsmenCounter = 1;
+            for (int i = 0; i < 11; i++)
+            {
+              if (teams[innings - 1][i][2] != 1)
+              {
+                std::cout << batsmenCounter << ". " << names[innings - 1][i] << std::endl;
+                batters[batsmenCounter] = i;
+                batsmenCounter++;
+              }
+            }
+            std::cin >> null;
+            while (std::stoi(null) >= batsmenCounter || std::stoi(null) <= 0)
+            {
+              batsmenCounter = 1;
+              std::cout << "\nThat is an incorrect index. Please choose again!\nPick the next batter (number):\n";
+              for (int i = 0; i < 11; i++)
+              {
+                if (teams[innings - 1][i][2] != 1)
+                {
+                  std::cout << batsmenCounter << ". " << names[innings - 1][i] << std::endl;
+                  batsmenCounter++;
+                }
+              }
+              std::cin >> null;
+            }
+            index[1] = batters[std::stoi(null)];
+            batsmenOrder.push_back(batters[std::stoi(null)]);
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            batters.clear();
+            teams[innings - 1][index[1]][2] = 1;
+          }
         }
 
         // Check if won
@@ -759,7 +896,7 @@ void draftSim()
             break;
           }
           // Printing out the amount of runs left to win if in the second innings
-          std::cout << "\nRuns to Win: " << ((oldRuns + 1) - runs) << " from " << ((maxOvers * 6) - ((overNumber * 6) + ballNumber)) << " balls\n";
+          std::cout << "\nRuns to Win: " << ((oldRuns + 1) - runs) << " from " << ((maxOvers * 6) - (((overNumber - 1) * 6) + ballNumber)) << " balls\n";
         }
         std::cout << "\nEnter to Continue\n";
         std::getline(std::cin, null);
@@ -849,7 +986,7 @@ void draftSim()
           requiredRR = std::round(requiredRR * 100.0) / 100.0;
           std::cout << "Required run rate: " << requiredRR << "\n";
         }
-        std::cout << "\nRuns to Win: " << ((oldRuns + 1) - runs) << " from " << ((maxOvers * 6) - ((overNumber * 6) + ballNumber)) << " balls\n";
+        std::cout << "\nRuns to Win: " << ((oldRuns + 1) - runs) << " from " << ((maxOvers * 6) - (((overNumber - 1) * 6) + ballNumber)) << " balls\n";
       }
       else
       {
@@ -1061,17 +1198,13 @@ void draftSim()
     {
       std::cout << "\nSCORECARD\n---------" << std::endl;
       counter = 0;
-      while (teams[0][counter][2] != 0)
+      for (int z = 0; z < batsmenOrder.size(); z++)
       {
-        if (counter == index[0] || counter == index[1])
-          std::cout << names[0][counter] << ": " << teams[0][counter][0] << " in " << teams[0][counter][1] << "\n";
+        if (batsmenOrder[counter] == index[0] || batsmenOrder[counter] == index[1])
+          std::cout << names[0][batsmenOrder[counter]] << ": " << teams[0][batsmenOrder[counter]][0] << " in " << teams[0][batsmenOrder[counter]][1] << "\n";
         else
-          std::cout << names[0][counter] << ": " << teams[0][counter][0] << " in " << teams[0][counter][1] << " - OUT\n";
+          std::cout << names[0][batsmenOrder[counter]] << ": " << teams[0][batsmenOrder[counter]][0] << " in " << teams[0][batsmenOrder[counter]][1] << " - OUT\n";
         counter++;
-        if (counter == 11)
-        {
-          break;
-        }
       }
       counter = 0;
       for (int i = 0; i < partnerships.size(); i++)
@@ -1089,21 +1222,13 @@ void draftSim()
     {
       std::cout << "\nFULL MATCH SCORECARD\n---------------------" << std::endl;
       counter = 0;
-      while (teams[0][counter][2] != 0)
+      for (int z = 0; z < oldBatsmenOrder.size(); z++)
       {
-        if (counter == notOut[0] || counter == notOut[1])
-        {
-          std::cout << names[0][counter] << ": " << teams[0][counter][0] << " in " << teams[0][counter][1] << "\n";
-        }
+        if (oldBatsmenOrder[counter] == notOut[0] || oldBatsmenOrder[counter] == notOut[1])
+          std::cout << names[0][oldBatsmenOrder[counter]] << ": " << teams[0][oldBatsmenOrder[counter]][0] << " in " << teams[0][oldBatsmenOrder[counter]][1] << "\n";
         else
-        {
-          std::cout << names[0][counter] << ": " << teams[0][counter][0] << " in " << teams[0][counter][1] << " - OUT\n";
-        }
+          std::cout << names[0][oldBatsmenOrder[counter]] << ": " << teams[0][oldBatsmenOrder[counter]][0] << " in " << teams[0][oldBatsmenOrder[counter]][1] << " - OUT\n";
         counter++;
-        if (counter == 11)
-        {
-          break;
-        }
       }
       std::cout << "\nLargest partnership: " << savedP[0] << " in " << savedP[1] << " between " << names[0][savedP[2]] << " and " << names[0][savedP[3]] << "\n\n";
       counter = 0;
@@ -1137,21 +1262,13 @@ void draftSim()
 
       std::cout << "\n";
 
-      while (teams[1][counter][2] != 0)
+      for (int z = 0; z < batsmenOrder.size(); z++)
       {
-        if (counter == index[0] || counter == index[1])
-        {
-          std::cout << names[1][counter] << ": " << teams[1][counter][0] << " in " << teams[1][counter][1] << "\n";
-        }
+        if (batsmenOrder[counter] == index[0] || batsmenOrder[counter] == index[1])
+          std::cout << names[1][batsmenOrder[counter]] << ": " << teams[1][batsmenOrder[counter]][0] << " in " << teams[1][batsmenOrder[counter]][1] << "\n";
         else
-        {
-          std::cout << names[1][counter] << ": " << teams[1][counter][0] << " in " << teams[1][counter][1] << " - OUT\n";
-        }
+          std::cout << names[1][batsmenOrder[counter]] << ": " << teams[1][batsmenOrder[counter]][0] << " in " << teams[1][batsmenOrder[counter]][1] << " - OUT\n";
         counter++;
-        if (counter == 11)
-        {
-          break;
-        }
       }
       counter = 0;
 
@@ -1326,7 +1443,7 @@ void draftSim()
     current[1] = 0;
     ballsB[1] = 0;
     index[0] = 0;
-    index[1] = 1;
+    index[1] = 0;
     ballNumber = 0;
     overNumber = 1;
     wickets = 0;
@@ -1355,6 +1472,8 @@ void draftSim()
     jadduSpell = {0, 0};
     steynSpell = {0, 0};
     hasarangaSpell = {0, 0};
+    oldBatsmenOrder = batsmenOrder;
+    batsmenOrder.clear();
 
     for (int i = 0; i < timeline.size(); i++)
     {

@@ -1,10 +1,9 @@
 #include "main.h"
 
-bool outPutRuns(int x, std::array<std::vector<char>, maxOvers> &array, int &runO, int &runT, int overN, int &ballN, int &outs, std::array<int, 2> &batsmen, std::array<int, 2> &index, bool &on, std::array<std::array<std::array<int, 3>, 11>, 2> &team, int inning, std::array<int, 2> &balls, std::array<int, 4> &partner, std::vector<std::array<int, 4>> &partners, bool &fHit, std::array<std::vector<std::array<int, 5>>, 2> &fall, int &wickT, int &wickTCount, bool &added, std::array<std::array<std::string, 11>, 2> names)
+bool outPutRuns(std::string type, int x, std::array<std::vector<char>, maxOvers> &array, int &runO, int &runT, int overN, int &ballN, int &outs, std::array<int, 2> &batsmen, std::array<int, 2> &index, bool &on, std::array<std::array<std::array<int, 3>, 11>, 2> &team, int inning, std::array<int, 2> &balls, std::array<int, 4> &partner, std::vector<std::array<int, 4>> &partners, bool &fHit, std::array<std::vector<std::array<int, 5>>, 2> &fall, int &wickT, int &wickTCount, bool &added, std::array<std::array<std::string, 11>, 2> names)
 {
   char number = ' ';
   int tRandom = std::rand() % 100 + 1;
-  std::string nul = "";
   added = false;
 
   if (fHit)
@@ -207,13 +206,17 @@ bool outPutRuns(int x, std::array<std::vector<char>, maxOvers> &array, int &runO
       balls[0] = 0;
       partner[2] = index[0];
       partner[3] = index[1];
-      if (index[0] > index[1])
-        index[0]++;
-      else
-        index[0] = index[1] + 1;
-      if (index[0] <= 10)
-      {
-        team[inning - 1][index[0]][2] = 1;
+
+      if (type == "sim") {
+        if (index[0] > index[1])
+          index[0]++;
+        else
+          index[0] = index[1] + 1;
+
+        if (index[0] <= 10)
+        {
+          team[inning - 1][index[0]][2] = 1;
+        }
       }
     }
     else
@@ -235,13 +238,16 @@ bool outPutRuns(int x, std::array<std::vector<char>, maxOvers> &array, int &runO
       balls[1] = 0;
       partner[2] = index[0];
       partner[3] = index[1];
-      if (index[0] < index[1])
-        index[1]++;
-      else
-        index[1] = index[0] + 1;
-      if (index[1] <= 10)
-      {
-        team[inning - 1][index[1]][2] = 1;
+
+      if (type == "sim") {
+        if (index[0] < index[1])
+          index[1]++;
+        else
+          index[1] = index[0] + 1;
+        if (index[1] <= 10)
+        {
+          team[inning - 1][index[1]][2] = 1;
+        }
       }
     }
 
