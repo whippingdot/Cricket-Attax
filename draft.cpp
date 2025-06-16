@@ -3,6 +3,7 @@
 static Player defaultPlayer;
 
 static Player Gaikwad{
+    .batsman = true,
     .dotPIncrease = 0.0225f,
     .onePIncrease = 0.01f,
     .doublePDecrease = 0.02f,
@@ -11,22 +12,26 @@ static Player Gaikwad{
     .coldStart = true};
 
 static Player Virat{
+    .batsman = true,
     .dotPDecrease = 0.02f,
     .onePIncrease = 0.02f,
     .anchor = true};
 
 static Player Rohit{
+    .batsman = true,
     .dotPDecrease = 0.02f,
     .fourPIncrease = 0.01f,
     .sixPIncrease = 0.01f,
     .PPSmash = true};
 
 static Player Sai{
+    .batsman = true,
     .dotPDecrease = 0.01f,
     .onePIncrease = 0.01f,
     .anchor = true};
 
 static Player Travis{
+    .batsman = true,
     .dotPDecrease = 0.0225f,
     .onePDecrease = 0.015f,
     .fourPIncrease = 0.01f,
@@ -34,11 +39,13 @@ static Player Travis{
     .paceBuff = true};
 
 static Player Suryakumar{
+    .batsman = true,
     .fourPDecrease = 0.015f,
     .sixPIncrease = 0.015f,
     .spinBuff = true};
 
 static Player Pooran{
+    .batsman = true,
     .dotPDecrease = 0.01f,
     .onePDecrease = 0.0075f,
     .fourPIncrease = 0.01f,
@@ -46,33 +53,39 @@ static Player Pooran{
     .paceBuff = true};
 
 static Player Gill{
+    .batsman = true,
     .fourPIncrease = 0.01f,
     .flowState = true};
 
 static Player Jaiswal{
+    .batsman = true,
     .dotPDecrease = 0.0075f,
     .onePDecrease = 0.015f,
     .fourPIncrease = 0.015f,
     .sixPIncrease = 0.005f};
 
-static Player Hetmeyer{
+static Player Hetmyer{
+    .batsman = true,
     .dotPDecrease = 0.025f,
     .fourPDecrease = 0.005f,
     .sixPIncrease = 0.025f,
     .redzoneDominator = true};
 
 static Player ABD{
+    .batsman = true,
     .dotPIncrease = 0.01f,
     .fourPDecrease = 0.005f,
     .chemistry = true};
 
 static Player Shreyas{
+    .batsman = true,
     .dotPDecrease = 0.0225f,
     .onePIncrease = 0.005f,
     .fourPIncrease = 0.015f,
     .spinBuff = true};
 
 static Player Dube{
+    .batsman = true,
     .dotPIncrease = 0.035f,
     .onePDecrease = 0.025f,
     .doublePDecrease = 0.02f,
@@ -81,24 +94,28 @@ static Player Dube{
     .spinBuff = true};
 
 static Player Abhishek{
+    .batsman = true,
     .onePDecrease = 0.0325f,
     .fourPIncrease = 0.015f,
     .sixPIncrease = 0.015f,
     .PPSmash = true};
 
 static Player Warner{
+    .batsman = true,
     .dotPDecrease = 0.01f,
     .fourPIncrease = 0.015f,
     .sixPDecrease = 0.005f,
     .paceBuff = true};
 
 static Player Dhoni{
+    .batsman = true,
     .dotPDecrease = 0.01f,
     .onePDecrease = 0.02f,
     .sixPIncrease = 0.0275f,
     .redzoneDominator = true};
 
 static Player KL{
+    .batsman = true,
     .dotPIncrease = 0.03f,
     .onePDecrease = 0.005f,
     .fourPDecrease = 0.005f,
@@ -106,6 +123,7 @@ static Player KL{
     .coldStart = true};
 
 static Player Pant{
+    .batsman = true,
     .dotPDecrease = 0.015f,
     .onePDecrease = 0.03f,
     .fourPIncrease = 0.005f,
@@ -113,6 +131,7 @@ static Player Pant{
     .flashpoint = true};
 
 static Player Quinton{
+    .batsman = true,
     .dotPDecrease = 0.025f,
     .onePDecrease = 0.01f,
     .fourPIncrease = 0.01f,
@@ -120,12 +139,14 @@ static Player Quinton{
     .PPSmash = true};
 
 static Player Sanju{
+    .batsman = true,
     .onePDecrease = 0.015f,
     .fourPDecrease = 0.005f,
     .sixPIncrease = 0.01f,
     .boomOrBust = true};
 
 static Player Klaasen{
+    .batsman = true,
     .dotPDecrease = 0.01f,
     .onePDecrease = 0.015f,
     .fourPIncrease = 0.01f,
@@ -133,6 +154,7 @@ static Player Klaasen{
     .flashpoint = true};
 
 static Player Buttler{
+    .batsman = true,
     .dotPDecrease = 0.025f,
     .onePIncrease = 0.01f,
     .fourPIncrease = 0.015f,
@@ -140,12 +162,14 @@ static Player Buttler{
     .boomOrBust = true};
 
 static Player Salt{
+    .batsman = true,
     .dotPDecrease = 0.025f,
     .onePDecrease = 0.01f,
     .fourPIncrease = 0.015f,
     .sixPIncrease = 0.015f};
 
 static Player Jadeja{
+    .batsman = true,
     .bowler = true,
     .pace = false,
     .dotPIncrease = 0.0275f,
@@ -154,9 +178,11 @@ static Player Jadeja{
     .bDotPIncrease = 0.005f,
     .bOnePDecrease = 0.015f,
     .bSixPIncrease = 0.01f,
-    .heatCheck = true};
+    .heatCheck = true,
+    .magician = true};
 
 static Player Hardik{
+    .batsman = true,
     .bowler = true,
     .pace = true,
     .onePDecrease = 0.0175f,
@@ -164,9 +190,11 @@ static Player Hardik{
     .bDotPDecrease = 0.015f,
     .bFourPIncrease = 0.005f,
     .bSixPIncrease = 0.008f,
-    .flowState = true};
+    .flowState = true,
+    .deathSpecial = true};
 
 static Player Shakib{
+    .batsman = true,
     .bowler = true,
     .pace = false,
     .dotPDecrease = 0.035f,
@@ -177,6 +205,7 @@ static Player Shakib{
     .carry = true};
 
 static Player Maxwell{
+    .batsman = true,
     .bowler = true,
     .pace = false,
     .dotPDecrease = 0.0025f,
@@ -190,6 +219,7 @@ static Player Maxwell{
     .flashpoint = true};
 
 static Player Stokes{
+    .batsman = true,
     .bowler = true,
     .pace = true,
     .fourPIncrease = 0.01f,
@@ -199,9 +229,11 @@ static Player Stokes{
     .bFourPIncrease = 0.005f,
     .bSixPIncrease = 0.01f,
     .bWidePIncrease = 0.0125f,
-    .savior = true};
+    .savior = true,
+    .tempoMaster = true};
 
 static Player Russell{
+    .batsman = true,
     .bowler = true,
     .pace = true,
     .dotPDecrease = 0.03f,
@@ -211,9 +243,11 @@ static Player Russell{
     .bDoublePDecrease = 0.01f,
     .bSixPIncrease = 0.005f,
     .bWidePIncrease = 0.0175f,
-    .redzoneDominator = true};
+    .redzoneDominator = true,
+    .deathSpecial = true};
 
 static Player Bravo{
+    .batsman = true,
     .bowler = true,
     .pace = true,
     .dotPDecrease = 0.035f,
@@ -223,13 +257,16 @@ static Player Bravo{
     .bDotPIncrease = 0.01f,
     .bOnePDecrease = 0.02f,
     .bFourPDecrease = 0.005f,
-    .bSixPIncrease = 0.015f};
+    .bSixPIncrease = 0.015f,
+    .deathSpecial = true};
 
 static Player Gayle{
+    .batsman = true,
     .fourPDecrease = 0.01f,
 };
 
 static Player Watson{
+    .batsman = true,
     .bowler = true,
     .pace = true,
     .dotPDecrease = 0.04f,
@@ -243,6 +280,7 @@ static Player Watson{
     .boomOrBust = true};
 
 static Player Pollard{
+    .batsman = true,
     .bowler = true,
     .pace = true,
     .dotPIncrease = 0.0125f,
@@ -252,9 +290,11 @@ static Player Pollard{
     .bDoublePIncrease = 0.005f,
     .bSixPIncrease = 0.015f,
     .bWidePIncrease = 0.01f,
-    .redzoneDominator = true};
+    .redzoneDominator = true,
+    .tempoMaster = true};
 
 static Player Washington{
+    .batsman = true,
     .bowler = true,
     .pace = false,
     .dotPDecrease = 0.0025f,
@@ -271,7 +311,8 @@ static Player Arshdeep{
     .pace = true,
     .bDotPIncrease = 0.005f,
     .bDoublePIncrease = 0.005f,
-    .bFourPDecrease = 0.01f};
+    .bFourPDecrease = 0.01f,
+    .deathSpecial = true};
 
 static Player Bumrah{
     .bowler = true,
@@ -279,7 +320,8 @@ static Player Bumrah{
     .bDotPIncrease = 0.01f,
     .bOnePDecrease = 0.03f,
     .bFourPIncrease = 0.005f,
-    .bSixPIncrease = 0.01f};
+    .bSixPIncrease = 0.01f,
+    .yorkerGod = true};
 
 static Player Steyn{
     .bowler = true,
@@ -287,7 +329,8 @@ static Player Steyn{
     .bDotPDecrease = 0.005f,
     .bDoublePDecrease = 0.005f,
     .bFourPIncrease = 0.005f,
-    .bSixPIncrease = 0.005f};
+    .bSixPIncrease = 0.005f,
+    .magician = true};
 
 static Player Malinga{
     .bowler = true,
@@ -296,28 +339,31 @@ static Player Malinga{
     .bOnePDecrease = 0.015f,
     .bDoublePDecrease = 0.01f,
     .bFourPIncrease = 0.01f,
-};
+    .yorkerGod = true};
 
 static Player Trent{
     .bowler = true,
     .pace = true,
     .bDotPDecrease = 0.015f,
     .bOnePDecrease = 0.005f,
-    .bFourPIncrease = 0.02f};
+    .bFourPIncrease = 0.02f,
+    .swingKing = true};
 
 static Player Starc{
     .bowler = true,
     .pace = true,
     .bDotPIncrease = 0.02f,
     .bOnePDecrease = 0.005f,
-    .bDoublePDecrease = 0.015f};
+    .bDoublePDecrease = 0.015f,
+    .yorkerGod = true};
 
 static Player Shami{
     .bowler = true,
     .pace = true,
     .bDotPDecrease = 0.015f,
     .bDoublePIncrease = 0.005f,
-    .bWidePIncrease = 0.01f};
+    .bWidePIncrease = 0.01f,
+    .swingKing = true};
 
 static Player Bhuvi{
     .bowler = true,
@@ -325,7 +371,7 @@ static Player Bhuvi{
     .bDotPIncrease = 0.0075f,
     .bOnePDecrease = 0.015f,
     .bFourPIncrease = 0.005f,
-};
+    .swingKing = true};
 
 static Player Siraj{
     .bowler = true,
@@ -341,7 +387,7 @@ static Player Archer{
     .pace = true,
     .bDotPDecrease = 0.015f,
     .bSixPIncrease = 0.0125f,
-};
+    .tempoMaster = true};
 
 static Player Marco{
     .bowler = true,
@@ -356,7 +402,7 @@ static Player Chahar{
     .pace = true,
     .bDotPDecrease = 0.012f,
     .bFourPIncrease = 0.01f,
-};
+    .swingKing = true};
 
 static Player Hasaranga{
     .bowler = true,
@@ -364,7 +410,8 @@ static Player Hasaranga{
     .bDotPDecrease = 0.015f,
     .bFourPDecrease = 0.0025f,
     .bSixPIncrease = 0.1f,
-    .bWidePIncrease = 0.0075f};
+    .bWidePIncrease = 0.0075f,
+    .magician = true};
 
 static Player Axar{
     .bowler = true,
@@ -378,7 +425,7 @@ static Player Rashid{
     .bowler = true,
     .pace = false,
     // Nothing cause everything in his special
-};
+    .mysterySpin = true};
 
 static Player Chahal{
     .bowler = true,
@@ -386,13 +433,15 @@ static Player Chahal{
     .bDotPDecrease = 0.015f,
     .bDoublePDecrease = 0.0075f,
     .bFourPIncrease = 0.01f,
-    .bWidePIncrease = 0.0075f};
+    .bWidePIncrease = 0.0075f,
+    .wicketUp = true};
 
 static Player Sunil{
     .bowler = true,
     .pace = false,
     .bDotPDecrease = 0.01f,
-    .bDoublePIncrease = 0.005f};
+    .bDoublePIncrease = 0.005f,
+    .mysterySpin = true};
 
 static Player Kuldeep{
     .bowler = true,
@@ -400,7 +449,8 @@ static Player Kuldeep{
     .bDotPDecrease = 0.0075f,
     .bOnePDecrease = 0.01f,
     .bSixPIncrease = 0.01f,
-    .bWidePIncrease = 0.0075f};
+    .bWidePIncrease = 0.0075f,
+    .wicketUp = true};
 
 static Player Ashwin{
     .bowler = true,
@@ -414,16 +464,20 @@ static Player Varun{
     .pace = false,
     .bDotPDecrease = 0.0075f,
     .bFourPDecrease = 0.005f,
-    .bWidePIncrease = 0.0125f};
+    .bWidePIncrease = 0.0125f,
+    .mysterySpin = true};
 
 static Player Warne{
     .bowler = true,
     .pace = false,
     .bDoublePIncrease = 0.01f,
     .bFourPDecrease = 0.025f,
-    .bSixPIncrease = 0.015f};
+    .bSixPIncrease = 0.015f,
+    .wicketUp = true};
 
-void playerMods(std::string name, std::string nSName, std::string bowler, float &dotP, float &oneP, float &doubleP, float &threeP, float &fourP, float &sixP, float &wideP, int ballsP, int runsP, int overN, int overB, int gillUpgrades, int hardikUpgrades, int partnership, double runRate, double requiredRR, bool pace, bool added, bool flashpoint, bool brokenPartner, std::unordered_map<std::string, Player> players)
+double randomDouble(int min, int max);
+
+void playerMods(std::string name, std::string nSName, std::string bowler, float &dotP, float &oneP, float &doubleP, float &threeP, float &fourP, float &sixP, float &wideP, int ballsP, int runsP, int overN, int overB, int gillUpgrades, int hardikUpgrades, int kuldeepWickets, int yuziWickets, int warneWickets, int jadduSpell, int steynSpell, int hasarangaSpell, int partnership, double runRate, double requiredRR, bool pace, bool added, bool flashpoint, bool brokenPartner, std::unordered_map<std::string, Player> players)
 {
   // std::cout << "Bowler is: " << bowler << std::endl;
   if (!players.contains(name) || !players.contains(nSName) || !players.contains(bowler))
@@ -432,8 +486,15 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
     throw(1);
   }
 
+  double random = 0;
   static int kohliWickets = 0;
   static int saiWickets = 0;
+  static float dotDecrease = 0.0f;
+  static float sixIncrease = 0.0f;
+  static float oneIncrease = 0.0f;
+  static float fourIncrease = 0.0f;
+  static float doubleIncrease = 0.0f;
+
   if (overN == 1 && overB == 0)
   {
     kohliWickets = 0;
@@ -618,7 +679,7 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
     }
     if (overN < 18)
     {
-      if (name == "Kieron Pollard" || name == "Shimron Hetmeyer")
+      if (name == "Kieron Pollard" || name == "Shimron Hetmyer")
       {
         // std::cout << "Redzone Dominator\n";
         players[name] = defaultPlayer;
@@ -724,6 +785,218 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
     players[name].sixPIncrease += 0.01f;
   }
 
+  if (players[bowler].deathSpecial)
+  {
+    if (overN >= 18)
+    {
+      players[bowler] = defaultPlayer;
+      // std::cout << "Death Special\n";
+      if (bowler == "Hardik Pandya")
+      {
+        players[bowler].bDotPIncrease = 0.01f;
+        players[bowler].bOnePDecrease = 0.015f;
+        players[bowler].bDoublePIncrease = 0.01f;
+        players[bowler].bFourPDecrease = 0.01f;
+        players[bowler].bSixPDecrease = 0.005f;
+      }
+      else if (bowler == "Andre Russell")
+      {
+        players[bowler].bDotPDecrease = 0.015f;
+        players[bowler].bSixPIncrease = 0.005f;
+      }
+      else if (bowler == "Dwayne Bravo")
+      {
+        players[bowler].bOnePIncrease = 0.005f;
+        players[bowler].bDoublePIncrease = 0.005f;
+        players[bowler].bFourPDecrease = 0.005f;
+        players[bowler].bSixPDecrease = 0.015f;
+        players[bowler].bWidePIncrease = 0.005f;
+      }
+      else if (bowler == "Arshdeep Singh")
+      {
+        players[bowler].bDotPIncrease = 0.03f;
+        players[bowler].bDoublePIncrease = 0.01f;
+        players[bowler].bFourPDecrease = 0.02f;
+        players[bowler].bSixPIncrease = 0.02f;
+      }
+    }
+  }
+  else if (players[bowler].swingKing)
+  {
+    if (overN < 7)
+    {
+      players[bowler] = defaultPlayer;
+      // std::cout << "Swing Special\n";
+      if (bowler == "Trent Boult")
+      {
+        players[bowler].bOnePDecrease = 0.0135f;
+        players[bowler].bDoublePIncrease = 0.02f;
+        players[bowler].bFourPIncrease = 0.01f;
+        players[bowler].bSixPDecrease = 0.02f;
+      }
+      else if (bowler == "Mohammed Shami")
+      {
+        players[bowler].bDotPDecrease = 0.0175f;
+        players[bowler].bFourPIncrease = 0.015f;
+        players[bowler].bSixPDecrease = 0.005f;
+      }
+      else if (bowler == "Bhuvneshwar Kumar")
+      {
+        players[bowler].bDotPIncrease = 0.03f;
+        players[bowler].bOnePDecrease = 0.015f;
+        players[bowler].bFourPDecrease = 0.01f;
+        players[bowler].bSixPDecrease = 0.01f;
+        players[bowler].bWidePIncrease = 0.005f;
+      }
+      else if (bowler == "Deepak Chahar")
+      {
+        players[bowler].bDotPIncrease = 0.013f;
+        players[bowler].bDoublePDecrease = 0.005f;
+        players[bowler].bWidePDecrease = 0.015f;
+      }
+    }
+  }
+  else if (players[bowler].mysterySpin)
+  {
+    // std::cout << "Mystery Time\n";
+    if (bowler == "Rashid Khan")
+    {
+      if (overB == 0)
+      {
+        random = randomDouble(0, 100);
+        players[bowler].bDotPDecrease += static_cast<float>(random);
+        dotDecrease = static_cast<float>(random);
+        random = randomDouble(-150, 150);
+        players[bowler].bSixPIncrease += static_cast<float>(random);
+        players[bowler].bOnePIncrease += static_cast<float>(-1 * random);
+        sixIncrease = static_cast<float>(random);
+        oneIncrease = static_cast<float>(-1 * random);
+        random = randomDouble(-50, 50);
+        players[bowler].bFourPIncrease += static_cast<float>(random);
+        players[bowler].bDoublePIncrease += static_cast<float>(-1 * random);
+        fourIncrease = static_cast<float>(random);
+        doubleIncrease = static_cast<float>(-1 * random);
+      }
+      else
+      {
+        players[bowler].bDotPDecrease += dotDecrease;
+        players[bowler].bSixPIncrease += sixIncrease;
+        players[bowler].bOnePIncrease += oneIncrease;
+        players[bowler].bFourPIncrease += fourIncrease;
+        players[bowler].bDoublePIncrease += doubleIncrease;
+      }
+    }
+    else if (bowler == "Sunil Narine")
+    {
+      random = randomDouble(-100, 100);
+      // std::cout << random << std::endl;
+      players[bowler].bSixPIncrease += static_cast<float>(random);
+      players[bowler].bDoublePIncrease += static_cast<float>(-1 * random);
+      random = randomDouble(-50, 50);
+      players[bowler].bFourPIncrease += static_cast<float>(random);
+      players[bowler].bOnePIncrease += static_cast<float>(-1 * random);
+    }
+    else if (bowler == "Varun Chakravarthy")
+    {
+      random = randomDouble(0, 50);
+      // std::cout << random << std::endl;
+      players[bowler].bDotPDecrease += static_cast<float>(random);
+      random = randomDouble(-50, 50);
+      players[bowler].bSixPIncrease += static_cast<float>(random);
+      players[bowler].bWidePIncrease += static_cast<float>(-1 * random);
+      random = randomDouble(-100, 100);
+      players[bowler].bFourPIncrease += static_cast<float>(random);
+      players[bowler].bOnePIncrease += static_cast<float>(-1 * random);
+    }
+  }
+  else if (players[bowler].tempoMaster)
+  {
+    std::uniform_int_distribution<> ballType(1, 100);
+    if (ballType(global_rng()) >= 0 && ballType(global_rng()) < 10)
+    {
+      // Bouncer
+      std::cout << "Bouncer! ";
+      players[bowler] = defaultPlayer;
+      players[bowler].bDotPIncrease = 0.02f;
+      players[bowler].bOnePDecrease = 0.04f;
+      players[bowler].bDoublePDecrease = 0.02f;
+      players[bowler].bFourPIncrease = 0.01f;
+      players[bowler].bSixPIncrease = 0.01f;
+      players[bowler].bWidePIncrease = 0.005f;
+    }
+    else if (ballType(global_rng()) >= 20 && ballType(global_rng()) < 30)
+    {
+      // Slow Ball
+      std::cout << "Slow ball! ";
+      players[bowler] = defaultPlayer;
+      players[bowler].bDotPDecrease = 0.015f;
+      players[bowler].bDoublePDecrease = 0.02f;
+      players[bowler].bFourPIncrease = 0.01f;
+      players[bowler].bSixPIncrease = 0.015f;
+    }
+  }
+  else if (players[bowler].magician)
+  {
+    if (bowler == "Ravindra Jadeja")
+    {
+      if (jadduSpell)
+      {
+        // std::cout << "Jadeja Spell\n";
+        players[bowler] = defaultPlayer;
+        players[bowler].bOnePIncrease = 0.015f;
+        players[bowler].bDoublePIncrease = 0.01f;
+        players[bowler].bFourPDecrease = 0.01f;
+        players[bowler].bSixPDecrease = 0.005f;
+        players[bowler].bWidePDecrease = 0.015f;
+      }
+    }
+    else if (bowler == "Dale Steyn")
+    {
+      // std::cout << "Steyn Spell: " << steynSpell << "\n";
+      players[bowler].bDotPIncrease += (0.01f * steynSpell);
+      players[bowler].bOnePDecrease += (0.01f * steynSpell);
+      players[bowler].bFourPDecrease += (0.005f * steynSpell);
+    }
+    else if (bowler == "Wanindu Hasaranga")
+    {
+      // std::cout << "Hasaranga Spell: " << hasarangaSpell << "\n";
+      players[bowler].bDotPIncrease += (0.01f * hasarangaSpell);
+      players[bowler].bDoublePIncrease += (0.005f * hasarangaSpell);
+      players[bowler].bFourPDecrease += (0.015f * hasarangaSpell);
+      players[bowler].bWidePDecrease += (0.0025f * hasarangaSpell);
+    }
+  }
+  else if (players[bowler].wicketUp)
+  {
+    if (bowler == "Yuzvendra Chahal")
+    {
+      // std::cout << "Yuzi Upgrade: " << yuziWickets << "\n";
+      players[bowler].bDotPIncrease += (0.0025f * yuziWickets);
+      players[bowler].bDoublePIncrease += (0.005f * yuziWickets);
+      players[bowler].bFourPDecrease += (0.005f * yuziWickets);
+      players[bowler].bSixPDecrease += (0.0025f * yuziWickets);
+      players[bowler].bWidePDecrease += (0.0025f * yuziWickets);
+    }
+    else if (bowler == "Kuldeep Yadav")
+    {
+      // std::cout << "Kuldeep Upgrade: " << kuldeepWickets << "\n";
+      players[bowler].bDotPIncrease += (0.01f * kuldeepWickets);
+      players[bowler].bFourPDecrease += (0.005f * kuldeepWickets);
+      players[bowler].bSixPDecrease += (0.005f * kuldeepWickets);
+      players[bowler].bWidePDecrease += (0.005f * kuldeepWickets);
+    }
+    else if (bowler == "Shane Warne")
+    {
+      if (warneWickets >= 2)
+      {
+        // std::cout << "Warne Upgrade\n";
+        players[bowler] = defaultPlayer;
+        players[bowler].bDotPDecrease = 0.0075f;
+        players[bowler].bFourPDecrease = 0.01f;
+      }
+    }
+  }
+
   dotP += (players[name].dotPIncrease + players[bowler].bDotPIncrease) - (players[name].dotPDecrease + players[bowler].bDotPDecrease);
   oneP += (players[name].onePIncrease + players[bowler].bOnePIncrease) - (players[name].onePDecrease + players[bowler].bOnePDecrease);
   doubleP += (players[name].doublePIncrease + players[bowler].bDoublePIncrease) - (players[name].doublePDecrease + players[bowler].bDoublePDecrease);
@@ -748,6 +1021,7 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
     sixP += (players[name].sixPIncrease + players[bowler].bSixPIncrease) - (players[name].sixPDecrease + players[bowler].bSixPDecrease);
   }
   wideP += (players[name].widePIncrease + players[bowler].bWidePIncrease) - (players[name].widePDecrease + players[bowler].bWidePDecrease);
+  // std::cout << players[bowler].bDotPIncrease << " " << players[bowler].bDotPDecrease << " " << players[bowler].bOnePIncrease << " " << players[bowler].bOnePDecrease << " " << players[bowler].bDoublePIncrease << " " << players[bowler].bDoublePDecrease << " " << players[bowler].bFourPIncrease << " " << players[bowler].bFourPDecrease << " " << players[bowler].bSixPIncrease << " " << players[bowler].bSixPDecrease << " " << players[bowler].bWidePIncrease << " " << players[bowler].bWidePDecrease << std::endl;
 
   if (players[name].flashpoint)
   {
@@ -775,7 +1049,7 @@ std::unordered_map<std::string, Player> Players = {
     {"Nicholas Pooran", Pooran},
     {"Shubman Gill", Gill},
     {"Yashasvi Jaiswal", Jaiswal},
-    {"Shimron Hetmeyer", Hetmeyer},
+    {"Shimron Hetmyer", Hetmyer},
     {"AB de Villiers", ABD},
     {"Shreyas Iyer", Shreyas},
     {"Shivam Dube", Dube},
@@ -822,3 +1096,9 @@ std::unordered_map<std::string, Player> Players = {
     {"Shane Warne", Warne},
     {"Washington Sundar", Washington},
 };
+
+double randomDouble(int min, int max)
+{
+  std::uniform_int_distribution<int> rDouble(min, max);
+  return rDouble(global_rng()) / 10000.0;
+}

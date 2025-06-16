@@ -57,7 +57,6 @@ void baseSim()
   std::array<int, 4> savedP = {0, 0, 0, 0};
 
   // Making rand() actually random (it adds a seed which is based on the time which changes every second)
-  std::mt19937 gen(std::random_device{}());
   std::uniform_int_distribution<> dist(1, 1000);
   std::uniform_int_distribution<> two(1, 2);
 
@@ -70,7 +69,7 @@ void baseSim()
 
   std::array<std::array<std::string, 11>, 2> names = {{{"Rohit Sharma", "Quinton de Kock", "Suryakumar Yadav", "Ishan Kishan", "Kieron Pollard", "Hardik Pandya", "Krunal Pandya", "Nathan Coulter-Nile", "Rahul Chahar", "Trent Boult", "Jasprit Bumrah"}, {"Ruturaj Gaikwad", "Devon Conway", "Shivam Dube", "Ajinkya Rahane", "Ambati Rayudu", "MS Dhoni", "Ravindra Jadeja", "Deepak Chahar", "Matheesha Pathirana", "Tushar Deshpande", "Maheesh Theekshana"}}};
 
-  random = two(gen);
+  random = two(global_rng());
   // Let The Games Begin!
   // My friend gave me the obvious idea of a coin flip which my dumb brain forgot
   std::getline(std::cin, null);
@@ -86,7 +85,7 @@ void baseSim()
   system("cls");
   counter = random;
 
-  random = two(gen);
+  random = two(global_rng());
   if (random == 1)
   {
     std::cout << "Heads!\n";
@@ -182,7 +181,7 @@ void baseSim()
     {
       while (ballNumber < 6)
       {
-        random = dist(gen);
+        random = dist(global_rng());
 
         if (wicketsT >= 3 && (added || !collapse))
         {
@@ -823,7 +822,7 @@ void baseSim()
 
       while (ballNumber < 6)
       {
-        random = dist(gen);
+        random = dist(global_rng());
 
         if (random <= dotMax)
           e = superO(5, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);
@@ -914,7 +913,7 @@ void baseSim()
 
       while (ballNumber < 6)
       {
-        random = dist(gen);
+        random = dist(global_rng());
 
         if (random <= dotMax)
           e = superO(5, sOverT, overRuns, ballNumber, wickets, current, index, strike, superTeams, innings, ballsB, partnership, superOver, free);

@@ -36,6 +36,7 @@ void draftSim();
 
 struct Player
 {
+  bool batsman = false;
   bool bowler = false;
   bool pace = false;
   float dotPIncrease = 0.0f;
@@ -84,6 +85,12 @@ struct Player
   bool wicketUp = false;
 };
 
-void playerMods(std::string name, std::string nSName, std::string bowler, float &dotP, float &oneP, float &doubleP, float &threeP, float &fourP, float &sixP, float &wideP, int ballsP, int runsP, int overN, int overB, int gillUpgrades, int hardikUpgrades, int partnership, double runRate, double requiredRR, bool pace, bool added, bool flashpoint, bool brokenPartner, std::unordered_map<std::string, Player> players);
+void playerMods(std::string name, std::string nSName, std::string bowler, float &dotP, float &oneP, float &doubleP, float &threeP, float &fourP, float &sixP, float &wideP, int ballsP, int runsP, int overN, int overB, int gillUpgrades, int hardikUpgrades, int kuldeepWickets, int yuziWickets, int warneWickets, int jadduSpell, int steynSpell, int hasarangaSpell, int partnership, double runRate, double requiredRR, bool pace, bool added, bool flashpoint, bool brokenPartner, std::unordered_map<std::string, Player> players);
 
 extern std::unordered_map<std::string, Player> Players;
+
+inline std::mt19937 &global_rng()
+{
+  static std::mt19937 rng(std::random_device{}()); // seeded ONCE
+  return rng;
+}
