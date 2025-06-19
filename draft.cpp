@@ -856,7 +856,7 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
 
   if (players[bowler].deathSpecial)
   {
-    if (overN >= 18)
+    if (overN >= 17)
     {
       players[bowler] = defaultPlayer;
       // std::cout << "Death Special\n";
