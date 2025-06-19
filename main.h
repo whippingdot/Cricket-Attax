@@ -20,6 +20,8 @@
 
 #include <unordered_map>
 
+#include <algorithm>
+
 // #include <print> - can't use yet cause not all compilers support
 
 // Change this to change the number of overs in that match *IMPORTANT*
