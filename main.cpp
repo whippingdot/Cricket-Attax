@@ -4,18 +4,26 @@ int main()
 {
   system("cls");
   std::string options = "";
+  std::string rerun = "";
   // Variable Declaration
   // Intro screen timeeee
   while (options != "5")
   {
-    std::cout << "\n  _____      _      _        _                  \n / ____|    (_)    | |      | |                 \n| |     _ __ _  ___| | _____| |_                \n| |    | '__| |/ __| |/ / _ \\ __|               \n| |____| |  | | (__|   <  __/ |_                \n \\_____|_|  |_|\\___|_|\\_\\___|\\__| _             \n / ____(_)               | |     | |            \n| (___  _ _ __ ___  _   _| | __ _| |_ ___  _ __ \n \\___ \\| | '_ ` _ \\| | | | |/ _` | __/ _ \\| '__|\n ____) | | | | | | | |_| | | (_| | || (_) | |   \n|_____/|_|_| |_| |_|\\__,_|_|\\__,_|\\__\\___/|_|   \n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\n1. Draft-based Simulator (Interactive)\n2. Simple Simulator\n3. How to Play\n4. What is Cricket\n5. Exit\n";
-    std::cin >> options;
-    system("cls");
+    if (rerun != "y" && rerun != "debug")
+    {
+      std::cout << "\n  _____      _      _        _                  \n / ____|    (_)    | |      | |                 \n| |     _ __ _  ___| | _____| |_                \n| |    | '__| |/ __| |/ / _ \\ __|               \n| |____| |  | | (__|   <  __/ |_                \n \\_____|_|  |_|\\___|_|\\_\\___|\\__| _             \n / ____(_)               | |     | |            \n| (___  _ _ __ ___  _   _| | __ _| |_ ___  _ __ \n \\___ \\| | '_ ` _ \\| | | | |/ _` | __/ _ \\| '__|\n ____) | | | | | | | |_| | | (_| | || (_) | |   \n|_____/|_|_| |_| |_|\\__,_|_|\\__,_|\\__\\___/|_|   \n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n\n1. Draft-based Simulator (Interactive)\n2. Simple Simulator\n3. How to Play\n4. What is Cricket\n5. Exit\n";
+      std::cin >> options;
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      system("cls");
+    }
 
     switch (std::stoi(options))
     {
     case 1:
-      draftSim();
+      draftSim(rerun);
+      std::cout << "Do you want to run it back with the same teams (y/n)? ";
+      std::getline(std::cin, rerun);
+      system("cls");
       break;
     case 2:
       baseSim();
