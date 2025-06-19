@@ -812,11 +812,13 @@ void draftSim(std::string sameTeams)
         {
           std::cout << "\n"
                     << bowlerName << ": " << bowlerStats[bowlerInnings][bowlers[bowlerInnings][bowlerName]][0] << "." << ballNumber << "-" << bowlerStats[bowlerInnings][bowlers[bowlerInnings][bowlerName]][3] + overRuns << "-" << bowlerStats[bowlerInnings][bowlers[bowlerInnings][bowlerName]][4] + wickets - oldWickets << std::endl;
+          std::cout << "\nScorecard: " << (overNumber - 1) << "." << ballNumber << ", " << runs << "/" << wickets << std::endl;
         }
         else
         {
           std::cout << "\n"
                     << bowlerName << ": " << bowlerStats[bowlerInnings][bowlers[bowlerInnings][bowlerName]][0] + 1 << "-" << bowlerStats[bowlerInnings][bowlers[bowlerInnings][bowlerName]][3] + overRuns << "-" << bowlerStats[bowlerInnings][bowlers[bowlerInnings][bowlerName]][4] + wickets - oldWickets << std::endl;
+          std::cout << "\nScorecard: " << overNumber << ", " << runs << "/" << wickets << std::endl;
         }
 
         if (added)
