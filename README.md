@@ -63,6 +63,7 @@ If you prefer more customization or an editable experience, I recommend cloning 
 ### Usage
 
 - In draft mode simply pick batsmen and bowlers alternatively (snake draft style) till pick 22
+- The players you pick have an effect on gameplay and each have their special buffs, nerfs, and special effects (check out Buffs&Nerfs.md for more)
 - Afterwards, pick bowlers every over and your opening batsmen along with other batsmen whenever a wicket falls
 - Press enter repeatedly to simulate ball-by-ball action
 - At the end of a match, type y on the pop-up that asks you if you want to replay the match with the same teams if you wish to repeat with same teams or type n if you wish to start a new draft / end the game
