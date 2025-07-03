@@ -2,20 +2,22 @@
 
 void baseSim()
 {
-  int overNumber = 1; // This is dumb, I know, and it makes me have to do - 1 wherever I mention overNumber, but I am too lazy to fix it everywhere
+  // The following are all the variable definitions. There are a TON
+  int overNumber = 1; // This starts the overNumber as 1 so when the first over finishes it shows up as 1 over completed. I made this decision 3 years ago so I can't change it now but it was very stupid as it requires me to '-1' wherever I mention overNumber
   int ballNumber = 0;
   int runs = 0;
   int wickets = 0;
-  int wicketsT = 0;
-  int wicketsTCounter = 0;
+  int wicketsT = 0;        // Wickets lost in the last 25 balls
+  int wicketsTCounter = 0; // Balls since the first 25 balls finished
   int innings = 1;
-  int random = 0;
-  int oldRuns = 0;
+  int random = 0;  // Used for all the random number based calculations
+  int oldRuns = 0; // Run count of first innings
   int overRuns = 0;
-  int projected = 0;
-  int counter = 0;
+  int projected = 0; // Projected score variable used to output the various projected scores
+  int counter = 0;   // A regular counter used everywhere in the program
   int balls = 0;
 
+  // The following are all the maximum values that are calculated for each probability value (like if there is 10% chance of a single it will be from dotMax till dotMax + 100 (since full value is 1000))
   int dotMax = 0;
   int oMax = 0;
   int dMax = 0;
@@ -23,6 +25,7 @@ void baseSim()
   int fMax = 0;
   int sMax = 0;
   int wMax = 0;
+  // These are the actual probabilities that are changed
   float dotP = 0.0f;
   float oneP = 0.0f;
   float doubleP = 0.0f;
@@ -33,45 +36,48 @@ void baseSim()
 
   double runRate = 0.0;
 
-  bool e = false;
+  bool e = false; // Used to check if 10 wickets have fallen
   bool strike = true;
-  bool free = false;
-  bool changed = false;
-  bool collapse = false;
-  bool added = false;
+  bool free = false;     // if a free hit
+  bool changed = false;  // if wickets in hand at the ending of match
+  bool collapse = false; // if in the last 25 balls 3 or more wickets have fallen
+  bool added = false;    // if a wicket just fell last ball
   bool buffed = false;
   bool nerfed = false;
 
+  // Used for all inputs
   std::string null = "";
 
-  std::array<int, 2> current = {0, 0};
-  std::array<int, 2> ballsB = {0, 0};
-  std::array<int, 2> index = {0, 1};
-  std::array<int, 2> notOut = {0, 0};
-  std::array<std::vector<char>, maxOvers> timeline; // Had to change this to a 2d array as wides were causing multiple issues
+  std::array<int, 2> current = {0, 0};              // Runs for both batsman on pitch
+  std::array<int, 2> ballsB = {0, 0};               // Balls faced for both batsman on pitch
+  std::array<int, 2> index = {0, 1};                // Index in the names list for both batsman on pitch
+  std::array<int, 2> notOut = {0, 0};               // Notes if the ending scorecard has a player out or not out (like if it ended with wicket or not)
+  std::array<std::vector<char>, maxOvers> timeline; // Innings timeline
+  // Tracks the fall of wickets and all the stats
   std::array<std::vector<std::array<int, 5>>, 2> fallOW = std::array<std::vector<std::array<int, 5>>, 2>();
+  // 1 if the batsman has stepped onto the pitch (for the third index of each array) and 0 if they haven't
   std::array<std::array<std::array<int, 3>, 11>, 2> teams = {{{{{{0, 0, 1}}, {{0, 0, 1}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}}}, {{{{0, 0, 1}}, {{0, 0, 1}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}}}}};
+  // Saves all the partnerships
   std::vector<std::array<int, 4>> partnerships = std::vector<std::array<int, 4>>();
 
-  std::array<int, 4> partnership = {0, 0, 0, 0};
-  std::array<int, 4> savedP = {0, 0, 0, 0};
+  std::array<int, 4> partnership = {0, 0, 0, 0}; // Saves current partnership
+  std::array<int, 4> savedP = {0, 0, 0, 0};      // Saves largest partnership of first innings
 
-  // Making rand() actually random (it adds a seed which is based on the time which changes every second)
+  // A randomizing method that is seeded by the header file inline function
   std::uniform_int_distribution<> dist(1, 1000);
   std::uniform_int_distribution<> two(1, 2);
 
-  // Making the average number of runs for that over number
   float mOvers = maxOvers;
-  float average = 211 * (mOvers / 20);
+  float average = 211 * (mOvers / 20); // Sets the par score as 211 and the following higherScore and lowerScore decide boundaries for a buff or nerf to chasing team to make the match closer
   int higherScore = static_cast<int>((6.75 / 6) * average);
-  // std::cout << higherScore << std::endl;
   int lowerScore = static_cast<int>((5.25 / 6) * average);
 
+  // Names array that can be manually changed by user if they want to play with different batsmen
   std::array<std::array<std::string, 11>, 2> names = {{{"Rohit Sharma", "Quinton de Kock", "Suryakumar Yadav", "Ishan Kishan", "Kieron Pollard", "Hardik Pandya", "Krunal Pandya", "Nathan Coulter-Nile", "Rahul Chahar", "Trent Boult", "Jasprit Bumrah"}, {"Ruturaj Gaikwad", "Devon Conway", "Shivam Dube", "Ajinkya Rahane", "Ambati Rayudu", "MS Dhoni", "Ravindra Jadeja", "Deepak Chahar", "Matheesha Pathirana", "Tushar Deshpande", "Maheesh Theekshana"}}};
 
   random = two(global_rng());
-  // Let The Games Begin!
-  // My friend gave me the obvious idea of a coin flip which my dumb brain forgot
+
+  // Coin flip system
   std::getline(std::cin, null);
   if (random == 1)
   {
@@ -82,6 +88,7 @@ void baseSim()
     std::cout << "Player 2: Choose heads (h) or tails (t) and enter to continue when ready.\n";
   }
   std::cin >> null;
+  std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   system("cls");
   counter = random;
 
@@ -115,6 +122,7 @@ void baseSim()
       }
     }
     std::cin >> null;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     system("cls");
   }
   else
@@ -146,22 +154,23 @@ void baseSim()
       }
     }
     std::cin >> null;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     system("cls");
   }
 
   if ((counter == 1 && null == "bowl") || (counter == 2 && null == "bat"))
   {
+    // Swaps the first and second array of the function based on who is batting and bowling first
     std::swap(names[0], names[1]);
   }
   counter = 0;
 
-  // The while loop containing most of our code
+  // The while loop containing most of my code
   while (innings < 3)
   {
-    // Start of innings
     std::cout << "INNINGS NUMBER " << innings << "\n";
 
-    // While loops for our over number and ball number
+    // Setted nerfed and buffed values based on the par score and runs scored in first innings
     if (oldRuns >= higherScore && innings == 2)
     {
       buffed = true;
@@ -177,12 +186,15 @@ void baseSim()
     std::getline(std::cin, null);
     system("cls");
 
+    // While loops for all the balls in an over
     while (overNumber <= maxOvers)
     {
       while (ballNumber < 6)
       {
+        // This is the random value that is between 1-1000 that is used to decide what this ball's outcome is
         random = dist(global_rng());
 
+        // Setting collapse to true if it meets the conditions stated
         if (wicketsT >= 3 && (added || !collapse))
         {
           collapse = true;
@@ -198,8 +210,8 @@ void baseSim()
         }
 
         // The main attraction - weighted randoms
-        // The weighted randoms are calculated based on the random number that was generated. As it was from 1 - 100 the weighted randoms work by saying if the number was in this range, it outputs this many runs or wicket or dot
-        // The first three are buffed for powerplay, and after that the next two are buffs and nerfs incase the first team plays good or bad
+        // The weighted randoms are calculated based on the random number that was generated. As it was from 1 - 1000 the weighted randoms work by saying if the number was in this range, it outputs this many runs or wicket or dot or wide
+        // The first few overs are buffed for powerplay, the next few get regular probabilities, and the last few are buffed for death
 
         if ((index[0] < 7 && strike) || (index[1] < 7 && !strike))
         {
@@ -272,15 +284,7 @@ void baseSim()
           }
         }
 
-        if (free)
-        {
-          dotP = 0.1f;
-          oneP = 0.15f;
-          doubleP = 0.18f;
-          fourP = 0.25f;
-          sixP = 0.2f;
-          wideP = 0.015f;
-        }
+        // Below modifies the values based on the special changes like a free hit, collapse, etc
 
         if (changed)
         {
@@ -295,6 +299,16 @@ void baseSim()
           fourP -= 0.02f;
           sixP -= 0.01f;
           dotP += 0.05f;
+        }
+
+        if (free)
+        {
+          dotP = 0.1f;
+          oneP = 0.15f;
+          doubleP = 0.18f;
+          fourP = 0.25f;
+          sixP = 0.2f;
+          wideP = 0.015f;
         }
 
         if (buffed)
@@ -312,6 +326,7 @@ void baseSim()
           doubleP -= 0.035f;
         }
 
+        // This calculates the ranges that are used below for ball outcome
         dotMax = static_cast<int>(1000 * dotP);
         oMax = static_cast<int>((1000 * oneP) + dotMax);
         dMax = static_cast<int>((1000 * doubleP) + oMax);
@@ -341,7 +356,7 @@ void baseSim()
             break;
         }
 
-        // Check if won
+        // Checks if won
         if (innings == 2)
         {
           if (runs > oldRuns)
@@ -352,7 +367,7 @@ void baseSim()
             break;
           }
           // Printing out the amount of runs left to win if in the second innings
-          std::cout << "\nRuns to Win: " << ((oldRuns + 1) - runs) << "\n";
+          std::cout << "\nRuns to Win: " << ((oldRuns + 1) - runs) << " from " << ((maxOvers * 6) - (((overNumber - 1) * 6) + ballNumber)) << " balls\n";
         }
         std::cout << "\nEnter to Continue\n";
         std::getline(std::cin, null);
@@ -375,6 +390,7 @@ void baseSim()
       {
         if ((i + 1) != timeline[overNumber - 2].size())
         {
+          // If the timeline has an 'n' in the next index, we skip that index and replace it with a * instead
           if (timeline[overNumber - 2][i + 1] == 'n')
           {
             std::cout << timeline[overNumber - 2][i] << "* ";
@@ -410,10 +426,11 @@ void baseSim()
           runRate = std::round(runRate * 100.0) / 100.0;
           std::cout << "Required run rate: " << runRate << "\n";
         }
-        std::cout << "Runs to Win: " << ((oldRuns + 1) - runs) << "\n";
+        std::cout << "\nRuns to Win: " << ((oldRuns + 1) - runs) << " from " << ((maxOvers * 6) - (((overNumber - 1) * 6) + ballNumber)) << " balls\n";
       }
       else
       {
+        // Outputting and calculating the projected scores
         projected = static_cast<int>(runRate * maxOvers);
         std::cout << "Projected score at current run rate: " << projected << "\n";
         projected = static_cast<int>(runs + static_cast<double>(10.9 * (maxOvers + 1 - overNumber)));
@@ -421,7 +438,9 @@ void baseSim()
         projected = static_cast<int>(runs + static_cast<double>(13 * (maxOvers + 1 - overNumber)));
         std::cout << "Projected score at high run rate (13): " << projected << "\n";
       }
+      // Switching strike after over finished
       strike = !strike;
+      // Setting changed to true if a few overs are left and many wickets are in hand
       if (!changed && (overNumber == 18 && wickets <= 3) || (overNumber == 17 && wickets <= 2))
       {
         changed = true;
@@ -498,14 +517,14 @@ void baseSim()
       teams[innings - 1][index[1]][1] = ballsB[1];
       partnership[2] = index[0];
       partnership[3] = index[1];
+      // Adding the final partnership to the main partnership variable to find the largest partnership
       partnerships.push_back(partnership);
     }
 
-    // Scorecard
+    // Scorecard outputting everything (should be self-explanatory)
     if (innings == 1)
     {
       std::cout << "\nSCORECARD\n---------" << std::endl;
-      counter = 0;
       while (teams[0][counter][2] != 0)
       {
         if (counter == index[0] || counter == index[1])
@@ -537,7 +556,6 @@ void baseSim()
     else
     {
       std::cout << "\nFULL MATCH SCORECARD\n---------------------" << std::endl;
-      counter = 0;
       while (teams[0][counter][2] != 0)
       {
         if (counter == notOut[0] || counter == notOut[1])
@@ -597,10 +615,10 @@ void baseSim()
     std::cout << "\n";
 
     // Printing out largest partnership
-
     std::cout << "Largest partnership: " << partnerships[counter][0] << " in " << partnerships[counter][1] << " between " << names[innings - 1][partnerships[counter][2]] << " and " << names[innings - 1][partnerships[counter][3]] << "\n\n";
     counter = 0;
 
+    // Printing out the fall of wickets
     std::cout << "Fall of wickets: ";
     for (int i = 0; i < fallOW[innings - 1].size(); i++)
     {
@@ -617,9 +635,10 @@ void baseSim()
     std::cin >> null;
     std::cout << "\n";
 
-    std::cin.ignore();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     overNumber--;
+    // So 21 overs becomes 20 and 20.3 becomes 19.3
 
     if (null == "y")
     {
@@ -627,6 +646,7 @@ void baseSim()
       {
         for (int i = 0; i < timeline[x].size(); i++)
         {
+          // Adds up the amount of runs in the over so it can be displayed at the end of the timeilne
           switch (timeline[x][i])
           {
           case '1':
@@ -672,7 +692,7 @@ void baseSim()
         std::cout << " - " << counter << std::endl;
         counter = 0;
       }
-      counter = 0;
+
       // This is for the reduced number of balls in an over due to all out
       if (overNumber != 20 && timeline[overNumber].size() > 0)
       {
@@ -729,12 +749,6 @@ void baseSim()
 
     system("cls");
 
-    //// Buffs and nerfs to chasing team incase batting team op or bad
-    // if (innings == 1 && runs > higherScore)
-    //	std::cout << "Chasing team will now get {buffed} as the score was above " << higherScore << "!\n";
-    // else if (innings == 1 && runs < lowerScore)
-    //	std::cout << "Chasing team will now get {nerfed} as the score was sub " << lowerScore << "!\n";
-
     // Resetting all variables
     current[0] = 0;
     ballsB[0] = 0;
@@ -757,12 +771,12 @@ void baseSim()
     wicketsTCounter = 0;
     buffed = false;
     nerfed = false;
-
     for (int i = 0; i < timeline.size(); i++)
     {
       timeline[i].clear();
     }
 
+    // The following is super over implementation
     if (innings == 2 && runs == oldRuns)
     {
       std::cout
@@ -772,10 +786,12 @@ void baseSim()
       std::getline(std::cin, null);
       system("cls");
 
+      // Initiatlizing variables required for super over
       std::array<std::array<std::array<int, 3>, 3>, 2> superTeams = {{{{{{0, 0, 1}}, {{0, 0, 1}}, {{0, 0, 0}}}}, {{{{0, 0, 1}}, {{0, 0, 1}}, {{0, 0, 0}}}}}};
       std::array<std::vector<char>, 2> sOverT;
       std::array<std::array<std::string, 3>, 2> superOver = {{{"", "", ""}, {"", "", ""}}};
 
+      // System for selecting batsmen for super over
       for (int x = 1; x < 3; x++)
       {
         std::cout << "Player " << x << "\n--------\n";
@@ -783,6 +799,7 @@ void baseSim()
         {
           std::cout << "Batsman " << i << ": ";
           std::cin >> null;
+          std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
           if (names[x - 1][std::stoi(null) - 1] == superOver[x - 1][0] ||
               names[x - 1][std::stoi(null) - 1] == superOver[x - 1][1])
           {
@@ -798,7 +815,7 @@ void baseSim()
         system("cls");
       }
 
-      // For later - I will add the function that changes probabilities here so I have it ready for later
+      // Special super over probabilities
       dotP = 0.16f;
       oneP = 0.15f;
       doubleP = 0.15f;
@@ -873,7 +890,6 @@ void baseSim()
       }
 
       std::cout << "\n\nSCORECARD\n---------" << std::endl;
-      counter = 0;
       while (counter < 3)
       {
         if ((counter == index[0] || counter == index[1]) &&
@@ -956,6 +972,7 @@ void baseSim()
       for (int i = 0; i < sOverT[innings - 1].size(); i++)
         std::cout << sOverT[0][i] << " ";
 
+      // Printing output of super over
       if (overRuns > oldRuns)
         std::cout << "\n\nTEAM 1 WINS IN SUPER OVER!\n"
                   << overRuns << "/" << wickets << " in " << ballNumber
@@ -1031,19 +1048,7 @@ void baseSim()
       std::cout << "\nEnter to Continue\n";
       std::getline(std::cin, null);
       system("cls");
-      innings = 2;
-      // RESET REST VARIABLES
-      overRuns = 0;
-      ballNumber = 0;
-      wickets = 0;
-      current[0] = 0;
-      current[1] = 0;
-      index[0] = 0;
-      index[1] = 1;
-      strike = true;
-      ballsB[0] = 0;
-      ballsB[1] = 0;
-      partnership = {0, 0, 0, 0};
+      // Don't need to reset variables since the sim restarts and no variable is static
     }
     oldRuns = runs;
     runs = 0;

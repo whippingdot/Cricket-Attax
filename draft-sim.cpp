@@ -1,31 +1,36 @@
 #include "main.h"
 
-std::string draftInput();
-void draftOutput(std::array<std::array<std::string, 11>, 2> names, std::string type);
+// Initialization of two functions that are defined below
+std::string draftInput();                                                             // draftInput gives us a string value that the user inputted (allows for user to output newlines that do not register and more than one word)
+void draftOutput(std::array<std::array<std::string, 11>, 2> names, std::string type); // draftOutput just outputs the player list along with coloring selected players
 
+// Defines a variable that tracks who took whose wicket
 std::array<std::array<std::string, 11>, 2> outBy = {{{{{""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}}}, {{{""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}}}}};
 
 void draftSim(std::string sameTeams)
 {
+  // Resets the outBy variable every time the draft simulation is called (so it doesn't save values from previous match)
   outBy = {{{{{""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}}}, {{{""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}}}}};
-  int overNumber = 1; // This is dumb, I know, and it makes me have to do - 1 wherever I mention overNumber, but I am too lazy to fix it everywhere
+  int overNumber = 1;
   int ballNumber = 0;
   int runs = 0;
   int wickets = 0;
   int wicketsT = 0;
-  int oldWickets = 0;
   int wicketsTCounter = 0;
+  int oldWickets = 0; // How many wickets fell uptil the last ball
   int innings = 1;
-  int bowlerInnings = 0;
+  int bowlerInnings = 0; // The innings that bowler indexes must follow (could have just make this normal but flipped where I inputted values)
   int random = 0;
-  int hundoGen = 0;
+  int hundoGen = 0; // Used to decide whether the ball is a yorker or not
   int oldRuns = 0;
   int overRuns = 0;
   int projected = 0;
-  int extras = 0;
+  int extras = 0; // Used to count the number of extra balls a bowler bowls
   int counter = 0;
-  int batsmenCounter = 0;
+  int batsmenCounter = 0; // Used to iteratore through batsmen that people can choose from
   int balls = 0;
+
+  // The following variables are used to add upgrades to the bowleres and batsmen based on certain conditions
   int gillStarted = 300;
   int gillUp = 0;
   int hardikStarted = 300;
@@ -33,6 +38,8 @@ void draftSim(std::string sameTeams)
   int kuldeepWickets = 0;
   int yuziWickets = 0;
   int warneWickets = 0;
+
+  // Used to draft the players at correct indices
   int teamAC = 0;
   int teamBC = 0;
 
@@ -52,7 +59,9 @@ void draftSim(std::string sameTeams)
   float wideP = 0.0f;
 
   double runRate = 0.0;
+  // Required run rate calculation
   double requiredRR = 0.0;
+  // Economy of bowler calculation
   double economy = 0.0;
 
   bool e = false;
@@ -63,8 +72,9 @@ void draftSim(std::string sameTeams)
   bool added = false;
   bool buffed = false;
   bool nerfed = false;
-  bool flashP = false;
-  bool debug = false;
+  bool debug = false; // Condition for whether the sim is ran in debug mode or not
+
+  bool flashP = false; // Condition for a certain type of player
 
   std::string null = "";
   std::string bowlerName = "";
@@ -73,36 +83,40 @@ void draftSim(std::string sameTeams)
   std::array<int, 2> ballsB = {0, 0};
   std::array<int, 2> index = {0, 0};
   std::array<int, 2> notOut = {0, 0};
+
+  // These variables track the stats of the spells of certain bowlers with spell related buffs. Number of overs the spell has ran and the last over they bowled in a spell
   std::array<int, 2> jadduSpell = {0, 0};
   std::array<int, 2> steynSpell = {0, 0};
   std::array<int, 2> hasarangaSpell = {0, 0};
-  std::array<int, 3> chemistryPartner = {12, 0, 0};
-  std::vector<int> batsmenOrder = std::vector<int>();
+
+  std::array<int, 3> chemistryPartner = {12, 0, 0}; // Used to track the stats of ABD's ability
+
+  std::vector<int> batsmenOrder = std::vector<int>(); // Batting order of batsman (because of draft the order is randomized)
   std::vector<int> oldBatsmenOrder = std::vector<int>();
-  std::unordered_map<int, int> batters = std::unordered_map<int, int>();
-  std::array<std::vector<int>, 2> bowlerNames = std::array<std::vector<int>, 2>();
+
+  std::unordered_map<int, int> batters = std::unordered_map<int, int>();           // Used to track drafting of batsmen
+  std::array<std::vector<int>, 2> bowlerNames = std::array<std::vector<int>, 2>(); // Used to track bowlers selected
   std::vector<std::array<int, 4>> partnerships = std::vector<std::array<int, 4>>();
-  std::array<std::vector<char>, maxOvers> timeline = std::array<std::vector<char>, maxOvers>(); // Had to change this to a 2d array as wides were causing multiple issues
+  std::array<std::vector<char>, maxOvers> timeline = std::array<std::vector<char>, maxOvers>();
   std::array<std::vector<std::array<int, 5>>, 2> fallOW = std::array<std::vector<std::array<int, 5>>, 2>();
   std::array<std::vector<std::array<int, 6>>, 2> bowlerStats = std::array<std::vector<std::array<int, 6>>, 2>();
-  std::array<std::unordered_map<std::string, int>, 2> bowlers = std::array<std::unordered_map<std::string, int>, 2>();
+  std::array<std::unordered_map<std::string, int>, 2> bowlers = std::array<std::unordered_map<std::string, int>, 2>(); // Another variable used to track bowler names
   std::array<std::array<std::array<int, 3>, 11>, 2> teams = {{{{{{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}}}, {{{{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}, {{0, 0, 0}}}}}};
 
   std::array<int, 4> partnership = {0, 0, 0, 0};
   std::array<int, 4> savedP = {0, 0, 0, 0};
 
-  // New random number generator based on the mercain twister or something
-  std::uniform_int_distribution<> dist(1, 10000);
+  // New random number generator based on the a special algorithm
+  std::uniform_int_distribution<> dist(1, 10000); // Now a 1-10000 chance because the player effects became very precise (up to 2 dp) when I forced to halve them
   std::uniform_int_distribution<> two(1, 2);
-  std::uniform_int_distribution<> hundo(1, 100);
+  std::uniform_int_distribution<> hundo(1, 100); // Used to have yorker balls
 
-  // Making the average number of runs for that over number
   float mOvers = maxOvers;
   float average = 211 * (mOvers / 20);
   int higherScore = static_cast<int>((6.75 / 6) * average);
-  // std::cout << higherScore << std::endl;
   int lowerScore = static_cast<int>((5.25 / 6) * average);
 
+  // The following is the list of all available players. Their names are given followed by the full name with proper capitalization for outputting
   std::unordered_map<std::string, std::string> players = {
       // Batsmen (full + first)
       {"gaikwad", "Ruturaj Gaikwad"},
@@ -234,7 +248,9 @@ void draftSim(std::string sameTeams)
       {"varun chakravarthy", "Varun Chakravarthy"},
       {"shane warne", "Shane Warne"}};
 
-  static std::array<std::array<std::string, 11>, 2> names;
+  static std::array<std::array<std::string, 11>, 2> names; // The names of all chosen players
+
+  // Draft system that is skipped when debug is selected
   if (sameTeams != "y" && sameTeams != "debug")
   {
     names = {{{"", "", "", "", "", "", "", "", "", "", ""}, {"", "", "", "", "", "", "", "", "", "", ""}}};
@@ -363,8 +379,7 @@ void draftSim(std::string sameTeams)
   }
 
   random = two(global_rng());
-  // Let The Games Begin!
-  // My friend gave me the obvious idea of a coin flip which my dumb brain forgot
+
   if (random == 1)
   {
     std::cout << "Player 1: Choose heads (h) or tails (t) and enter to continue when ready.\n";
@@ -448,6 +463,7 @@ void draftSim(std::string sameTeams)
   }
 
   counter = 0;
+  // Sets the bowlers selected into both variables
   for (int i = 0; i < 2; i++)
   {
     counter = 0;
@@ -464,25 +480,23 @@ void draftSim(std::string sameTeams)
   }
 
   counter = 0;
-  // The while loop containing most of our code
   while (innings < 3)
   {
-    // Start of innings
     std::cout << "INNINGS NUMBER " << innings << "\n";
 
-    // While loops for our over number and ball number
     if (oldRuns >= higherScore && innings == 2)
     {
       buffed = true;
-      std::cout << "\nThe chasing team has been buffed due to a score high above par!\n";
     }
     else if (oldRuns <= lowerScore && innings == 2)
     {
       nerfed = true;
-      std::cout << "\nThe chasing team has been nerfed due to a score much lower than par!\n";
     }
 
+    // Sets bowlerInnings variable based on the actual innings
     innings == 1 ? bowlerInnings = 1 : bowlerInnings = 0;
+
+    // Bowler selection for first over
     if (!debug)
     {
       std::cout << "\nChoose your bowler for the first over (number):\n";
@@ -515,6 +529,7 @@ void draftSim(std::string sameTeams)
       system("cls");
     }
 
+    // Openers selection
     std::cout << "Pick on-strike opener (number):\n";
     batsmenCounter = 1;
     for (int i = 0; i < 11; i++)
@@ -600,16 +615,20 @@ void draftSim(std::string sameTeams)
           balls++;
         }
 
+        // ABD's buff logic
         if ((chemistryPartner[0] == 12) && (partnership[0] >= 50) && (names[innings - 1][index[0]] == "AB de Villiers" || names[innings - 1][index[1]] == "AB de Villiers"))
         {
+          // Sets both indexes as 0 and 1 so that if either change in the future, we know that the partnership has been broken
           chemistryPartner[0] = index[0];
           chemistryPartner[1] = index[1];
         }
         else if (chemistryPartner[0] != 12 && (chemistryPartner[0] != index[0] || chemistryPartner[1] != index[1]) && chemistryPartner[2] == 0)
         {
+          // Broken partnership indicator
           chemistryPartner[2] = 1;
         }
 
+        // Similar logic for the next few batsmen - saving the starting runs into a variable and dividing the difference between current runs and runs then by an increment each time to add a bigger buff per increment
         if ((names[innings - 1][partnership[2]] == "Shubman Gill" || names[innings - 1][partnership[3]] == "Shubman Gill") && gillStarted == 300)
         {
           gillStarted = runs;
@@ -636,10 +655,7 @@ void draftSim(std::string sameTeams)
           }
         }
 
-        // The main attraction - weighted randoms
-        // The weighted randoms are calculated based on the random number that was generated. As it was from 1 - 100 the weighted randoms work by saying if the number was in this range, it outputs this many runs or wicket or dot
-        // The first three are buffed for powerplay, and after that the next two are buffs and nerfs incase the first team plays good or bad
-
+        // Different logic for checking if a real batsman or not because this time each cricketer has a toggle for whether they can bat or bowl
         if ((Players[names[innings - 1][index[0]]].batsman && strike) || (Players[names[innings - 1][index[1]]].batsman && !strike))
         {
           if (overNumber > ((maxOvers / 4) + 1) && overNumber <= (maxOvers - 2))
@@ -677,7 +693,6 @@ void draftSim(std::string sameTeams)
         }
         else
         {
-          // std::cout << "EWW BOWLER\n";
           if (overNumber > ((maxOvers / 4) + 1) && overNumber <= (maxOvers - 2))
           {
             dotP = 0.43f;
@@ -742,9 +757,10 @@ void draftSim(std::string sameTeams)
           doubleP -= 0.035f;
         }
 
-        // std::cout << "Makes it here\n";
+        // This is the logic for adding buffs and nerfs based on the cricketer. The block looks big because I have to account for on strike or off strike. I could cut it in half by using strike and !strike but lite
         strike ? playerMods(names[innings - 1][index[0]], names[innings - 1][index[1]], bowlerName, dotP, oneP, doubleP, threeP, fourP, sixP, wideP, ballsB[0], current[0], overNumber, ballNumber, innings, gillUp, hardikUp, kuldeepWickets, yuziWickets, warneWickets, jadduSpell[0], steynSpell[0], hasarangaSpell[0], partnership[0], runRate, requiredRR, Players[bowlerName].pace, added, flashP, chemistryPartner[2], Players) : playerMods(names[innings - 1][index[1]], names[innings - 1][index[0]], bowlerName, dotP, oneP, doubleP, threeP, fourP, sixP, wideP, ballsB[1], current[1], overNumber, ballNumber, innings, gillUp, hardikUp, kuldeepWickets, yuziWickets, warneWickets, jadduSpell[0], steynSpell[0], hasarangaSpell[0], partnership[0], runRate, requiredRR, Players[bowlerName].pace, added, flashP, chemistryPartner[2], Players);
 
+        // Free hits are not affected by striker or non-striker since if they were the 10% dot ball chance would cause issues
         if (free)
         {
           dotP = 0.1f;
@@ -757,6 +773,7 @@ void draftSim(std::string sameTeams)
         }
         else if (hundoGen <= 3 && Players[bowlerName].pace)
         {
+          // 3% chance for yorker for a pace bowler normally
           std::cout << "A yorker ball! ";
           dotP = 0.5f;
           oneP = 0.15f;
@@ -768,6 +785,7 @@ void draftSim(std::string sameTeams)
         }
         else if (hundoGen >= 5 && hundoGen <= 25 && Players[bowlerName].yorkerGod)
         {
+          // 21% chance added for yorker for special 'Yorker God' bowlers
           std::cout << "OH MY WHAT A YORKER! ";
           dotP = 0.5f;
           oneP = 0.15f;
@@ -785,7 +803,6 @@ void draftSim(std::string sameTeams)
         fMax = static_cast<int>((10000 * fourP) + tMax);
         sMax = static_cast<int>((10000 * sixP) + fMax);
         wMax = static_cast<int>((10000 * wideP) + sMax);
-        // std::cout << dotMax << " " << oMax << " " << dMax << " " << tMax << " " << fMax << " " << sMax << " " << wMax << std::endl;
 
         if (random <= dotMax)
           e = outPutRuns("draft", 5, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names, bowlerName);
@@ -808,6 +825,7 @@ void draftSim(std::string sameTeams)
             break;
         }
 
+        // Outputs the bowler stats after every ball
         if (ballNumber != 6)
         {
           std::cout << "\n"
@@ -821,6 +839,7 @@ void draftSim(std::string sameTeams)
           std::cout << "\nScorecard: " << overNumber << ", " << runs << "/" << wickets << std::endl;
         }
 
+        // Increases effectiveness of certain bowlers when taking wickets
         if (added)
         {
           if (bowlerName == "Kuldeep Yadav" && kuldeepWickets < 4)
@@ -836,6 +855,7 @@ void draftSim(std::string sameTeams)
             warneWickets++;
           }
 
+          // Choice of next batsman when wicket falls
           if (strike)
           {
             std::cout << "\nPick the next batter (number):\n";
@@ -906,7 +926,6 @@ void draftSim(std::string sameTeams)
           }
         }
 
-        // Check if won
         if (innings == 2)
         {
           if (runs > oldRuns)
@@ -916,7 +935,6 @@ void draftSim(std::string sameTeams)
             system("cls");
             break;
           }
-          // Printing out the amount of runs left to win if in the second innings
           std::cout << "\nRuns to Win: " << ((oldRuns + 1) - runs) << " from " << ((maxOvers * 6) - (((overNumber - 1) * 6) + ballNumber)) << " balls\n";
         }
         std::cout << "\nEnter to Continue\n";
@@ -924,23 +942,23 @@ void draftSim(std::string sameTeams)
         system("cls");
       }
 
-      // Increasing over number if six balls were finished
       if (ballNumber == 6)
       {
         ballNumber = 0;
-        bowlerStats[bowlerInnings][bowlers[bowlerInnings][bowlerName]][0]++;
+        bowlerStats[bowlerInnings][bowlers[bowlerInnings][bowlerName]][0]++; // Increments overs bowled by bowler
         overNumber++;
       }
 
       if (overRuns == 0)
       {
+        // Maiden overs bowled by bowler
         bowlerStats[bowlerInnings][bowlers[bowlerInnings][bowlerName]][2]++;
       }
-      bowlerStats[bowlerInnings][bowlers[bowlerInnings][bowlerName]][3] += overRuns;
-      bowlerStats[bowlerInnings][bowlers[bowlerInnings][bowlerName]][4] += wickets - oldWickets;
+      bowlerStats[bowlerInnings][bowlers[bowlerInnings][bowlerName]][3] += overRuns;             // Total runs given by bowler
+      bowlerStats[bowlerInnings][bowlers[bowlerInnings][bowlerName]][4] += wickets - oldWickets; // Total wickets taken by bowler
       oldWickets = wickets;
 
-      // Checking if won or all out again
+      // Calculating extras bowled by bowler if match ended (so mid-over check and add)
       if ((wickets == 10) || (innings == 2) && (runs > oldRuns))
       {
         for (int i = 0; i < timeline[overNumber - 2].size(); i++)
@@ -959,7 +977,6 @@ void draftSim(std::string sameTeams)
         break;
       }
 
-      // Timeline after every over
       for (int i = 0; i < timeline[overNumber - 2].size(); i++)
       {
         if (timeline[overNumber - 2][i] == 'w')
@@ -985,7 +1002,7 @@ void draftSim(std::string sameTeams)
         }
       }
 
-      bowlerStats[bowlerInnings][bowlers[bowlerInnings][bowlerName]][5] += extras;
+      bowlerStats[bowlerInnings][bowlers[bowlerInnings][bowlerName]][5] += extras; // Regular addition of extras bowled in over
       extras = 0;
 
       // Calculating run rate
@@ -1032,6 +1049,7 @@ void draftSim(std::string sameTeams)
         bowlerName = names[bowlerInnings][bowlerNames[bowlerInnings][counter]];
       }
 
+      // Choice of next bowler. Stats of every bowler are also given when asking for next choice
       if (overNumber != 21 && !debug)
       {
         std::cout << "\nChoose a bowler for the next over (number):\n";
@@ -1087,6 +1105,7 @@ void draftSim(std::string sameTeams)
         system("cls");
       }
 
+      // Spell-related bowlers who get better (incrementing their buff for every over they bowl in a spell)
       if (bowlerName == "Ravindra Jadeja")
       {
         if ((overNumber - jadduSpell[1]) == 2 && jadduSpell[1] != 0)
@@ -1124,6 +1143,7 @@ void draftSim(std::string sameTeams)
         hasarangaSpell[1] = overNumber;
       }
 
+      // Setting flash point variable true if the last over qualified
       if (overRuns <= 9)
       {
         flashP = true;
@@ -1144,7 +1164,6 @@ void draftSim(std::string sameTeams)
     runRate = static_cast<double>(runs) / static_cast<double>(((overNumber - 1) * 6 + ballNumber)) * static_cast<double>(6);
     runRate = std::round(runRate * 100.0) / 100.0;
 
-    // Printing out results
     if (wickets == 10)
     {
       if (ballNumber != 0)
@@ -1187,7 +1206,6 @@ void draftSim(std::string sameTeams)
       }
     }
 
-    // Adding runs from last 2 batsmen
     if (index[0] > 10)
     {
       teams[innings - 1][index[1]][0] = current[1];
@@ -1211,10 +1229,10 @@ void draftSim(std::string sameTeams)
 
     if (ballNumber != 0)
     {
+      // If over was incomplete ball number is added
       bowlerStats[bowlerInnings][bowlers[bowlerInnings][bowlerName]][1] = ballNumber;
     }
 
-    // Scorecard
     if (innings == 1)
     {
       std::cout << "\nSCORECARD\n---------" << std::endl;
@@ -1265,6 +1283,7 @@ void draftSim(std::string sameTeams)
       }
       std::cout << "\n\n";
 
+      // Outputting bowler stats
       for (int a = 0; a < bowlerNames[1].size(); a++)
       {
         if (bowlerStats[1][bowlers[1][names[1][bowlerNames[1][a]]]][1] == 0)
@@ -1303,8 +1322,6 @@ void draftSim(std::string sameTeams)
     }
     std::cout << "\n";
 
-    // Printing out largest partnership
-
     std::cout << "Largest partnership: " << partnerships[counter][0] << " in " << partnerships[counter][1] << " between " << names[innings - 1][partnerships[counter][2]] << " and " << names[innings - 1][partnerships[counter][3]] << "\n\n";
     counter = 0;
 
@@ -1319,6 +1336,7 @@ void draftSim(std::string sameTeams)
     }
     std::cout << "\n\n";
 
+    // Outputting bowler stats
     for (int a = 0; a < bowlerNames[bowlerInnings].size(); a++)
     {
       if (bowlerStats[bowlerInnings][bowlers[bowlerInnings][names[bowlerInnings][bowlerNames[bowlerInnings][a]]]][1] == 0)
@@ -1335,7 +1353,6 @@ void draftSim(std::string sameTeams)
       }
     }
 
-    // Full innings timeline
     std::cout << "\nDo you want the full innings timeline(y/n): ";
     std::cin >> null;
     std::cout << "\n";
@@ -1396,7 +1413,6 @@ void draftSim(std::string sameTeams)
         counter = 0;
       }
       counter = 0;
-      // This is for the reduced number of balls in an over due to all out
       if (overNumber != 20 && timeline[overNumber].size() > 0)
       {
         for (int i = 0; i < timeline[overNumber].size(); i++)
@@ -1452,13 +1468,6 @@ void draftSim(std::string sameTeams)
 
     system("cls");
 
-    //// Buffs and nerfs to chasing team incase batting team op or bad
-    // if (innings == 1 && runs > higherScore)
-    //	std::cout << "Chasing team will now get {buffed} as the score was above " << higherScore << "!\n";
-    // else if (innings == 1 && runs < lowerScore)
-    //	std::cout << "Chasing team will now get {nerfed} as the score was sub " << lowerScore << "!\n";
-
-    // Resetting all variables
     current[0] = 0;
     ballsB[0] = 0;
     current[1] = 0;
@@ -1789,6 +1798,7 @@ void draftSim(std::string sameTeams)
   }
 }
 
+// Combines both getline and cin methods meaning a new line doesn't count as an input but you can have multiple words as input
 std::string draftInput()
 {
   std::string str;
@@ -1802,6 +1812,7 @@ std::string draftInput()
   return str;
 }
 
+// Outputs the full draft list in an easy way (called easily instead of a block being put in the code constantly). If the below arrays are changed, the draft list changes. Players are highlighted based on team color if picked
 void draftOutput(std::array<std::array<std::string, 11>, 2> names, std::string type)
 {
   std::array<std::string, 19> batsmen = {{"Ruturaj Gaikwad", "Virat Kohli", "Rohit Sharma", "Sai Sudharsan", "Travis Head", "Suryakumar Yadav", "Nicholas Pooran", "Shubman Gill", "Yashasvi Jaiswal", "Shimron Hetmyer", "AB de Villiers", "Shreyas Iyer", "Shivam Dube", "Abhishek Sharma", "David Warner", "Chris Gayle", "Brendon McCullum", "Don Bradman", "Sachin Tendulkar"}};

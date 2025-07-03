@@ -109,8 +109,7 @@ static Player Warner{
 
 static Player Gayle{
     .batsman = true,
-    .fourPDecrease = 0.01f,
-};
+    .fourPDecrease = 0.01f};
 
 static Player Don{
     .batsman = true,
@@ -402,8 +401,7 @@ static Player Siraj{
     .bDotPDecrease = 0.02f,
     .bOnePDecrease = 0.015f,
     .bFourPIncrease = 0.015f,
-    .bSixPIncrease = 0.01f,
-};
+    .bSixPIncrease = 0.01f};
 
 static Player Archer{
     .bowler = true,
@@ -417,8 +415,7 @@ static Player Morne{
     .pace = true,
     .bDotPDecrease = 0.0175f,
     .bFourPDecrease = 0.005f,
-    .bSixPIncrease = 0.015f,
-};
+    .bSixPIncrease = 0.015f};
 
 static Player Chahar{
     .bowler = true,
@@ -439,8 +436,7 @@ static Player Hasaranga{
 static Player Rashid{
     .bowler = true,
     .pace = false,
-    // Nothing cause everything in his special
-
+    // All his buffs are in his 'mysterySpin' ability
     .mysterySpin = true};
 
 static Player Chahal{
@@ -499,7 +495,6 @@ double randomDouble(int min, int max);
 
 void playerMods(std::string name, std::string nSName, std::string bowler, float &dotP, float &oneP, float &doubleP, float &threeP, float &fourP, float &sixP, float &wideP, int ballsP, int runsP, int overN, int overB, int innings, int gillUpgrades, int hardikUpgrades, int kuldeepWickets, int yuziWickets, int warneWickets, int jadduSpell, int steynSpell, int hasarangaSpell, int partnership, double runRate, double requiredRR, bool pace, bool added, bool flashpoint, bool brokenPartner, std::unordered_map<std::string, Player> players)
 {
-  // std::cout << "Bowler is: " << bowler << std::endl;
   if (!players.contains(name) || !players.contains(nSName) || !players.contains(bowler))
   {
     std::cout << "PLAYER " << name << " NOT FOUND\n";
@@ -550,7 +545,6 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
     {
       if (ballsP >= 12)
       {
-        // std::cout << "Cold Start\n";
         players[name] = defaultPlayer;
         players[name].dotPDecrease = 0.0275f;
         players[name].onePIncrease = 0.01f;
@@ -561,7 +555,6 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
     {
       if (ballsP >= 40)
       {
-        // std::cout << "Cold Start SICKO MODE\n";
         players[name] = defaultPlayer;
         players[name].dotPDecrease = 0.04f;
         players[name].onePIncrease = 0.0175f;
@@ -570,7 +563,6 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
       }
       else if (ballsP >= 10)
       {
-        // std::cout << "Cold Start\n";
         players[name] = defaultPlayer;
         players[name].dotPDecrease = 0.025f;
         players[name].onePIncrease = 0.015f;
@@ -584,7 +576,6 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
     {
       if (runsP >= 20)
       {
-        // std::cout << "Heat Check\n";
         players[name] = defaultPlayer;
         players[name].dotPDecrease = 0.03f;
         players[name].onePDecrease = 0.0075f;
@@ -611,7 +602,6 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
     {
       if (ballsP >= 20)
       {
-        // std::cout << "Boom or Bust\n";
         players[name] = defaultPlayer;
         players[name].dotPDecrease = 0.0175f;
         players[name].fourPIncrease = 0.02f;
@@ -622,7 +612,6 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
     {
       if (ballsP >= 14)
       {
-        // std::cout << "Boom or Bust\n";
         players[name] = defaultPlayer;
         players[name].onePDecrease = 0.015f;
         players[name].fourPIncrease = 0.005f;
@@ -633,7 +622,6 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
     {
       if (ballsP >= 18)
       {
-        // std::cout << "Boom or Bust\n";
         players[name] = defaultPlayer;
         players[name].onePIncrease = 0.0075f;
         players[name].fourPDecrease = 0.005f;
@@ -648,20 +636,17 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
       players[name] = defaultPlayer;
       if (name == "Rohit Sharma")
       {
-        // std::cout << "PP Smash\n";
         players[name].onePIncrease = 0.005f;
         players[name].fourPDecrease = 0.01f;
         players[name].sixPIncrease = 0.005f;
       }
       else if (name == "Abhishek Sharma")
       {
-        // std::cout << "PP Smash\n";
         players[name].onePDecrease = 0.0175f;
         players[name].fourPIncrease = 0.015f;
       }
       else if (name == "Quinton de Kock")
       {
-        // std::cout << "PP Smash\n";
         players[name].dotPIncrease = 0.0025f;
         players[name].onePDecrease = 0.01f;
         players[name].fourPIncrease = 0.005f;
@@ -673,7 +658,6 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
   {
     if (pace)
     {
-      // std::cout << "Pace Buff\n";
       players[name].dotPDecrease += 0.02f;
       players[name].fourPIncrease += 0.01f;
       players[name].sixPIncrease += 0.01f;
@@ -685,14 +669,12 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
     {
       if (name == "Shivam Dube")
       {
-        // std::cout << "Spin Buff\n";
         players[name].dotPDecrease += 0.026f;
         players[name].fourPDecrease += 0.02f;
         players[name].sixPIncrease += 0.045f;
       }
       else
       {
-        // std::cout << "Spin Buff\n";
         players[name].dotPDecrease += 0.015f;
         players[name].onePDecrease += 0.005f;
         players[name].fourPIncrease += 0.005f;
@@ -706,7 +688,6 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
     {
       if (name == "MS Dhoni" || name == "Andre Russell")
       {
-        // std::cout << "Redzone Dominator\n";
         players[name] = defaultPlayer;
         players[name].dotPIncrease = 0.025f;
         players[name].onePDecrease = 0.015f;
@@ -718,7 +699,6 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
     {
       if (name == "Kieron Pollard" || name == "Shimron Hetmyer")
       {
-        // std::cout << "Redzone Dominator\n";
         players[name] = defaultPlayer;
         players[name].onePDecrease = 0.01f;
         players[name].sixPIncrease = 0.01f;
@@ -729,13 +709,11 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
   {
     if (name == "Virat Kohli")
     {
-      // std::cout << "Anchor\n";
       players[name].dotPDecrease += (0.005f * kohliWickets);
       players[name].fourPIncrease += (0.01f * kohliWickets);
     }
     else if (name == "Sai Sudharsan")
     {
-      // std::cout << "Anchor\n";
       players[name].onePDecrease += (0.005f * saiWickets);
       players[name].sixPIncrease += (0.0075f * saiWickets);
     }
@@ -744,13 +722,11 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
   {
     if (name == "Shubman Gill")
     {
-      // std::cout << "Gill Upgrades:" << gillUpgrades << std::endl;
       players[name].dotPDecrease += (0.01f * gillUpgrades);
       players[name].fourPIncrease += (0.0075f * gillUpgrades);
     }
     else if (name == "Hardik Pandya")
     {
-      // std::cout << "Hardik Upgrades:" << hardikUpgrades << std::endl;
       players[name].dotPDecrease += (0.0075f * hardikUpgrades);
       players[name].onePDecrease += (0.001f * hardikUpgrades);
       players[name].fourPIncrease += (0.005f * hardikUpgrades);
@@ -763,20 +739,17 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
     {
       if (partnership < 100)
       {
-        // std::cout << "Chemistry\n";
         players[name].dotPDecrease += (0.0075f * (partnership / 20));
         players[name].fourPIncrease += (0.01f * (partnership / 20));
       }
       else
       {
-        // std::cout << "Chemistry\n";
         players[name].dotPDecrease += (0.0075f * 5);
         players[name].fourPIncrease += (0.01f * 5);
       }
     }
     else
     {
-      // std::cout << "Broken Chemistry\n";
       players[name] = defaultPlayer;
       players[name].dotPDecrease = 0.025f;
       players[name].fourPIncrease = 0.01f;
@@ -787,7 +760,6 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
   {
     if (runRate <= 9.5 || requiredRR >= 12.5)
     {
-      // std::cout << "Savior\n";
       players[name].onePDecrease += 0.03f;
       players[name].fourPIncrease += 0.005f;
       players[name].sixPIncrease += 0.025f;
@@ -848,7 +820,6 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
   }
   else if (players[nSName].carry)
   {
-    // std::cout << "Carry\n";
     players[name].onePDecrease += 0.025f;
     players[name].fourPIncrease += 0.01f;
     players[name].sixPIncrease += 0.01f;
@@ -859,7 +830,6 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
     if (overN >= 17)
     {
       players[bowler] = defaultPlayer;
-      // std::cout << "Death Special\n";
       if (bowler == "Hardik Pandya")
       {
         players[bowler].bDotPIncrease = 0.01f;
@@ -895,7 +865,6 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
     if (overN < 7)
     {
       players[bowler] = defaultPlayer;
-      // std::cout << "Swing Special\n";
       if (bowler == "Trent Boult")
       {
         players[bowler].bOnePDecrease = 0.0135f;
@@ -927,7 +896,6 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
   }
   else if (players[bowler].mysterySpin)
   {
-    // std::cout << "Mystery Time\n";
     if (bowler == "Rashid Khan")
     {
       if (overB == 0)
@@ -958,7 +926,6 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
     else if (bowler == "Sunil Narine")
     {
       random = randomDouble(-100, 100);
-      // std::cout << random << std::endl;
       players[bowler].bSixPIncrease += static_cast<float>(random);
       players[bowler].bDoublePIncrease += static_cast<float>(-1 * random);
       random = randomDouble(-50, 50);
@@ -968,7 +935,6 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
     else if (bowler == "Varun Chakravarthy")
     {
       random = randomDouble(0, 50);
-      // std::cout << random << std::endl;
       players[bowler].bDotPDecrease += static_cast<float>(random);
       random = randomDouble(-50, 50);
       players[bowler].bSixPIncrease += static_cast<float>(random);
@@ -1010,7 +976,6 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
     {
       if (jadduSpell)
       {
-        // std::cout << "Jadeja Spell\n";
         players[bowler] = defaultPlayer;
         players[bowler].bOnePIncrease = 0.015f;
         players[bowler].bDoublePIncrease = 0.01f;
@@ -1021,14 +986,12 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
     }
     else if (bowler == "Dale Steyn")
     {
-      // std::cout << "Steyn Spell: " << steynSpell << "\n";
       players[bowler].bDotPIncrease += (0.01f * steynSpell);
       players[bowler].bOnePDecrease += (0.01f * steynSpell);
       players[bowler].bFourPDecrease += (0.005f * steynSpell);
     }
     else if (bowler == "Wanindu Hasaranga")
     {
-      // std::cout << "Hasaranga Spell: " << hasarangaSpell << "\n";
       players[bowler].bDotPIncrease += (0.01f * hasarangaSpell);
       players[bowler].bDoublePIncrease += (0.005f * hasarangaSpell);
       players[bowler].bFourPDecrease += (0.015f * hasarangaSpell);
@@ -1039,7 +1002,6 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
   {
     if (bowler == "Yuzvendra Chahal")
     {
-      // std::cout << "Yuzi Upgrade: " << yuziWickets << "\n";
       players[bowler].bDotPIncrease += (0.0025f * yuziWickets);
       players[bowler].bDoublePIncrease += (0.005f * yuziWickets);
       players[bowler].bFourPDecrease += (0.005f * yuziWickets);
@@ -1048,7 +1010,6 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
     }
     else if (bowler == "Kuldeep Yadav")
     {
-      // std::cout << "Kuldeep Upgrade: " << kuldeepWickets << "\n";
       players[bowler].bDotPIncrease += (0.01f * kuldeepWickets);
       players[bowler].bFourPDecrease += (0.005f * kuldeepWickets);
       players[bowler].bSixPDecrease += (0.005f * kuldeepWickets);
@@ -1058,7 +1019,6 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
     {
       if (warneWickets >= 2)
       {
-        // std::cout << "Warne Upgrade\n";
         players[bowler] = defaultPlayer;
         players[bowler].bDotPDecrease = 0.0075f;
         players[bowler].bFourPDecrease = 0.01f;
@@ -1090,13 +1050,11 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
     sixP += (players[name].sixPIncrease + players[bowler].bSixPIncrease) - (players[name].sixPDecrease + players[bowler].bSixPDecrease);
   }
   wideP += (players[name].widePIncrease + players[bowler].bWidePIncrease) - (players[name].widePDecrease + players[bowler].bWidePDecrease);
-  // std::cout << players[bowler].bDotPIncrease << " " << players[bowler].bDotPDecrease << " " << players[bowler].bOnePIncrease << " " << players[bowler].bOnePDecrease << " " << players[bowler].bDoublePIncrease << " " << players[bowler].bDoublePDecrease << " " << players[bowler].bFourPIncrease << " " << players[bowler].bFourPDecrease << " " << players[bowler].bSixPIncrease << " " << players[bowler].bSixPDecrease << " " << players[bowler].bWidePIncrease << " " << players[bowler].bWidePDecrease << std::endl;
 
   if (players[name].flashpoint)
   {
     if (flashpoint)
     {
-      // std::cout << "Flashpoint\n";
       dotP = 0.1f;
       oneP = 0.35f;
       doubleP = 0.18f;
