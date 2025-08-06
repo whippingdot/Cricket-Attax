@@ -804,19 +804,19 @@ void draftSim(std::string sameTeams)
         }
 
         dotMax = static_cast<int>(10000 * dotP);
-        std::cout << dotMax << std::endl;
+        //std::cout << dotMax << std::endl;
         oMax = static_cast<int>((10000 * oneP) + dotMax);
-        std::cout << oMax << std::endl;
+        //std::cout << oMax << std::endl;
         dMax = static_cast<int>((10000 * doubleP) + oMax);
-        std::cout << dMax << std::endl;
+        //std::cout << dMax << std::endl;
         tMax = static_cast<int>((10000 * threeP) + dMax);
-        std::cout << tMax << std::endl;
+        //std::cout << tMax << std::endl;
         fMax = static_cast<int>((10000 * fourP) + tMax);
-        std::cout << fMax << std::endl;
+        //std::cout << fMax << std::endl;
         sMax = static_cast<int>((10000 * sixP) + fMax);
-        std::cout << sMax << std::endl;
+        //std::cout << sMax << std::endl;
         wMax = static_cast<int>((10000 * wideP) + sMax);
-        std::cout << wMax << std::endl;
+        //std::cout << wMax << std::endl;
 
         if (random <= dotMax)
           e = outPutRuns("draft", 5, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names, bowlerName, special, bouncer);
