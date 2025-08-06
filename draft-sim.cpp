@@ -39,6 +39,9 @@ void draftSim(std::string sameTeams)
   int yuziWickets = 0;
   int warneWickets = 0;
 
+  int special = 0;
+  int bouncer = 0;
+
   // Used to draft the players at correct indices
   int teamAC = 0;
   int teamBC = 0;
@@ -758,7 +761,11 @@ void draftSim(std::string sameTeams)
         }
 
         // This is the logic for adding buffs and nerfs based on the cricketer. The block looks big because I have to account for on strike or off strike. I could cut it in half by using strike and !strike but lite
-        strike ? playerMods(names[innings - 1][index[0]], names[innings - 1][index[1]], bowlerName, dotP, oneP, doubleP, threeP, fourP, sixP, wideP, ballsB[0], current[0], overNumber, ballNumber, innings, gillUp, hardikUp, kuldeepWickets, yuziWickets, warneWickets, jadduSpell[0], steynSpell[0], hasarangaSpell[0], partnership[0], runRate, requiredRR, Players[bowlerName].pace, added, flashP, chemistryPartner[2], Players) : playerMods(names[innings - 1][index[1]], names[innings - 1][index[0]], bowlerName, dotP, oneP, doubleP, threeP, fourP, sixP, wideP, ballsB[1], current[1], overNumber, ballNumber, innings, gillUp, hardikUp, kuldeepWickets, yuziWickets, warneWickets, jadduSpell[0], steynSpell[0], hasarangaSpell[0], partnership[0], runRate, requiredRR, Players[bowlerName].pace, added, flashP, chemistryPartner[2], Players);
+        strike ? playerMods(names[innings - 1][index[0]], names[innings - 1][index[1]], bowlerName, dotP, oneP, doubleP, threeP, fourP, sixP, wideP, ballsB[0], current[0], overNumber, ballNumber, innings, gillUp, hardikUp, kuldeepWickets, yuziWickets, warneWickets, jadduSpell[0], steynSpell[0], hasarangaSpell[0], partnership[0], runRate, requiredRR, Players[bowlerName].pace, added, flashP, chemistryPartner[2], Players, special) : playerMods(names[innings - 1][index[1]], names[innings - 1][index[0]], bowlerName, dotP, oneP, doubleP, threeP, fourP, sixP, wideP, ballsB[1], current[1], overNumber, ballNumber, innings, gillUp, hardikUp, kuldeepWickets, yuziWickets, warneWickets, jadduSpell[0], steynSpell[0], hasarangaSpell[0], partnership[0], runRate, requiredRR, Players[bowlerName].pace, added, flashP, chemistryPartner[2], Players, special);
+
+        if (special == 1) {
+          bouncer++;
+        }
 
         // Free hits are not affected by striker or non-striker since if they were the 10% dot ball chance would cause issues
         if (free)
@@ -771,7 +778,7 @@ void draftSim(std::string sameTeams)
           sixP = 0.2f;
           wideP = 0.015f;
         }
-        else if (hundoGen <= 3 && Players[bowlerName].pace)
+        else if (!special && (hundoGen <= 3 && Players[bowlerName].pace))
         {
           // 3% chance for yorker for a pace bowler normally
           std::cout << "A yorker ball! ";
@@ -783,7 +790,7 @@ void draftSim(std::string sameTeams)
           sixP = 0.02f;
           wideP = 0.0f;
         }
-        else if (hundoGen >= 5 && hundoGen <= 25 && Players[bowlerName].yorkerGod)
+        else if (!special && (hundoGen >= 5 && hundoGen <= 25 && Players[bowlerName].yorkerGod))
         {
           // 21% chance added for yorker for special 'Yorker God' bowlers
           std::cout << "OH MY WHAT A YORKER! ";
@@ -797,30 +804,37 @@ void draftSim(std::string sameTeams)
         }
 
         dotMax = static_cast<int>(10000 * dotP);
+        std::cout << dotMax << std::endl;
         oMax = static_cast<int>((10000 * oneP) + dotMax);
+        std::cout << oMax << std::endl;
         dMax = static_cast<int>((10000 * doubleP) + oMax);
+        std::cout << dMax << std::endl;
         tMax = static_cast<int>((10000 * threeP) + dMax);
+        std::cout << tMax << std::endl;
         fMax = static_cast<int>((10000 * fourP) + tMax);
+        std::cout << fMax << std::endl;
         sMax = static_cast<int>((10000 * sixP) + fMax);
+        std::cout << sMax << std::endl;
         wMax = static_cast<int>((10000 * wideP) + sMax);
+        std::cout << wMax << std::endl;
 
         if (random <= dotMax)
-          e = outPutRuns("draft", 5, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names, bowlerName);
+          e = outPutRuns("draft", 5, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names, bowlerName, special, bouncer);
         else if (random > dotMax && random <= oMax)
-          e = outPutRuns("draft", 1, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names, bowlerName);
+          e = outPutRuns("draft", 1, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names, bowlerName, special, bouncer);
         else if (random > oMax && random <= dMax)
-          e = outPutRuns("draft", 2, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names, bowlerName);
+          e = outPutRuns("draft", 2, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names, bowlerName, special, bouncer);
         else if (random > dMax && random <= tMax)
-          e = outPutRuns("draft", 3, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names, bowlerName);
+          e = outPutRuns("draft", 3, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names, bowlerName, special, bouncer);
         else if (random > tMax && random <= fMax)
-          e = outPutRuns("draft", 4, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names, bowlerName);
+          e = outPutRuns("draft", 4, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names, bowlerName, special, bouncer);
         else if (random > fMax && random <= sMax)
-          e = outPutRuns("draft", 6, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names, bowlerName);
+          e = outPutRuns("draft", 6, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names, bowlerName, special, bouncer);
         else if (random > sMax && random <= wMax)
-          e = outPutRuns("draft", 7, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names, bowlerName);
+          e = outPutRuns("draft", 7, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names, bowlerName, special, bouncer);
         else if (random > wMax)
         {
-          e = outPutRuns("draft", 8, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names, bowlerName);
+          e = outPutRuns("draft", 8, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names, bowlerName, special, bouncer);
           if (e == true)
             break;
         }
@@ -941,6 +955,7 @@ void draftSim(std::string sameTeams)
         std::getline(std::cin, null);
         system("cls");
       }
+      bouncer = 0;
 
       if (ballNumber == 6)
       {
@@ -1166,6 +1181,12 @@ void draftSim(std::string sameTeams)
 
     if (wickets == 10)
     {
+      if (strike) {
+        index[0] = 11;
+      }
+      else {
+        index[1] = 11;
+      }
       if (ballNumber != 0)
       {
         std::cout << "\nAll out at " << runs << " after " << overNumber - 1 << "." << ballNumber << " overs with a run rate of " << runRate << "!\n";

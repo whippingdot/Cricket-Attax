@@ -1,6 +1,6 @@
 #include "main.h"
 
-bool outPutRuns(std::string type, int x, std::array<std::vector<char>, maxOvers> &array, int &runO, int &runT, int overN, int &ballN, int &outs, std::array<int, 2> &batsmen, std::array<int, 2> &index, bool &on, std::array<std::array<std::array<int, 3>, 11>, 2> &team, int inning, std::array<int, 2> &balls, std::array<int, 4> &partner, std::vector<std::array<int, 4>> &partners, bool &fHit, std::array<std::vector<std::array<int, 5>>, 2> &fall, int &wickT, int &wickTCount, bool &added, std::array<std::array<std::string, 11>, 2> names, std::string bowler)
+bool outPutRuns(std::string type, int x, std::array<std::vector<char>, maxOvers> &array, int &runO, int &runT, int overN, int &ballN, int &outs, std::array<int, 2> &batsmen, std::array<int, 2> &index, bool &on, std::array<std::array<std::array<int, 3>, 11>, 2> &team, int inning, std::array<int, 2> &balls, std::array<int, 4> &partner, std::vector<std::array<int, 4>> &partners, bool &fHit, std::array<std::vector<std::array<int, 5>>, 2> &fall, int &wickT, int &wickTCount, bool &added, std::array<std::array<std::string, 11>, 2> names, std::string bowler, int special, int bouncer)
 {
   // Variable declaration - the number variable is a char because it is used in a character array that is used to have the full innings' timeline
   char number = ' ';
@@ -51,13 +51,17 @@ bool outPutRuns(std::string type, int x, std::array<std::vector<char>, maxOvers>
     break;
   }
 
+  if (special == 1 && bouncer >= 2) {
+    std::cout << "\nNot the first bouncer of the over so...";
+  }
+
   if (x == 1 || x == 2 || x == 3 || x == 4 || x == 6)
   {
     // array is the timeline variable which stores the whole timeline of the innings
     array[overN - 1].push_back(number);
     // Resets if the last ball was a free hit
     fHit = false;
-    if (tRandom == 18)
+    if ((special == 1 && bouncer >= 2) || tRandom == 18)
     {
       // Logic for a free hit. Adding 'n' to the timeline is useful as when outputting the timeline we check for 'n' and convert it to *, skipping its index
       fHit = true;
@@ -114,7 +118,7 @@ bool outPutRuns(std::string type, int x, std::array<std::vector<char>, maxOvers>
   {
     array[overN - 1].push_back('.');
     fHit = false;
-    if (tRandom == 18)
+    if ((special == 1 && bouncer >= 2) || tRandom == 18)
     {
       fHit = true;
       array[overN - 1].push_back('n');
@@ -175,7 +179,7 @@ bool outPutRuns(std::string type, int x, std::array<std::vector<char>, maxOvers>
   else if (x == 8)
   {
     array[overN - 1].push_back('W');
-    if ((tRandom == 18 || tRandom == 21) && !fHit)
+    if (((special == 1 && bouncer >= 2) || (tRandom == 18 || tRandom == 21)) && !fHit)
     {
       array[overN - 1].push_back('n');
       std::cout << "\nBUT ITS A NO BALL!\n";
@@ -183,7 +187,7 @@ bool outPutRuns(std::string type, int x, std::array<std::vector<char>, maxOvers>
       runO++;
       partner[0]++;
     }
-    else if (tRandom == 18 || tRandom == 21)
+    else if ((special == 1 && bouncer >= 2) || tRandom == 18 || tRandom == 21)
     {
       array[overN - 1].push_back('n');
       std::cout << "\nBUT ITS A NO BALL AGAIN!\n";
@@ -275,7 +279,7 @@ bool outPutRuns(std::string type, int x, std::array<std::vector<char>, maxOvers>
       }
     }
 
-    if (tRandom == 18 || tRandom == 21 || fHit)
+    if ((special == 1 && bouncer >= 2) || tRandom == 18 || tRandom == 21 || fHit)
     {
       if (on)
       {
@@ -301,7 +305,7 @@ bool outPutRuns(std::string type, int x, std::array<std::vector<char>, maxOvers>
       partner[1] = 0;
     }
 
-    if (tRandom == 18 || tRandom == 21)
+    if ((special == 1 && bouncer >= 2) || tRandom == 18 || tRandom == 21)
     {
       fHit = true;
     }

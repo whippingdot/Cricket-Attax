@@ -29,7 +29,7 @@ constexpr int maxOvers = 20;
 extern std::array<std::array<std::string, 11>, 2> outBy;
 
 // Function initializations for all other files. These make it so that it can be used in any file that includes the header. This function is to change all stats and values whenever a ball occurs
-bool outPutRuns(std::string type, int x, std::array<std::vector<char>, maxOvers> &array, int &runO, int &runT, int overN, int &ballN, int &outs, std::array<int, 2> &batsmen, std::array<int, 2> &index, bool &on, std::array<std::array<std::array<int, 3>, 11>, 2> &team, int inning, std::array<int, 2> &balls, std::array<int, 4> &partner, std::vector<std::array<int, 4>> &partners, bool &fHit, std::array<std::vector<std::array<int, 5>>, 2> &fall, int &wickT, int &wickTCount, bool &added, std::array<std::array<std::string, 11>, 2> names, std::string bowler);
+bool outPutRuns(std::string type, int x, std::array<std::vector<char>, maxOvers> &array, int &runO, int &runT, int overN, int &ballN, int &outs, std::array<int, 2> &batsmen, std::array<int, 2> &index, bool &on, std::array<std::array<std::array<int, 3>, 11>, 2> &team, int inning, std::array<int, 2> &balls, std::array<int, 4> &partner, std::vector<std::array<int, 4>> &partners, bool &fHit, std::array<std::vector<std::array<int, 5>>, 2> &fall, int &wickT, int &wickTCount, bool &added, std::array<std::array<std::string, 11>, 2> names, std::string bowler, int special, int bouncer);
 
 // This function has the same functionality as the above one but is only for super overs. It is not refined with a lot of new features though
 bool superO(int x, std::array<std::vector<char>, 2> &array, int &runO, int &ballN, int &outs, std::array<int, 2> &batsmen, std::array<int, 2> &index, bool &on, std::array<std::array<std::array<int, 3>, 3>, 2> &team, int inning, std::array<int, 2> &balls, std::array<int, 4> &partner, std::array<std::array<std::string, 3>, 2> nNames, bool &fHit);
@@ -92,7 +92,7 @@ struct Player
 };
 
 // This function is in the draft function and is what changes all probabilities based on the batsman and bowler
-void playerMods(std::string name, std::string nSName, std::string bowler, float &dotP, float &oneP, float &doubleP, float &threeP, float &fourP, float &sixP, float &wideP, int ballsP, int runsP, int overN, int overB, int innings, int gillUpgrades, int hardikUpgrades, int kuldeepWickets, int yuziWickets, int warneWickets, int jadduSpell, int steynSpell, int hasarangaSpell, int partnership, double runRate, double requiredRR, bool pace, bool added, bool flashpoint, bool brokenPartner, std::unordered_map<std::string, Player> players);
+void playerMods(std::string name, std::string nSName, std::string bowler, float &dotP, float &oneP, float &doubleP, float &threeP, float &fourP, float &sixP, float &wideP, int ballsP, int runsP, int overN, int overB, int innings, int gillUpgrades, int hardikUpgrades, int kuldeepWickets, int yuziWickets, int warneWickets, int jadduSpell, int steynSpell, int hasarangaSpell, int partnership, double runRate, double requiredRR, bool pace, bool added, bool flashpoint, bool brokenPartner, std::unordered_map<std::string, Player> players, int& special);
 
 // This is the initialization of a variable that is used to get the buffs, nerfs, and status of different players using their name as the string. I used an unordered_map here since index / order didn't matter
 extern std::unordered_map<std::string, Player> Players;

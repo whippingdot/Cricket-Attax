@@ -429,7 +429,7 @@ static Player Hasaranga{
     .pace = false,
     .bDotPDecrease = 0.015f,
     .bFourPDecrease = 0.0025f,
-    .bSixPIncrease = 0.1f,
+    .bSixPIncrease = 0.01f,
     .bWidePIncrease = 0.0075f,
     .magician = true};
 
@@ -493,7 +493,7 @@ static Player Warne{
 
 double randomDouble(int min, int max);
 
-void playerMods(std::string name, std::string nSName, std::string bowler, float &dotP, float &oneP, float &doubleP, float &threeP, float &fourP, float &sixP, float &wideP, int ballsP, int runsP, int overN, int overB, int innings, int gillUpgrades, int hardikUpgrades, int kuldeepWickets, int yuziWickets, int warneWickets, int jadduSpell, int steynSpell, int hasarangaSpell, int partnership, double runRate, double requiredRR, bool pace, bool added, bool flashpoint, bool brokenPartner, std::unordered_map<std::string, Player> players)
+void playerMods(std::string name, std::string nSName, std::string bowler, float &dotP, float &oneP, float &doubleP, float &threeP, float &fourP, float &sixP, float &wideP, int ballsP, int runsP, int overN, int overB, int innings, int gillUpgrades, int hardikUpgrades, int kuldeepWickets, int yuziWickets, int warneWickets, int jadduSpell, int steynSpell, int hasarangaSpell, int partnership, double runRate, double requiredRR, bool pace, bool added, bool flashpoint, bool brokenPartner, std::unordered_map<std::string, Player> players, int& special)
 {
   if (!players.contains(name) || !players.contains(nSName) || !players.contains(bowler))
   {
@@ -722,11 +722,17 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
   {
     if (name == "Shubman Gill")
     {
+      if (gillUpgrades == 300) {
+        gillUpgrades = 0;
+      }
       players[name].dotPDecrease += (0.01f * gillUpgrades);
       players[name].fourPIncrease += (0.0075f * gillUpgrades);
     }
     else if (name == "Hardik Pandya")
     {
+      if (hardikUpgrades == 300) {
+        hardikUpgrades = 0;
+      }
       players[name].dotPDecrease += (0.0075f * hardikUpgrades);
       players[name].onePDecrease += (0.001f * hardikUpgrades);
       players[name].fourPIncrease += (0.005f * hardikUpgrades);
@@ -947,17 +953,19 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
   else if (players[bowler].tempoMaster)
   {
     std::uniform_int_distribution<> ballType(1, 100);
-    if (ballType(global_rng()) >= 0 && ballType(global_rng()) < 10)
+    special = 0;
+    if (ballType(global_rng()) > 0 && ballType(global_rng()) <= 8)
     {
       // Bouncer
       std::cout << "Bouncer! ";
       players[bowler] = defaultPlayer;
       players[bowler].bDotPIncrease = 0.02f;
-      players[bowler].bOnePDecrease = 0.04f;
+      players[bowler].bOnePDecrease = 0.045f;
       players[bowler].bDoublePDecrease = 0.02f;
       players[bowler].bFourPIncrease = 0.01f;
       players[bowler].bSixPIncrease = 0.01f;
       players[bowler].bWidePIncrease = 0.005f;
+      special = 1;
     }
     else if (ballType(global_rng()) >= 20 && ballType(global_rng()) < 30)
     {
@@ -968,6 +976,7 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
       players[bowler].bDoublePDecrease = 0.02f;
       players[bowler].bFourPIncrease = 0.01f;
       players[bowler].bSixPIncrease = 0.015f;
+      special = 2;
     }
   }
   else if (players[bowler].magician)
