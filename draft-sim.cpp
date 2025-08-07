@@ -1196,11 +1196,11 @@ void draftSim(std::string sameTeams)
       }
       if (ballNumber != 0)
       {
-        std::cout << "\nAll out at " << runs << " after " << overNumber - 1 << "." << ballNumber << " overs with a run rate of " << runRate << "!\n";
+        std::cout << "\nAll out at " << runs << " after " << overNumber - 1 << "." << ballNumber << " overs with a run rate of " << runRate << "!\n\n";
       }
       else
       {
-        std::cout << "\nAll out at " << runs << " after " << overNumber - 1 << " overs with a run rate of " << runRate << "!\n";
+        std::cout << "\nAll out at " << runs << " after " << overNumber - 1 << " overs with a run rate of " << runRate << "!\n\n";
       }
     }
 
@@ -1216,7 +1216,7 @@ void draftSim(std::string sameTeams)
     }
     else if (runs < oldRuns && innings == 2)
     {
-      std::cout << "\nTeam 1 won by " << (oldRuns - runs) << " run(s)!\n";
+      std::cout << "Team 1 won by " << (oldRuns - runs) << " run(s)!\n";
       if (wickets != 10)
         std::cout << "\nTeam 2 scored " << runs << "/" << wickets << " in " << maxOvers << " overs!\nRun rate : " << runRate << std::endl;
     }
