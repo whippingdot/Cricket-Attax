@@ -76,6 +76,7 @@ void draftSim(std::string sameTeams)
   bool buffed = false;
   bool nerfed = false;
   bool debug = false; // Condition for whether the sim is ran in debug mode or not
+  static bool flipped = false;
 
   bool flashP = false; // Condition for a certain type of player
 
@@ -462,7 +463,13 @@ void draftSim(std::string sameTeams)
 
   if ((counter == 1 && null == "bowl") || (counter == 2 && null == "bat"))
   {
-    std::swap(names[0], names[1]);
+    if (!flipped) {
+      std::swap(names[0], names[1]);
+    }
+    flipped = true;
+  }
+  else {
+    flipped = false;
   }
 
   counter = 0;
