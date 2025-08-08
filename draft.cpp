@@ -511,6 +511,8 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
   static float doubleIncrease = 0.0f;
   static bool narineBuff = false;
 
+  special = 0;
+
   if (overN == 1 && overB == 0)
   {
     kohliWickets = 0;
@@ -953,7 +955,6 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
   else if (players[bowler].tempoMaster)
   {
     std::uniform_int_distribution<> ballType(1, 100);
-    special = 0;
     if (ballType(global_rng()) > 0 && ballType(global_rng()) <= 8)
     {
       // Bouncer
