@@ -62,6 +62,7 @@ void draftSim(std::string sameTeams)
   float wideP = 0.0f;
 
   double runRate = 0.0;
+  double oldRunRate = 0.0;
   // Required run rate calculation
   double requiredRR = 0.0;
   // Economy of bowler calculation
@@ -1037,14 +1038,14 @@ void draftSim(std::string sameTeams)
       std::cout << names[innings - 1][index[1]] << ": " << current[1] << " in " << ballsB[1] << "\n\n";
       std::cout << "Runs last over: " << overRuns << "\n";
       std::cout << (overNumber - 1) << " over(s) up, " << runs << "/" << wickets << std::endl;
-      std::cout << "Current run rate: " << runRate << "\n";
+      std::cout << "Current Run Rate: " << runRate << "\n";
       if (innings == 2)
       {
         if (overNumber != maxOvers + 1)
         {
           requiredRR = static_cast<double>(oldRuns - runs + 1) / static_cast<double>(maxOvers - (overNumber - 1));
           requiredRR = std::round(requiredRR * 100.0) / 100.0;
-          std::cout << "Required run rate: " << requiredRR << "\n";
+          std::cout << "Required Run Rate: " << requiredRR << "\n";
         }
         std::cout << "\nRuns to Win: " << ((oldRuns + 1) - runs) << " from " << ((maxOvers * 6) - (((overNumber - 1) * 6) + ballNumber)) << " balls\n";
       }
@@ -1185,6 +1186,9 @@ void draftSim(std::string sameTeams)
     // Calculating run rate again
     runRate = static_cast<double>(runs) / static_cast<double>(((overNumber - 1) * 6 + ballNumber)) * static_cast<double>(6);
     runRate = std::round(runRate * 100.0) / 100.0;
+    if (innings == 1) {
+      oldRunRate = runRate;
+    }
 
     if (wickets == 10)
     {
@@ -1207,30 +1211,30 @@ void draftSim(std::string sameTeams)
     if (innings == 1 && wickets != 10)
     {
       std::cout << "First innings up.\n"
-                << runs << "/" << wickets << " in " << maxOvers << " overs!\nRun rate : " << runRate << std::endl;
+                << runs << "/" << wickets << " in " << maxOvers << " overs!\nRun Rate: " << runRate << std::endl;
     }
     else if (runs == oldRuns && innings == 2)
     {
       std::cout << "Both teams tied\n";
-      std::cout << "\nTeam 2 scored " << runs << "/" << wickets << " in " << maxOvers << " overs!\nRun rate : " << runRate << std::endl;
+      std::cout << "\nTeam 2 scored " << runs << "/" << wickets << " in " << maxOvers << " overs!\nRun Rate: " << runRate << std::endl;
     }
     else if (runs < oldRuns && innings == 2)
     {
       std::cout << "Team 1 won by " << (oldRuns - runs) << " run(s)!\n";
       if (wickets != 10)
-        std::cout << "\nTeam 2 scored " << runs << "/" << wickets << " in " << maxOvers << " overs!\nRun rate : " << runRate << std::endl;
+        std::cout << "\nTeam 2 scored " << runs << "/" << wickets << " in " << maxOvers << " overs!\nRun Rate: " << runRate << std::endl;
     }
     else if (innings == 2)
     {
       if (ballNumber != 0)
       {
         std::cout << "\nTeam 2 won with " << (10 - wickets) << " wicket(s)!\n"
-                  << runs << "/" << wickets << " in " << overNumber - 1 << "." << ballNumber << " overs!\nRun rate : " << runRate << std::endl;
+                  << runs << "/" << wickets << " in " << overNumber - 1 << "." << ballNumber << " overs!\nRun Rate: " << runRate << std::endl;
       }
       else
       {
         std::cout << "\nTeam 2 won with " << (10 - wickets) << " wicket(s)!\n"
-                  << runs << "/" << wickets << " in " << overNumber - 1 << " overs!\nRun rate : " << runRate << std::endl;
+                  << runs << "/" << wickets << " in " << overNumber - 1 << " overs!\nRun Rate: " << runRate << std::endl;
       }
     }
 
@@ -1273,6 +1277,7 @@ void draftSim(std::string sameTeams)
           std::cout << names[0][batsmenOrder[counter]] << ": " << teams[0][batsmenOrder[counter]][0] << " in " << teams[0][batsmenOrder[counter]][1] << " b. " << outBy[0][batsmenOrder[counter]] << std::endl;
         counter++;
       }
+      std::cout << "\nTotal: " << runs << "/" << wickets << ", Run Rate: " << runRate << "\n";
       counter = 0;
       for (int i = 0; i < partnerships.size(); i++)
       {
@@ -1289,14 +1294,18 @@ void draftSim(std::string sameTeams)
     {
       std::cout << "\nFULL MATCH SCORECARD\n---------------------" << std::endl;
       counter = 0;
+      int wickCounter = 0;
       for (int z = 0; z < oldBatsmenOrder.size(); z++)
       {
         if (oldBatsmenOrder[counter] == notOut[0] || oldBatsmenOrder[counter] == notOut[1])
           std::cout << names[0][oldBatsmenOrder[counter]] << ": " << teams[0][oldBatsmenOrder[counter]][0] << " in " << teams[0][oldBatsmenOrder[counter]][1] << "\n";
-        else
+        else {
           std::cout << names[0][oldBatsmenOrder[counter]] << ": " << teams[0][oldBatsmenOrder[counter]][0] << " in " << teams[0][oldBatsmenOrder[counter]][1] << " b. " << outBy[0][oldBatsmenOrder[counter]] << std::endl;
+          wickCounter++;
+        }
         counter++;
       }
+      std::cout << "\nTotal: " << oldRuns << "/" << wickCounter << ", Run Rate: " << oldRunRate << "\n";
       std::cout << "\nLargest partnership: " << savedP[0] << " in " << savedP[1] << " between " << names[0][savedP[2]] << " and " << names[0][savedP[3]] << "\n\n";
       counter = 0;
 
@@ -1338,6 +1347,7 @@ void draftSim(std::string sameTeams)
           std::cout << names[1][batsmenOrder[counter]] << ": " << teams[1][batsmenOrder[counter]][0] << " in " << teams[1][batsmenOrder[counter]][1] << " b. " << outBy[1][batsmenOrder[counter]] << std::endl;
         counter++;
       }
+      std::cout << "\nTotal: " << runs << "/" << wickets << ", Run Rate: " << runRate << "\n";
       counter = 0;
 
       for (int i = 0; i < partnerships.size(); i++)
