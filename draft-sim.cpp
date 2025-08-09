@@ -271,7 +271,7 @@ void draftSim(std::string sameTeams)
     draftOutput(names, "first");
 
     random = two(global_rng());
-    std::cout << "Player " << random << " make the first pick: ";
+    std::cout << "Player " << random << " make the first pick ('r' for random teams): ";
     null = draftInput();
     if (null == "debug")
     {
