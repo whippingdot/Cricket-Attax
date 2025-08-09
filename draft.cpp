@@ -493,7 +493,7 @@ static Player Warne{
 
 double randomDouble(int min, int max);
 
-void playerMods(std::string name, std::string nSName, std::string bowler, float &dotP, float &oneP, float &doubleP, float &threeP, float &fourP, float &sixP, float &wideP, int ballsP, int runsP, int overN, int overB, int innings, int gillUpgrades, int hardikUpgrades, int kuldeepWickets, int yuziWickets, int warneWickets, int jadduSpell, int steynSpell, int hasarangaSpell, int partnership, double runRate, double requiredRR, bool pace, bool added, bool flashpoint, bool brokenPartner, std::unordered_map<std::string, Player> players, int& special)
+void playerMods(std::string name, std::string nSName, std::string bowler, float &dotP, float &oneP, float &doubleP, float &threeP, float &fourP, float &sixP, float &wideP, int ballsP, int runsP, int overN, int overB, int innings, int gillUpgrades, int hardikUpgrades, int kuldeepWickets, int yuziWickets, int warneWickets, int jadduSpell, int steynSpell, int hasarangaSpell, int partnership, double runRate, double requiredRR, bool pace, bool added, bool flashpoint, bool brokenPartner, std::unordered_map<std::string, Player> players, int &special)
 {
   if (!players.contains(name) || !players.contains(nSName) || !players.contains(bowler))
   {
@@ -724,7 +724,8 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
   {
     if (name == "Shubman Gill")
     {
-      if (gillUpgrades == 300) {
+      if (gillUpgrades == 300)
+      {
         gillUpgrades = 0;
       }
       players[name].dotPDecrease += (0.01f * gillUpgrades);
@@ -732,7 +733,8 @@ void playerMods(std::string name, std::string nSName, std::string bowler, float 
     }
     else if (name == "Hardik Pandya")
     {
-      if (hardikUpgrades == 300) {
+      if (hardikUpgrades == 300)
+      {
         hardikUpgrades = 0;
       }
       players[name].dotPDecrease += (0.0075f * hardikUpgrades);

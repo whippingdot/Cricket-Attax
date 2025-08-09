@@ -51,7 +51,8 @@ bool outPutRuns(std::string type, int x, std::array<std::vector<char>, maxOvers>
     break;
   }
 
-  if (special == 1 && bouncer >= 2) {
+  if (special == 1 && bouncer >= 2)
+  {
     std::cout << "\nNot the first bouncer of the over so...";
   }
 

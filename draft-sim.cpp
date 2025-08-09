@@ -7,6 +7,12 @@ void draftOutput(std::array<std::array<std::string, 11>, 2> names, std::string t
 // Defines a variable that tracks who took whose wicket
 std::array<std::array<std::string, 11>, 2> outBy = {{{{{""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}}}, {{{""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}, {""}}}}};
 
+const std::array<std::string, 19> batsmen = {{"Ruturaj Gaikwad", "Virat Kohli", "Rohit Sharma", "Sai Sudharsan", "Travis Head", "Suryakumar Yadav", "Nicholas Pooran", "Shubman Gill", "Yashasvi Jaiswal", "Shimron Hetmyer", "AB de Villiers", "Shreyas Iyer", "Shivam Dube", "Abhishek Sharma", "David Warner", "Chris Gayle", "Brendon McCullum", "Don Bradman", "Sachin Tendulkar"}};
+const std::array<std::string, 7> wicketKeepers = {{"MS Dhoni", "KL Rahul", "Rishabh Pant", "Jos Buttler", "Heinrich Klaasen", "Sanju Samson", "Quinton de Kock"}};
+const std::array<std::string, 11> allRounders = {{"Ravindra Jadeja", "Hardik Pandya", "Shakib Al Hasan", "Glenn Maxwell", "Ben Stokes", "Andre Russell", "Dwayne Bravo", "Shane Watson", "Kieron Pollard", "Washington Sundar", "Axar Patel"}};
+const std::array<std::string, 12> paceBowlers = {{"Dale Steyn", "Lasith Malinga", "Trent Boult", "Mitchell Starc", "Mohammed Shami", "Bhuvneshwar Kumar", "Mohammed Siraj", "Jofra Archer", "Morne Morkel", "Deepak Chahar", "Arshdeep Singh", "Jasprit Bumrah"}};
+const std::array<std::string, 8> spinBowlers = {{"Wanindu Hasaranga", "Rashid Khan", "Yuzvendra Chahal", "Sunil Narine", "Kuldeep Yadav", "Ravichandran Ashwin", "Varun Chakravarthy", "Shane Warne"}};
+
 void draftSim(std::string sameTeams)
 {
   // Resets the outBy variable every time the draft simulation is called (so it doesn't save values from previous match)
@@ -274,6 +280,71 @@ void draftSim(std::string sameTeams)
       // names = {{{"Shubman Gill", "Yashasvi Jaiswal", "KL Rahul", "AB de Villiers", "Rishabh Pant", "Washington Sundar", "Dwayne Bravo", "Sunil Narine", "Morne Morkel", "Jofra Archer", "Arshdeep Singh"}, {"David Warner", "Chris Gayle", "Brendon McCullum", "Virat Kohli", "Ben Stokes", "Shimron Hetmyer", "Wanindu Hasaranga", "Kuldeep Yadav", "Bhuvneshwar Kumar", "Mitchell Starc", "Shane Warne"}}};
       names = {{{"Brendon McCullum", "Don Bradman", "Sachin Tendulkar", "AB de Villiers", "Rishabh Pant", "Washington Sundar", "Rashid Khan", "Sunil Narine", "Morne Morkel", "Lasith Malinga", "Arshdeep Singh"}, {"Travis Head", "Shane Watson", "Jos Buttler", "Abhishek Sharma", "Shreyas Iyer", "Sanju Samson", "Andre Russell", "Ravichandran Ashwin", "Dale Steyn", "Mohammed Shami", "Yuzvendra Chahal"}}};
     }
+    else if (null == "random" || null == "r")
+    {
+      std::uniform_int_distribution<> batsmenR(0, 18);
+      std::uniform_int_distribution<> wicketKeepersR(0, 6);
+      std::uniform_int_distribution<> allRoundersR(0, 10);
+      std::uniform_int_distribution<> paceBowlersR(0, 11);
+      std::uniform_int_distribution<> spinBowlersR(0, 7);
+
+      std::vector<std::string> chosen = std::vector<std::string>();
+      std::string placeHolder = "";
+      for (int i = 0; i < 2; i++)
+      {
+        for (int j = 0; j < 4; j++)
+        {
+          placeHolder = batsmen[batsmenR(global_rng())];
+          while (std::find(chosen.begin(), chosen.end(), placeHolder) != chosen.end())
+          {
+            placeHolder = batsmen[batsmenR(global_rng())];
+          }
+          names[i][j] = placeHolder;
+          chosen.push_back(placeHolder);
+        }
+
+        placeHolder = wicketKeepers[wicketKeepersR(global_rng())];
+        while (std::find(chosen.begin(), chosen.end(), placeHolder) != chosen.end())
+        {
+          placeHolder = wicketKeepers[wicketKeepersR(global_rng())];
+        }
+        names[i][4] = placeHolder;
+        chosen.push_back(placeHolder);
+
+        for (int j = 5; j < 7; j++)
+        {
+          placeHolder = allRounders[allRoundersR(global_rng())];
+          while (std::find(chosen.begin(), chosen.end(), placeHolder) != chosen.end())
+          {
+            placeHolder = allRounders[allRoundersR(global_rng())];
+          }
+          names[i][j] = placeHolder;
+          chosen.push_back(placeHolder);
+        }
+
+        for (int j = 7; j < 9; j++)
+        {
+          placeHolder = paceBowlers[paceBowlersR(global_rng())];
+          while (std::find(chosen.begin(), chosen.end(), placeHolder) != chosen.end())
+          {
+            placeHolder = paceBowlers[paceBowlersR(global_rng())];
+          }
+          names[i][j] = placeHolder;
+          chosen.push_back(placeHolder);
+        }
+
+        for (int j = 9; j < 11; j++)
+        {
+          placeHolder = spinBowlers[spinBowlersR(global_rng())];
+          while (std::find(chosen.begin(), chosen.end(), placeHolder) != chosen.end())
+          {
+            placeHolder = spinBowlers[spinBowlersR(global_rng())];
+          }
+          names[i][j] = placeHolder;
+          chosen.push_back(placeHolder);
+        }
+      }
+    }
     else if (players.contains(null))
     {
       names[random - 1][0] = players[null];
@@ -282,7 +353,7 @@ void draftSim(std::string sameTeams)
     {
       while (!players.contains(null))
       {
-        std::cout << "Enter a proper name or enter the full name\nPlayer " << random << " make the first pick: ";
+        std::cout << "Enter a proper name or enter the full name\nPlayer " << random << " make the first pick ('r' for random teams): ";
         null = draftInput();
       }
       names[random - 1][0] = players[null];
@@ -290,87 +361,105 @@ void draftSim(std::string sameTeams)
     random == 1 ? teamAC++ : teamBC++;
 
     system("cls");
-    for (int i = 2; i < 23; i++)
+    if (null == "r" || null == "random")
     {
-      if (names[0][10] != "" && names[1][10] != "")
+      std::cout << "The following are your teams:\n\n";
+      std::cout << "Team 1\n------\n";
+      for (int i = 0; i < 11; i++)
       {
-        break;
+        std::cout << names[0][i] << std::endl;
       }
 
-      draftOutput(names, "");
-      random == 1 ? random = 2 : random = 1;
-
-      for (int j = 0; j < 2; j++)
+      std::cout << "\nTeam 2\n------\n";
+      for (int i = 0; i < 11; i++)
       {
-        if (i == 22)
-        {
-          std::cout << "Player " << random << " make the last pick: ";
-        }
-        else
-        {
-          std::cout << "Player " << random << " make pick " << i << ": ";
-        }
-        null = draftInput();
-        if (players.contains(null) && std::find(names[0].begin(), names[0].end(), players[null]) == names[0].end() && std::find(names[1].begin(), names[1].end(), players[null]) == names[1].end())
-        {
-          if (random == 1)
-          {
-            names[random - 1][teamAC] = players[null];
-            teamAC++;
-          }
-          else
-          {
-            names[random - 1][teamBC] = players[null];
-            teamBC++;
-          }
-        }
-        else
-        {
-          while (!players.contains(null) || std::find(names[0].begin(), names[0].end(), players[null]) != names[0].end() || std::find(names[1].begin(), names[1].end(), players[null]) != names[1].end())
-          {
-            if (i == 22)
-            {
-              if (!players.contains(null))
-              {
-                std::cout << "Enter a proper name or enter the full name\nPlayer " << random << " make the last pick: ";
-              }
-              else
-              {
-                std::cout << "That player has already been chosen\nPlayer " << random << " make the last pick: ";
-              }
-            }
-            else
-            {
-              if (!players.contains(null))
-              {
-                std::cout << "Enter a proper name or enter the full name\nPlayer " << random << " make pick " << i << ": ";
-              }
-              else
-              {
-                std::cout << "That player has already been chosen\nPlayer " << random << " make pick " << i << ": ";
-              }
-            }
-            null = draftInput();
-          }
-          if (random == 1)
-          {
-            names[random - 1][teamAC] = players[null];
-            teamAC++;
-          }
-          else
-          {
-            names[random - 1][teamBC] = players[null];
-            teamBC++;
-          }
-        }
-        if (i == 22)
+        std::cout << names[1][i] << std::endl;
+      }
+    }
+    else
+    {
+      for (int i = 2; i < 23; i++)
+      {
+        if (names[0][10] != "" && names[1][10] != "")
         {
           break;
         }
-        i++;
+
+        draftOutput(names, "");
+        random == 1 ? random = 2 : random = 1;
+
+        for (int j = 0; j < 2; j++)
+        {
+          if (i == 22)
+          {
+            std::cout << "Player " << random << " make the last pick: ";
+          }
+          else
+          {
+            std::cout << "Player " << random << " make pick " << i << ": ";
+          }
+          null = draftInput();
+          if (players.contains(null) && std::find(names[0].begin(), names[0].end(), players[null]) == names[0].end() && std::find(names[1].begin(), names[1].end(), players[null]) == names[1].end())
+          {
+            if (random == 1)
+            {
+              names[random - 1][teamAC] = players[null];
+              teamAC++;
+            }
+            else
+            {
+              names[random - 1][teamBC] = players[null];
+              teamBC++;
+            }
+          }
+          else
+          {
+            while (!players.contains(null) || std::find(names[0].begin(), names[0].end(), players[null]) != names[0].end() || std::find(names[1].begin(), names[1].end(), players[null]) != names[1].end())
+            {
+              if (i == 22)
+              {
+                if (!players.contains(null))
+                {
+                  std::cout << "Enter a proper name or enter the full name\nPlayer " << random << " make the last pick: ";
+                }
+                else
+                {
+                  std::cout << "That player has already been chosen\nPlayer " << random << " make the last pick: ";
+                }
+              }
+              else
+              {
+                if (!players.contains(null))
+                {
+                  std::cout << "Enter a proper name or enter the full name\nPlayer " << random << " make pick " << i << ": ";
+                }
+                else
+                {
+                  std::cout << "That player has already been chosen\nPlayer " << random << " make pick " << i << ": ";
+                }
+              }
+              null = draftInput();
+            }
+            if (random == 1)
+            {
+              names[random - 1][teamAC] = players[null];
+              teamAC++;
+            }
+            else
+            {
+              names[random - 1][teamBC] = players[null];
+              teamBC++;
+            }
+          }
+          if (i == 22)
+          {
+            break;
+          }
+          i++;
+        }
+        i--;
+        system("cls");
       }
-      i--;
-      system("cls");
     }
 
     std::cout << "\nEnter to Continue\n";
@@ -464,12 +553,14 @@ void draftSim(std::string sameTeams)
 
   if ((counter == 1 && null == "bowl") || (counter == 2 && null == "bat"))
   {
-    if (!flipped) {
+    if (!flipped)
+    {
       std::swap(names[0], names[1]);
     }
     flipped = true;
   }
-  else {
+  else
+  {
     flipped = false;
   }
 
@@ -771,7 +862,8 @@ void draftSim(std::string sameTeams)
         // This is the logic for adding buffs and nerfs based on the cricketer. The block looks big because I have to account for on strike or off strike. I could cut it in half by using strike and !strike but lite
         strike ? playerMods(names[innings - 1][index[0]], names[innings - 1][index[1]], bowlerName, dotP, oneP, doubleP, threeP, fourP, sixP, wideP, ballsB[0], current[0], overNumber, ballNumber, innings, gillUp, hardikUp, kuldeepWickets, yuziWickets, warneWickets, jadduSpell[0], steynSpell[0], hasarangaSpell[0], partnership[0], runRate, requiredRR, Players[bowlerName].pace, added, flashP, chemistryPartner[2], Players, special) : playerMods(names[innings - 1][index[1]], names[innings - 1][index[0]], bowlerName, dotP, oneP, doubleP, threeP, fourP, sixP, wideP, ballsB[1], current[1], overNumber, ballNumber, innings, gillUp, hardikUp, kuldeepWickets, yuziWickets, warneWickets, jadduSpell[0], steynSpell[0], hasarangaSpell[0], partnership[0], runRate, requiredRR, Players[bowlerName].pace, added, flashP, chemistryPartner[2], Players, special);
 
-        if (special == 1) {
+        if (special == 1)
+        {
           bouncer++;
         }
 
@@ -812,19 +904,19 @@ void draftSim(std::string sameTeams)
         }
 
         dotMax = static_cast<int>(10000 * dotP);
-        //std::cout << dotMax << std::endl;
+        // std::cout << dotMax << std::endl;
         oMax = static_cast<int>((10000 * oneP) + dotMax);
-        //std::cout << oMax << std::endl;
+        // std::cout << oMax << std::endl;
         dMax = static_cast<int>((10000 * doubleP) + oMax);
-        //std::cout << dMax << std::endl;
+        // std::cout << dMax << std::endl;
         tMax = static_cast<int>((10000 * threeP) + dMax);
-        //std::cout << tMax << std::endl;
+        // std::cout << tMax << std::endl;
         fMax = static_cast<int>((10000 * fourP) + tMax);
-        //std::cout << fMax << std::endl;
+        // std::cout << fMax << std::endl;
         sMax = static_cast<int>((10000 * sixP) + fMax);
-        //std::cout << sMax << std::endl;
+        // std::cout << sMax << std::endl;
         wMax = static_cast<int>((10000 * wideP) + sMax);
-        //std::cout << wMax << std::endl;
+        // std::cout << wMax << std::endl;
 
         if (random <= dotMax)
           e = outPutRuns("draft", 5, timeline, overRuns, runs, overNumber, ballNumber, wickets, current, index, strike, teams, innings, ballsB, partnership, partnerships, free, fallOW, wicketsT, wicketsTCounter, added, names, bowlerName, special, bouncer);
@@ -1186,16 +1278,19 @@ void draftSim(std::string sameTeams)
     // Calculating run rate again
     runRate = static_cast<double>(runs) / static_cast<double>(((overNumber - 1) * 6 + ballNumber)) * static_cast<double>(6);
     runRate = std::round(runRate * 100.0) / 100.0;
-    if (innings == 1) {
+    if (innings == 1)
+    {
       oldRunRate = runRate;
     }
 
     if (wickets == 10)
     {
-      if (strike) {
+      if (strike)
+      {
         index[0] = 11;
       }
-      else {
+      else
+      {
         index[1] = 11;
       }
       if (ballNumber != 0)
@@ -1299,7 +1394,8 @@ void draftSim(std::string sameTeams)
       {
         if (oldBatsmenOrder[counter] == notOut[0] || oldBatsmenOrder[counter] == notOut[1])
           std::cout << names[0][oldBatsmenOrder[counter]] << ": " << teams[0][oldBatsmenOrder[counter]][0] << " in " << teams[0][oldBatsmenOrder[counter]][1] << "\n";
-        else {
+        else
+        {
           std::cout << names[0][oldBatsmenOrder[counter]] << ": " << teams[0][oldBatsmenOrder[counter]][0] << " in " << teams[0][oldBatsmenOrder[counter]][1] << " b. " << outBy[0][oldBatsmenOrder[counter]] << std::endl;
           wickCounter++;
         }
@@ -1853,12 +1949,6 @@ std::string draftInput()
 // Outputs the full draft list in an easy way (called easily instead of a block being put in the code constantly). If the below arrays are changed, the draft list changes. Players are highlighted based on team color if picked
 void draftOutput(std::array<std::array<std::string, 11>, 2> names, std::string type)
 {
-  std::array<std::string, 19> batsmen = {{"Ruturaj Gaikwad", "Virat Kohli", "Rohit Sharma", "Sai Sudharsan", "Travis Head", "Suryakumar Yadav", "Nicholas Pooran", "Shubman Gill", "Yashasvi Jaiswal", "Shimron Hetmyer", "AB de Villiers", "Shreyas Iyer", "Shivam Dube", "Abhishek Sharma", "David Warner", "Chris Gayle", "Brendon McCullum", "Don Bradman", "Sachin Tendulkar"}};
-  std::array<std::string, 7> wicketKeepers = {{"MS Dhoni", "KL Rahul", "Rishabh Pant", "Jos Buttler", "Heinrich Klaasen", "Sanju Samson", "Quinton de Kock"}};
-  std::array<std::string, 11> allRounders = {{"Ravindra Jadeja", "Hardik Pandya", "Shakib Al Hasan", "Glenn Maxwell", "Ben Stokes", "Andre Russell", "Dwayne Bravo", "Shane Watson", "Kieron Pollard", "Washington Sundar", "Axar Patel"}};
-  std::array<std::string, 12> paceBowlers = {{"Dale Steyn", "Lasith Malinga", "Trent Boult", "Mitchell Starc", "Mohammed Shami", "Bhuvneshwar Kumar", "Mohammed Siraj", "Jofra Archer", "Morne Morkel", "Deepak Chahar", "Arshdeep Singh", "Jasprit Bumrah"}};
-  std::array<std::string, 8> spinBowlers = {{"Wanindu Hasaranga", "Rashid Khan", "Yuzvendra Chahal", "Sunil Narine", "Kuldeep Yadav", "Ravichandran Ashwin", "Varun Chakravarthy", "Shane Warne"}};
-
   std::cout << "Batsmen             Wicket Keepers      All Rounders        Pace Bowlers        Spin Bowlers\n--------            ---------------     -------------       -------------       -------------\n";
   if (type == "first")
   {
