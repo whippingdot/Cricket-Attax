@@ -12,7 +12,7 @@
 10. **Shimron Hetmyer ✈️** – +5 6, -1 4, +1.5 W, -5.5 . – _+26 but 1.5% more dangerous / +10_ [Redzone-Dominator]
 11. **AB de Villiers ✈️** – -1 4, -1 W, +2 . – _-4 but 1% safer / +32 but 1% safer_ [Chemistry]
 12. **Shreyas Iyer** – +3 4, -4.5 ., +1 1, +0.5 W – _+13 but 0.5% more dangerous / +34 but 0.5% more dangerous_ [Spin-Buff]
-13. **Shivam Dube** – +7 ., -5 1, +1 W, +4 6, -3 4, -4 2 – _-1 but 1% more dangerous / 38 but 0.2% more dangerous_ [Spin-Buff]
+13. **Shivam Dube** – +7 ., -5 1, +1 W, +4 6, -3 4, -4 2 – _-1 but 1% more dangerous / +38 but 0.2% more dangerous_ [Spin-Buff]
 14. **Abhishek Sharma** – +3 6, +3 4, -6.5 1, +0.5 W – _+23.5 but 0.5% more dangerous / +8.5 and 0.5% more dangerous_ [PP-Smash]
 15. **David Warner ✈️** – +3 4, -1 6, -2 . – _+6 / +26_ [Pace-Buff]
 16. **Chris Gayle ✈️** – 1 is 10%: +8 6, . is rest, -2 4, +1 W, +1 . – _+20-35 but 1% more dangerous_
